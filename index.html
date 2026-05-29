@@ -879,18 +879,22 @@ function updateStats() {
       API CALLS
 ═══════════════════════════════════════════════════════════════════════ */
 async function apiFetch(params) {
-    const url = new URL(SCRIPT_URL);
-    Object.entries(params).forEach(([k, v]) => url.searchParams.set(k, v));
-    const res = await fetch(url.toString());
+    const form = new URLSearchParams({ ...params });
+    const res = await fetch(SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: form.toString()
+    });
     if (!res.ok) throw new Error('HTTP ' + res.status);
     return res.json();
 }
 
 async function apiPost(body) {
+    const form = new URLSearchParams({ payload: JSON.stringify(body) });
     const res = await fetch(SCRIPT_URL, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body)
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: form.toString()
     });
     if (!res.ok) throw new Error('HTTP ' + res.status);
     return res.json();
