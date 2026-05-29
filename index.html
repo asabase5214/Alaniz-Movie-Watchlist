@@ -788,29 +788,13 @@
 <div id="toast"></div>
 
 <script>
-// ─── CONFIGURATION ───────────────────────────────────────────────────────────
-// Paste your deployed Apps Script web app URL here:
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwe9MqrfiCZaKc26hIJBF1qkKvAi8UB6eFa2TXUrsgbpzRR8XNtCeicvLMH6pbT-VCt/exec';
-// ─────────────────────────────────────────────────────────────────────────────
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzdqCOH1pl3KnE2EoiutEBypjoz3aAvTXORF39sLRtRGDs7uEZ9vLJnpRD35YTup5sI/exec';
 
-/* Expected sheet columns (1-indexed, row 1 = headers):
-      A: RowID (auto)   B: Title      C: Year      D: Runtime
-      E: Genre          F: Director   G: Language  H: Priority
-      I: Status         J: Rating     K: Source    L: Notes
-      M: DateAdded (auto)
-*/
-
-/* ═══════════════════════════════════════════════════════════════════════
-      STATE
-═══════════════════════════════════════════════════════════════════════ */
 let allMovies  = [];
 let view       = 'table';  // 'table' | 'cards'
 let sortKey    = 'title-asc';
 let editingId  = null;
 
-/* ═══════════════════════════════════════════════════════════════════════
-      INIT
-═══════════════════════════════════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded', () => {
     loadMovies();
 
