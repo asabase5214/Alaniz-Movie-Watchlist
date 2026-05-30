@@ -973,13 +973,10 @@ async function toggleWatched(movie) {
     }
 }
 
-/* ═══════════════════════════════════════════════════════════════════════
-      FILTERS & SORT
-═══════════════════════════════════════════════════════════════════════ */
 function buildDynamicFilters() {
     // Genres
     const genres = [...new Set(allMovies.flatMap(m => parseList(m.Genre)))].sort();
-    buildCheckGroup('filter-genre', genres, true);
+    buildCheckGroup('filter-genre', genres, false);
 
     // Languages
     const langs = [...new Set(allMovies.map(m => m.Language).filter(Boolean))].sort();
