@@ -383,9 +383,6 @@
             white-space: nowrap;
         }
 
-        .rating-stars { color: var(--gold); font-size: 0.75rem; letter-spacing: 1px; }
-        .rating-none { color: var(--text-dim); font-size: 0.7rem; font-family: 'DM Mono', monospace; }
-
         .status-pill {
             display: inline-block;
             font-family: 'DM Mono', monospace;
@@ -657,19 +654,6 @@
             </div>
         </div>
 
-        <!-- Min Rating -->
-        <div class="filter-section">
-            <h3>Min Rating</h3>
-            <select id="filter-rating" class="filter-select">
-                <option value="0">Any rating</option>
-                <option value="1">★ 1+</option>
-                <option value="2">★★ 2+</option>
-                <option value="3">★★★ 3+</option>
-                <option value="4">★★★★ 4+</option>
-                <option value="5">★★★★★ 5</option>
-            </select>
-        </div>
-
         <!-- Language -->
         <div class="filter-section">
             <h3>Language</h3>
@@ -694,7 +678,6 @@
                         <option value="priority-asc">Priority ↑</option>
                         <option value="runtime-asc">Shortest first</option>
                         <option value="runtime-desc">Longest first</option>
-                        <option value="rating-desc">Highest rated</option>
                         <option value="added-desc">Recently added</option>
                     </select>
                 </div>
@@ -755,17 +738,6 @@
                 </select>
             </div>
             <div class="field">
-                <label>Rating (1–5)</label>
-                <select id="f-rating">
-                    <option value="">—</option>
-                    <option value="1">★</option>
-                    <option value="2">★★</option>
-                    <option value="3">★★★</option>
-                    <option value="4">★★★★</option>
-                    <option value="5">★★★★★</option>
-                </select>
-            </div>
-            <div class="field">
                 <label>Source / Platform</label>
                 <input type="text" id="f-source" placeholder="Netflix, DVD…">
             </div>
@@ -815,7 +787,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     document.getElementById('filter-year-from').addEventListener('input', renderList);
     document.getElementById('filter-year-to').addEventListener('input', renderList);
-    document.getElementById('filter-rating').addEventListener('change', renderList);
     document.getElementById('btn-reset').addEventListener('click', resetFilters);
 
     // Modal
@@ -922,7 +893,6 @@ async function saveMovie() {
         Language: document.getElementById('f-language').value.trim(),
         Priority: document.getElementById('f-priority').value,
         Status:   document.getElementById('f-status').value,
-        Rating:   document.getElementById('f-rating').value,
         Source:   document.getElementById('f-source').value.trim(),
         Notes:    document.getElementById('f-notes').value.trim(),
     };
@@ -1010,7 +980,6 @@ function applyFilters(movies) {
     const maxRuntime  = +document.getElementById('filter-runtime').value;
     const yearFrom    = +document.getElementById('filter-year-from').value || 0;
     const yearTo      = +document.getElementById('filter-year-to').value   || 9999;
-    const minRating   = +document.getElementById('filter-rating').value    || 0;
 
     return movies.filter(m => {
         if (q && !((m.Title||'').toLowerCase().includes(q) ||
@@ -1023,7 +992,6 @@ function applyFilters(movies) {
         if (langs.length && m.Language && !langs.includes(m.Language)) return false;
         if (maxRuntime < 300 && m.Runtime && +m.Runtime > maxRuntime) return false;
         if (m.Year && (+m.Year < yearFrom || +m.Year > yearTo)) return false;
-        if (minRating && (!m.Rating || +m.Rating < minRating)) return false;
         return true;
     });
 }
@@ -1036,7 +1004,6 @@ function applySort(movies) {
         if (field === 'year')    { va = +a.Year    || 0; vb = +b.Year    || 0; }
         if (field === 'priority'){ va = +a.Priority|| 9; vb = +b.Priority|| 9; }
         if (field === 'runtime') { va = +a.Runtime || 0; vb = +b.Runtime || 0; }
-        if (field === 'rating')  { va = +a.Rating  || 0; vb = +b.Rating  || 0; }
         if (field === 'added')   { va = a.DateAdded||''; vb = b.DateAdded||''; }
         if (va < vb) return dir === 'asc' ? -1 : 1;
         if (va > vb) return dir === 'asc' ?  1 : -1;
@@ -1052,7 +1019,6 @@ function resetFilters() {
     document.getElementById('runtime-val').textContent = 'Any';
     document.getElementById('filter-year-from').value = '';
     document.getElementById('filter-year-to').value = '';
-    document.getElementById('filter-rating').value = '0';
     renderList();
 }
 
@@ -1078,11 +1044,6 @@ function renderList() {
     else renderCards(filtered, el);
 }
 
-function starsHtml(r) {
-    if (!r) return '<span class="rating-none">—</span>';
-    return '<span class="rating-stars">' + '★'.repeat(+r) + '☆'.repeat(5 - +r) + '</span>';
-}
-
 function statusPill(s) {
     const cls = { Watched: 'watched', Unwatched: 'unwatched'}[s] || 'unwatched';
     return `<span class="status-pill status-${cls}">${s||'Unwatched'}</span>`;
@@ -1100,7 +1061,6 @@ function renderTable(movies, container) {
             <td>${genres}</td>
             <td><span class="priority-badge priority-${m.Priority||3}">${m.Priority||3}</span></td>
             <td class="runtime-cell">${m.Runtime ? m.Runtime+'m' : '—'}</td>
-            <td>${starsHtml(m.Rating)}</td>
             <td>${statusPill(m.Status)}</td>
             <td>${esc(m.Director||'—')}</td>
             <td>${esc(m.Language||'—')}</td>
@@ -1125,7 +1085,6 @@ function renderTable(movies, container) {
                         <th>Genre</th>
                         <th>Priority</th>
                         <th>Runtime</th>
-                        <th>Rating</th>
                         <th>Status</th>
                         <th>Director</th>
                         <th>Language</th>
@@ -1146,7 +1105,6 @@ function renderCards(movies, container) {
             <div class="card-genres">${genres}</div>
             <div style="display:flex;justify-content:space-between;align-items:center">
                 <span class="priority-badge priority-${m.Priority||3}">${m.Priority||3}</span>
-                ${starsHtml(m.Rating)}
             </div>
             <div class="card-footer">
                 ${statusPill(m.Status)}
@@ -1175,7 +1133,6 @@ function openAddModal() {
         document.getElementById('f-'+f).value = '');
     document.getElementById('f-priority').value = '2';
     document.getElementById('f-status').value   = 'Unwatched';
-    document.getElementById('f-rating').value   = '';
     document.getElementById('movie-modal').classList.add('open');
 }
 
@@ -1192,7 +1149,6 @@ function openEditModal(rowId) {
     document.getElementById('f-language').value = m.Language || '';
     document.getElementById('f-priority').value = m.Priority || '2';
     document.getElementById('f-status').value   = m.Status   || 'Unwatched';
-    document.getElementById('f-rating').value   = m.Rating   || '';
     document.getElementById('f-source').value   = m.Source   || '';
     document.getElementById('f-notes').value    = m.Notes    || '';
     document.getElementById('movie-modal').classList.add('open');
