@@ -660,6 +660,11 @@
             <div class="check-group" id="filter-language"></div>
         </div>
 
+        <div class="filter-section">
+            <h3>Viewers</h3>
+            <div class="check-group" id="filter-viewers"></div>
+        </div>
+
         <button class="reset-link" id="btn-reset">↺ Reset all filters</button>
     </aside>
 
@@ -737,6 +742,10 @@
                     <option value="Watched">Watched</option>
                 </select>
             </div>
+            <div class="field full">
+                <label>Viewers — semicolon separated</label>
+                <input type="text" id="f-viewers" placeholder="Aidan; Jordan">
+            </div>
             <div class="field">
                 <label>Source / Platform</label>
                 <input type="text" id="f-source" placeholder="Netflix, DVD…">
@@ -757,7 +766,7 @@
 <div id="toast"></div>
 
 <script>
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzdqCOH1pl3KnE2EoiutEBypjoz3aAvTXORF39sLRtRGDs7uEZ9vLJnpRD35YTup5sI/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwzbr1JGGrbkAyy4KGbUpRBl26BmuGU42vCc7E-tLLmcjyR9DufIWYSh_FcsMGfMRq3/exec';
 
 let allMovies  = [];
 let view       = 'table';  // 'table' | 'cards'
@@ -893,6 +902,7 @@ async function saveMovie() {
         Language: document.getElementById('f-language').value.trim(),
         Priority: document.getElementById('f-priority').value,
         Status:   document.getElementById('f-status').value,
+        Viewers:  document.getElementById('f-viewers').value.trim(),
         Source:   document.getElementById('f-source').value.trim(),
         Notes:    document.getElementById('f-notes').value.trim(),
     };
@@ -948,6 +958,9 @@ function buildDynamicFilters() {
     // Languages
     const langs = [...new Set(allMovies.map(m => m.Language).filter(Boolean))].sort();
     buildCheckGroup('filter-language', langs, true);
+
+    const viewers = [...new Set(allMovies.flatMap(m => parseList(m.Viewers)))].sort();
+    buildCheckGroup('filter-viewers', viewers, false);
 }
 
 function buildCheckGroup(id, values, checked) {
@@ -977,6 +990,7 @@ function applyFilters(movies) {
     const priorities  = getChecked('filter-priority');
     const genres      = getChecked('filter-genre');
     const langs       = getChecked('filter-language');
+    const viewers     = getChecked('filter-viewers');
     const maxRuntime  = +document.getElementById('filter-runtime').value;
     const yearFrom    = +document.getElementById('filter-year-from').value || 0;
     const yearTo      = +document.getElementById('filter-year-to').value   || 9999;
@@ -990,6 +1004,7 @@ function applyFilters(movies) {
         const mGenres = parseList(m.Genre);
         if (genres.length && !mGenres.some(g => genres.includes(g))) return false;
         if (langs.length && m.Language && !langs.includes(m.Language)) return false;
+        if (viewers.length && !parseList(m.Viewers).some(v => viewers.includes(v))) return false;
         if (maxRuntime < 300 && m.Runtime && +m.Runtime > maxRuntime) return false;
         if (m.Year && (+m.Year < yearFrom || +m.Year > yearTo)) return false;
         return true;
@@ -1013,7 +1028,7 @@ function applySort(movies) {
 
 function resetFilters() {
     document.getElementById('search').value = '';
-    document.querySelectorAll('#filter-status input, #filter-priority input, #filter-genre input, #filter-language input')
+    document.querySelectorAll('#filter-status input, #filter-priority input, #filter-genre input, #filter-language input, #filter-viewers input')
         .forEach(el => el.checked = true);
     document.getElementById('filter-runtime').value = 300;
     document.getElementById('runtime-val').textContent = 'Any';
@@ -1064,6 +1079,7 @@ function renderTable(movies, container) {
             <td>${statusPill(m.Status)}</td>
             <td>${esc(m.Director||'—')}</td>
             <td>${esc(m.Language||'—')}</td>
+            <td>${esc(m.Viewers||'—')}</td>
             <td>
                 <div class="row-actions">
                     <button class="row-btn" onclick="event.stopPropagation();openEditModal('${m.RowID}')">✎</button>
@@ -1088,6 +1104,7 @@ function renderTable(movies, container) {
                         <th>Status</th>
                         <th>Director</th>
                         <th>Language</th>
+                        <th>Viewers</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -1149,6 +1166,7 @@ function openEditModal(rowId) {
     document.getElementById('f-language').value = m.Language || '';
     document.getElementById('f-priority').value = m.Priority || '2';
     document.getElementById('f-status').value   = m.Status   || 'Unwatched';
+    document.getElementById('f-viewers').value  = m.Viewers  || '';
     document.getElementById('f-source').value   = m.Source   || '';
     document.getElementById('f-notes').value    = m.Notes    || '';
     document.getElementById('movie-modal').classList.add('open');
