@@ -397,7 +397,6 @@
         }
         .status-watched  { background: rgba(46,204,113,0.12); color: #2ecc71; border: 1px solid #1a8a46; }
         .status-unwatched{ background: rgba(74,72,70,0.3); color: var(--text-dim); border: 1px solid var(--border); }
-        .status-watching { background: rgba(52,152,219,0.15); color: #5dade2; border: 1px solid #2471a3; }
 
         .row-actions { display: flex; gap: 0.3rem; opacity: 0; transition: opacity var(--transition); }
         tbody tr:hover .row-actions { opacity: 1; }
@@ -620,7 +619,6 @@
             <h3>Status</h3>
             <div class="check-group" id="filter-status">
                 <label class="check-item"><input type="checkbox" value="Unwatched" checked> Unwatched</label>
-                <label class="check-item"><input type="checkbox" value="Watching"  checked> Watching</label>
                 <label class="check-item"><input type="checkbox" value="Watched"   checked> Watched</label>
             </div>
         </div>
@@ -753,7 +751,6 @@
                 <label>Status</label>
                 <select id="f-status">
                     <option value="Unwatched" selected>Unwatched</option>
-                    <option value="Watching">Watching</option>
                     <option value="Watched">Watched</option>
                 </select>
             </div>
@@ -1087,7 +1084,7 @@ function starsHtml(r) {
 }
 
 function statusPill(s) {
-    const cls = { Watched: 'watched', Unwatched: 'unwatched', Watching: 'watching' }[s] || 'unwatched';
+    const cls = { Watched: 'watched', Unwatched: 'unwatched'}[s] || 'unwatched';
     return `<span class="status-pill status-${cls}">${s||'Unwatched'}</span>`;
 }
 
