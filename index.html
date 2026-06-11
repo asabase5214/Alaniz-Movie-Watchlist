@@ -755,8 +755,9 @@
             .viewer-avatars {
                 display: flex;
                 gap: 3px;
-                flex-wrap: wrap;
+                flex-wrap: none;
             }
+
             .viewer-pip {
                 width: 20px; height: 20px;
                 border-radius: 50%;
@@ -1449,9 +1450,8 @@
                     '<td>' + esc(m.Language||'\u2014') + '</td>' +
                     '<td>' + esc(m.Viewers||'\u2014') + '</td>' +
                     '<td>' + buildStarHTML(m.RowID) + '</td>' +
-                    '<td>' + buildViewerPips(m) +
-                        (!isOnMyList(m) ? '<button class="add-to-list-btn" onclick="event.stopPropagation();addToMyList(' + mj + ')">+ My List</button>' : '') +
-                    '</td>' +
+                    '<td>' + (!isOnMyList(m) ? '<button class="add-to-list-btn" onclick="event.stopPropagation();addToMyList(' + mj + ')">+ My List</button>' : '') + '</td>' +
+                    '<td>' + buildViewerPips(m) + '</td>' +
                     '<td><div class="row-actions">' +
                         '<button class="row-btn" onclick="event.stopPropagation();openEditModal(\'' + m.RowID + '\')">\u270E</button>' +
                         '<button class="row-btn" onclick="event.stopPropagation();toggleWatched(' + mj + ')">' + (m.Status === 'Watched' ? '\u21A9' : '\u2713') + '</button>' +
