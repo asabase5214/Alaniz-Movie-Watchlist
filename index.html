@@ -562,592 +562,590 @@
         ::-webkit-scrollbar-thumb:hover { background: var(--gold-dim); }
     </style>
 </head>
-<body>
+    <body>
 
-<header>
-    <div class="logo">Alaniz Movie Watchlist</div>
-    <div class="header-actions">
-        <button class="btn" id="btn-refresh" title="Reload from Google Sheets">⟳ Sync</button>
-        <button class="btn primary" id="btn-add">+ Add Movie</button>
-    </div>
-</header>
-
-<div id="status-bar">
-    <span><span class="dot" id="conn-dot"></span><span id="conn-text">Connecting…</span></span>
-    <span id="stat-total"></span>
-    <span id="stat-watched"></span>
-    <span id="stat-unwatched"></span>
-</div>
-
-
-
-<div class="app" id="app-shell">
-
-    <aside>
-        <!-- Search -->
-        <div class="filter-section">
-            <h3>Search</h3>
-            <div class="search-wrap">
-                <span class="icon">🔍</span>
-                <input type="text" id="search" placeholder="Title, director…" />
+        <header>
+            <div class="logo">Alaniz Movie Watchlist</div>
+            <div class="header-actions">
+                <button class="btn" id="btn-refresh" title="Reload from Google Sheets">⟳ Sync</button>
+                <button class="btn primary" id="btn-add">+ Add Movie</button>
             </div>
+        </header>
+
+        <div id="status-bar">
+            <span><span class="dot" id="conn-dot"></span><span id="conn-text">Connecting…</span></span>
+            <span id="stat-total"></span>
+            <span id="stat-watched"></span>
+            <span id="stat-unwatched"></span>
         </div>
 
-        <div class="filter-section">
-            <h3>Status</h3>
-            <div class="check-group" id="filter-status">
-                <label class="check-item"><input type="checkbox" value="Unwatched" checked> Unwatched</label>
-                <label class="check-item"><input type="checkbox" value="Watched"   checked> Watched</label>
-            </div>
-        </div>
+        <div class="app" id="app-shell">
 
-        <!-- Priority -->
-        <div class="filter-section">
-            <h3>Priority</h3>
-            <div class="check-group" id="filter-priority">
-                <label class="check-item"><input type="checkbox" value="1" checked> 🥇 Must-Watch</label>
-                <label class="check-item"><input type="checkbox" value="2" checked> 🥈 High</label>
-                <label class="check-item"><input type="checkbox" value="3" checked> 🥉 Normal</label>
-            </div>
-        </div>
-
-        <!-- Genre -->
-        <div class="filter-section">
-            <h3>Genre</h3>
-            <div class="check-group" id="filter-genre"></div>
-        </div>
-
-        <!-- Length -->
-        <div class="filter-section">
-            <h3>Max Runtime</h3>
-            <div class="range-row">
-                <input type="range" id="filter-runtime" min="30" max="300" value="300" step="5">
-                <span class="range-val" id="runtime-val">Any</span>
-            </div>
-        </div>
-
-        <div class="filter-section">
-            <h3>Year Range</h3>
-            <div style="display:flex;gap:0.5rem">
-                <input type="number" id="filter-year-from" class="filter-select" placeholder="From" min="1900" max="2099" style="width:50%">
-                <input type="number" id="filter-year-to"   class="filter-select" placeholder="To"   min="1900" max="2099" style="width:50%">
-            </div>
-        </div>
-
-        <!-- Language -->
-        <div class="filter-section">
-            <h3>Language</h3>
-            <div class="check-group" id="filter-language"></div>
-        </div>
-
-        <div class="filter-section">
-            <h3>Who Is Watching</h3>
-            <div class="check-group" id="filter-viewers"></div>
-        </div>
-
-        <button class="reset-link" id="btn-reset">↺ Reset all filters</button>
-    </aside>
-
-    <!-- MAIN -->
-    <main>
-        <div class="toolbar">
-            <span class="results-count" id="results-count"></span>
-            <div style="display:flex;gap:1rem;align-items:center;flex-wrap:wrap">
-                <div class="sort-row">
-                    <label>Sort</label>
-                    <select id="sort-select" class="filter-select" style="width:auto">
-                        <option value="title-asc">Title A→Z</option>
-                        <option value="title-desc">Title Z→A</option>
-                        <option value="year-desc">Newest first</option>
-                        <option value="year-asc">Oldest first</option>
-                        <option value="priority-asc">Priority ↑</option>
-                        <option value="runtime-asc">Shortest first</option>
-                        <option value="runtime-desc">Longest first</option>
-                        <option value="added-desc">Recently added</option>
-                    </select>
+            <aside>
+                <!-- Search -->
+                <div class="filter-section">
+                    <h3>Search</h3>
+                    <div class="search-wrap">
+                        <span class="icon">🔍</span>
+                        <input type="text" id="search" placeholder="Title, director…" />
+                    </div>
                 </div>
-                <div class="view-toggle">
-                    <button id="view-table" class="active" title="Table view">☰</button>
-                    <button id="view-cards" title="Card view">⊞</button>
+
+                <div class="filter-section">
+                    <h3>Status</h3>
+                    <div class="check-group" id="filter-status">
+                        <label class="check-item"><input type="checkbox" value="Unwatched" checked> Unwatched</label>
+                        <label class="check-item"><input type="checkbox" value="Watched"   checked> Watched</label>
+                    </div>
+                </div>
+
+                <!-- Priority -->
+                <div class="filter-section">
+                    <h3>Priority</h3>
+                    <div class="check-group" id="filter-priority">
+                        <label class="check-item"><input type="checkbox" value="1" checked> 🥇 Must-Watch</label>
+                        <label class="check-item"><input type="checkbox" value="2" checked> 🥈 High</label>
+                        <label class="check-item"><input type="checkbox" value="3" checked> 🥉 Normal</label>
+                    </div>
+                </div>
+
+                <!-- Genre -->
+                <div class="filter-section">
+                    <h3>Genre</h3>
+                    <div class="check-group" id="filter-genre"></div>
+                </div>
+
+                <!-- Length -->
+                <div class="filter-section">
+                    <h3>Max Runtime</h3>
+                    <div class="range-row">
+                        <input type="range" id="filter-runtime" min="30" max="300" value="300" step="5">
+                        <span class="range-val" id="runtime-val">Any</span>
+                    </div>
+                </div>
+
+                <div class="filter-section">
+                    <h3>Year Range</h3>
+                    <div style="display:flex;gap:0.5rem">
+                        <input type="number" id="filter-year-from" class="filter-select" placeholder="From" min="1900" max="2099" style="width:50%">
+                        <input type="number" id="filter-year-to"   class="filter-select" placeholder="To"   min="1900" max="2099" style="width:50%">
+                    </div>
+                </div>
+
+                <!-- Language -->
+                <div class="filter-section">
+                    <h3>Language</h3>
+                    <div class="check-group" id="filter-language"></div>
+                </div>
+
+                <div class="filter-section">
+                    <h3>Who Is Watching</h3>
+                    <div class="check-group" id="filter-viewers"></div>
+                </div>
+
+                <button class="reset-link" id="btn-reset">↺ Reset all filters</button>
+            </aside>
+
+            <!-- MAIN -->
+            <main>
+                <div class="toolbar">
+                    <span class="results-count" id="results-count"></span>
+                    <div style="display:flex;gap:1rem;align-items:center;flex-wrap:wrap">
+                        <div class="sort-row">
+                            <label>Sort</label>
+                            <select id="sort-select" class="filter-select" style="width:auto">
+                                <option value="title-asc">Title A→Z</option>
+                                <option value="title-desc">Title Z→A</option>
+                                <option value="year-desc">Newest first</option>
+                                <option value="year-asc">Oldest first</option>
+                                <option value="priority-asc">Priority ↑</option>
+                                <option value="runtime-asc">Shortest first</option>
+                                <option value="runtime-desc">Longest first</option>
+                                <option value="added-desc">Recently added</option>
+                            </select>
+                        </div>
+                        <div class="view-toggle">
+                            <button id="view-table" class="active" title="Table view">☰</button>
+                            <button id="view-cards" title="Card view">⊞</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="movie-list"></div>
+            </main>
+        </div>
+
+        <!-- Add or edit thingy -->
+        <div class="modal-backdrop" id="movie-modal">
+            <div class="modal">
+                <h2 id="modal-title">Add <em>Movie</em></h2>
+                <input type="hidden" id="edit-row-id">
+                <div class="form-grid">
+                    <div class="field full">
+                        <label>Title *</label>
+                        <input type="text" id="f-title" placeholder="Movie title" required>
+                    </div>
+                    <div class="field">
+                        <label>Year</label>
+                        <input type="number" id="f-year" placeholder="2024" min="1888" max="2099">
+                    </div>
+                    <div class="field">
+                        <label>Runtime (min)</label>
+                        <input type="number" id="f-runtime" placeholder="120" min="1">
+                    </div>
+                    <div class="field full">
+                        <label>Genre(s)</label>
+                        <input type="text" id="f-genre" placeholder="Drama, Thriller">
+                    </div>
+                    <div class="field">
+                        <label>Director</label>
+                        <input type="text" id="f-director" placeholder="Director name">
+                    </div>
+                    <div class="field">
+                        <label>Language</label>
+                        <input type="text" id="f-language" placeholder="English">
+                    </div>
+                    <div class="field">
+                        <label>Priority</label>
+                        <select id="f-priority">
+                            <option value="1">1 — Must-Watch</option>
+                            <option value="2" selected>2 — High</option>
+                            <option value="3">3 — Normal</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label>Status</label>
+                        <select id="f-status">
+                            <option value="Unwatched" selected>Unwatched</option>
+                            <option value="Watched">Watched</option>
+                        </select>
+                    </div>
+                    <div class="field full">
+                        <label>Viewers</label>
+                        <input type="text" id="f-viewers" placeholder="Aidan; Jordan">
+                    </div>
+                    <div class="field">
+                        <label>Source / Platform</label>
+                        <input type="text" id="f-source" placeholder="Prime, DVD...">
+                    </div>
+                    <div class="field full">
+                        <label>Notes</label>
+                        <textarea id="f-notes" placeholder="Why you want to watch it, recommendations…"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn" id="modal-cancel">Cancel</button>
+                    <button class="btn primary" id="modal-save">Save Movie</button>
                 </div>
             </div>
         </div>
 
-        <div id="movie-list"></div>
-    </main>
-</div>
+        <div id="toast"></div>
 
-<!-- Add or edit thingy -->
-<div class="modal-backdrop" id="movie-modal">
-    <div class="modal">
-        <h2 id="modal-title">Add <em>Movie</em></h2>
-        <input type="hidden" id="edit-row-id">
-        <div class="form-grid">
-            <div class="field full">
-                <label>Title *</label>
-                <input type="text" id="f-title" placeholder="Movie title" required>
-            </div>
-            <div class="field">
-                <label>Year</label>
-                <input type="number" id="f-year" placeholder="2024" min="1888" max="2099">
-            </div>
-            <div class="field">
-                <label>Runtime (min)</label>
-                <input type="number" id="f-runtime" placeholder="120" min="1">
-            </div>
-            <div class="field full">
-                <label>Genre(s) — comma separated</label>
-                <input type="text" id="f-genre" placeholder="Drama, Thriller">
-            </div>
-            <div class="field">
-                <label>Director</label>
-                <input type="text" id="f-director" placeholder="Director name">
-            </div>
-            <div class="field">
-                <label>Language</label>
-                <input type="text" id="f-language" placeholder="English">
-            </div>
-            <div class="field">
-                <label>Priority</label>
-                <select id="f-priority">
-                    <option value="1">1 — Must-Watch</option>
-                    <option value="2" selected>2 — High</option>
-                    <option value="3">3 — Normal</option>
-                </select>
-            </div>
-            <div class="field">
-                <label>Status</label>
-                <select id="f-status">
-                    <option value="Unwatched" selected>Unwatched</option>
-                    <option value="Watched">Watched</option>
-                </select>
-            </div>
-            <div class="field full">
-                <label>Viewers — semicolon separated</label>
-                <input type="text" id="f-viewers" placeholder="Aidan; Jordan">
-            </div>
-            <div class="field">
-                <label>Source / Platform</label>
-                <input type="text" id="f-source" placeholder="Prime video, DVD...">
-            </div>
-            <div class="field full">
-                <label>Notes</label>
-                <textarea id="f-notes" placeholder="Why you want to watch it, recommendations…"></textarea>
-            </div>
-        </div>
-        <div class="modal-footer">
-            <button class="btn" id="modal-cancel">Cancel</button>
-            <button class="btn primary" id="modal-save">Save Movie</button>
-        </div>
-    </div>
-</div>
+        <script>
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwzbr1JGGrbkAyy4KGbUpRBl26BmuGU42vCc7E-tLLmcjyR9DufIWYSh_FcsMGfMRq3/exec';
 
-<div id="toast"></div>
+        let allMovies  = [];
+        let view       = 'table';
+        let sortKey    = 'title-asc';
+        let editingId  = null;
 
-<script>
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwzbr1JGGrbkAyy4KGbUpRBl26BmuGU42vCc7E-tLLmcjyR9DufIWYSh_FcsMGfMRq3/exec';
+        document.addEventListener('DOMContentLoaded', () => {
+            loadMovies();
 
-let allMovies  = [];
-let view       = 'table';
-let sortKey    = 'title-asc';
-let editingId  = null;
+            // Toolbar
+            document.getElementById('btn-refresh').addEventListener('click', loadMovies);
+            document.getElementById('btn-add').addEventListener('click', openAddModal);
 
-document.addEventListener('DOMContentLoaded', () => {
-    loadMovies();
+            // Sort / view
+            document.getElementById('sort-select').addEventListener('change', e => { sortKey = e.target.value; renderList(); });
+            document.getElementById('view-table').addEventListener('click', () => setView('table'));
+            document.getElementById('view-cards').addEventListener('click', () => setView('cards'));
 
-    // Toolbar
-    document.getElementById('btn-refresh').addEventListener('click', loadMovies);
-    document.getElementById('btn-add').addEventListener('click', openAddModal);
+            // Filters
+            document.getElementById('search').addEventListener('input', renderList);
+            document.querySelectorAll('#filter-status input, #filter-priority input').forEach(el =>
+                el.addEventListener('change', renderList));
+            document.getElementById('filter-runtime').addEventListener('input', e => {
+                const v = +e.target.value;
+                document.getElementById('runtime-val').textContent = v >= 300 ? 'Any' : v + ' min';
+                renderList();
+            });
+            document.getElementById('filter-year-from').addEventListener('input', renderList);
+            document.getElementById('filter-year-to').addEventListener('input', renderList);
+            document.getElementById('btn-reset').addEventListener('click', resetFilters);
 
-    // Sort / view
-    document.getElementById('sort-select').addEventListener('change', e => { sortKey = e.target.value; renderList(); });
-    document.getElementById('view-table').addEventListener('click', () => setView('table'));
-    document.getElementById('view-cards').addEventListener('click', () => setView('cards'));
+            document.getElementById('modal-cancel').addEventListener('click', closeModal);
+            document.getElementById('modal-save').addEventListener('click', saveMovie);
+            document.getElementById('movie-modal').addEventListener('click', e => {
+                if (e.target === document.getElementById('movie-modal')) closeModal();
+            });
+        });
 
-    // Filters
-    document.getElementById('search').addEventListener('input', renderList);
-    document.querySelectorAll('#filter-status input, #filter-priority input').forEach(el =>
-        el.addEventListener('change', renderList));
-    document.getElementById('filter-runtime').addEventListener('input', e => {
-        const v = +e.target.value;
-        document.getElementById('runtime-val').textContent = v >= 300 ? 'Any' : v + ' min';
-        renderList();
-    });
-    document.getElementById('filter-year-from').addEventListener('input', renderList);
-    document.getElementById('filter-year-to').addEventListener('input', renderList);
-    document.getElementById('btn-reset').addEventListener('click', resetFilters);
-
-    document.getElementById('modal-cancel').addEventListener('click', closeModal);
-    document.getElementById('modal-save').addEventListener('click', saveMovie);
-    document.getElementById('movie-modal').addEventListener('click', e => {
-        if (e.target === document.getElementById('movie-modal')) closeModal();
-    });
-});
-
-function setView(v) {
-    view = v;
-    document.getElementById('view-table').classList.toggle('active', v === 'table');
-    document.getElementById('view-cards').classList.toggle('active', v === 'cards');
-    renderList();
-}
-
-function setStatus(state, msg) {
-    const dot  = document.getElementById('conn-dot');
-    const text = document.getElementById('conn-text');
-    dot.className = 'dot ' + state;
-    text.textContent = msg;
-}
-
-function showToast(msg, type = '') {
-    const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.className = 'show ' + type;
-    clearTimeout(t._timer);
-    t._timer = setTimeout(() => t.className = '', 3000);
-}
-
-function updateStats() {
-    const watched   = allMovies.filter(m => m.Status === 'Watched').length;
-    const unwatched = allMovies.filter(m => m.Status === 'Unwatched').length;
-    document.getElementById('stat-total').textContent    = allMovies.length + ' films';
-    document.getElementById('stat-watched').textContent  = watched   + ' watched';
-    document.getElementById('stat-unwatched').textContent= unwatched + ' to watch';
-}
-
-function jsonp(params) {
-    return new Promise((resolve, reject) => {
-        const callbackName = 'cb_' + Date.now();
-        const url = new URL(SCRIPT_URL);
-        Object.entries(params).forEach(([k, v]) => url.searchParams.set(k, v));
-        url.searchParams.set('callback', callbackName);
-        const script = document.createElement('script');
-        script.src = url.toString();
-        const timer = setTimeout(() => {
-            cleanup();
-            reject(new Error('Timeout'));
-        }, 10000);
-        window[callbackName] = (data) => {
-            cleanup();
-            resolve(data);
-        };
-        function cleanup() {
-            clearTimeout(timer);
-            delete window[callbackName];
-            script.remove();
+        function setView(v) {
+            view = v;
+            document.getElementById('view-table').classList.toggle('active', v === 'table');
+            document.getElementById('view-cards').classList.toggle('active', v === 'cards');
+            renderList();
         }
-        script.onerror = () => { cleanup(); reject(new Error('Script load failed')); };
-        document.head.appendChild(script);
-    });
-}
 
-async function apiFetch(params) {
-    return jsonp(params);
-}
-
-async function apiPost(body) {
-    const url = new URL(SCRIPT_URL);
-    url.searchParams.set('action', body.action);
-    url.searchParams.set('payload', JSON.stringify(body));
-    url.searchParams.set('callback', 'ignore_' + Date.now());
-    return jsonp({ ...body, payload: JSON.stringify(body) });
-}
-
-async function loadMovies() {
-    setStatus('loading', 'Syncing…');
-    try {
-        const data = await apiFetch({ action: 'getAll' });
-        allMovies = data.movies || [];
-        updateStats();
-        buildDynamicFilters();
-        renderList();
-        setStatus('connected', 'Connected · ' + new Date().toLocaleTimeString());
-    } catch(e) {
-        setStatus('error', 'Error — check URL');
-        showToast('Failed to load: ' + e.message, 'error');
-    }
-}
-
-async function saveMovie() {
-    const movie = {
-        Title:    document.getElementById('f-title').value.trim(),
-        Year:     document.getElementById('f-year').value.trim(),
-        Runtime:  document.getElementById('f-runtime').value.trim(),
-        Genre:    document.getElementById('f-genre').value.trim(),
-        Director: document.getElementById('f-director').value.trim(),
-        Language: document.getElementById('f-language').value.trim(),
-        Priority: document.getElementById('f-priority').value,
-        Status:   document.getElementById('f-status').value,
-        Viewers:  document.getElementById('f-viewers').value.trim(),
-        Source:   document.getElementById('f-source').value.trim(),
-        Notes:    document.getElementById('f-notes').value.trim(),
-    };
-    if (!movie.Title) { showToast('Title is required', 'error'); return; }
-
-    const btn = document.getElementById('modal-save');
-    btn.textContent = 'Saving…'; btn.disabled = true;
-
-    try {
-        if (editingId) {
-            movie.RowID = editingId;
-            await apiPost({ action: 'update', movie });
-            showToast('Movie updated ✓', 'success');
-        } else {
-            await apiPost({ action: 'add', movie });
-            showToast('Movie added ✓', 'success');
+        function setStatus(state, msg) {
+            const dot  = document.getElementById('conn-dot');
+            const text = document.getElementById('conn-text');
+            dot.className = 'dot ' + state;
+            text.textContent = msg;
         }
-        closeModal();
-        loadMovies();
-    } catch(e) {
-        showToast('Save failed: ' + e.message, 'error');
-    } finally {
-        btn.textContent = 'Save Movie'; btn.disabled = false;
-    }
-}
 
-async function deleteMovie(rowId, title) {
-    if (!confirm(`Delete "${title}"?`)) return;
-    try {
-        await apiPost({ action: 'delete', rowId });
-        showToast('Deleted', 'success');
-        loadMovies();
-    } catch(e) {
-        showToast('Delete failed', 'error');
-    }
-}
+        function showToast(msg, type = '') {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.className = 'show ' + type;
+            clearTimeout(t._timer);
+            t._timer = setTimeout(() => t.className = '', 3000);
+        }
 
-async function toggleWatched(movie) {
-    const newStatus = movie.Status === 'Watched' ? 'Unwatched' : 'Watched';
-    try {
-        await apiPost({ action: 'update', movie: { ...movie, Status: newStatus } });
-        loadMovies();
-    } catch(e) {
-        showToast('Update failed', 'error');
-    }
-}
+        function updateStats() {
+            const watched   = allMovies.filter(m => m.Status === 'Watched').length;
+            const unwatched = allMovies.filter(m => m.Status === 'Unwatched').length;
+            document.getElementById('stat-total').textContent    = allMovies.length + ' films';
+            document.getElementById('stat-watched').textContent  = watched   + ' watched';
+            document.getElementById('stat-unwatched').textContent= unwatched + ' to watch';
+        }
 
-function buildDynamicFilters() {
-    // Genres
-    const genres = [...new Set(allMovies.flatMap(m => parseList(m.Genre)))].sort();
-    buildCheckGroup('filter-genre', genres, false);
+        function jsonp(params) {
+            return new Promise((resolve, reject) => {
+                const callbackName = 'cb_' + Date.now();
+                const url = new URL(SCRIPT_URL);
+                Object.entries(params).forEach(([k, v]) => url.searchParams.set(k, v));
+                url.searchParams.set('callback', callbackName);
+                const script = document.createElement('script');
+                script.src = url.toString();
+                const timer = setTimeout(() => {
+                    cleanup();
+                    reject(new Error('Timeout'));
+                }, 10000);
+                window[callbackName] = (data) => {
+                    cleanup();
+                    resolve(data);
+                };
+                function cleanup() {
+                    clearTimeout(timer);
+                    delete window[callbackName];
+                    script.remove();
+                }
+                script.onerror = () => { cleanup(); reject(new Error('Script load failed')); };
+                document.head.appendChild(script);
+            });
+        }
 
-    // Languages
-    const langs = [...new Set(allMovies.map(m => m.Language).filter(Boolean))].sort();
-    buildCheckGroup('filter-language', langs, true);
+        async function apiFetch(params) {
+            return jsonp(params);
+        }
 
-    const viewers = [...new Set(allMovies.flatMap(m => parseList(m.Viewers)))].sort();
-    buildCheckGroup('filter-viewers', viewers, false);
-}
+        async function apiPost(body) {
+            const url = new URL(SCRIPT_URL);
+            url.searchParams.set('action', body.action);
+            url.searchParams.set('payload', JSON.stringify(body));
+            url.searchParams.set('callback', 'ignore_' + Date.now());
+            return jsonp({ ...body, payload: JSON.stringify(body) });
+        }
 
-function buildCheckGroup(id, values, checked) {
-    const el = document.getElementById(id);
-    el.innerHTML = '';
-    values.forEach(v => {
-        const lbl = document.createElement('label');
-        lbl.className = 'check-item';
-        lbl.innerHTML = `<input type="checkbox" value="${v}" ${checked?'checked':''}> ${v}`;
-        lbl.querySelector('input').addEventListener('change', renderList);
-        el.appendChild(lbl);
-    });
-}
+        async function loadMovies() {
+            setStatus('loading', 'Syncing…');
+            try {
+                const data = await apiFetch({ action: 'getAll' });
+                allMovies = data.movies || [];
+                updateStats();
+                buildDynamicFilters();
+                renderList();
+                setStatus('connected', 'Connected · ' + new Date().toLocaleTimeString());
+            } catch(e) {
+                setStatus('error', 'Error — check URL');
+                showToast('Failed to load: ' + e.message, 'error');
+            }
+        }
 
-function getChecked(id) {
-    return [...document.querySelectorAll(`#${id} input:checked`)].map(el => el.value);
-}
+        async function saveMovie() {
+            const movie = {
+                Title:    document.getElementById('f-title').value.trim(),
+                Year:     document.getElementById('f-year').value.trim(),
+                Runtime:  document.getElementById('f-runtime').value.trim(),
+                Genre:    document.getElementById('f-genre').value.trim(),
+                Director: document.getElementById('f-director').value.trim(),
+                Language: document.getElementById('f-language').value.trim(),
+                Priority: document.getElementById('f-priority').value,
+                Status:   document.getElementById('f-status').value,
+                Viewers:  document.getElementById('f-viewers').value.trim(),
+                Source:   document.getElementById('f-source').value.trim(),
+                Notes:    document.getElementById('f-notes').value.trim(),
+            };
+            if (!movie.Title) { showToast('Title is required', 'error'); return; }
 
-function parseList(str) {
-    if (!str) return [];
-    return str.split(/[,;|]/).map(s => s.trim()).filter(Boolean);
-}
+            const btn = document.getElementById('modal-save');
+            btn.textContent = 'Saving…'; btn.disabled = true;
 
-function applyFilters(movies) {
-    const q           = document.getElementById('search').value.toLowerCase().trim();
-    const statuses    = getChecked('filter-status');
-    const priorities  = getChecked('filter-priority');
-    const genres      = getChecked('filter-genre');
-    const langs       = getChecked('filter-language');
-    const viewers     = getChecked('filter-viewers');
-    const maxRuntime  = +document.getElementById('filter-runtime').value;
-    const yearFrom    = +document.getElementById('filter-year-from').value || 0;
-    const yearTo      = +document.getElementById('filter-year-to').value   || 9999;
+            try {
+                if (editingId) {
+                    movie.RowID = editingId;
+                    await apiPost({ action: 'update', movie });
+                    showToast('Movie updated ✓', 'success');
+                } else {
+                    await apiPost({ action: 'add', movie });
+                    showToast('Movie added ✓', 'success');
+                }
+                closeModal();
+                loadMovies();
+            } catch(e) {
+                showToast('Save failed: ' + e.message, 'error');
+            } finally {
+                btn.textContent = 'Save Movie'; btn.disabled = false;
+            }
+        }
 
-    return movies.filter(m => {
-        if (q && !((m.Title||'').toLowerCase().includes(q) ||
-            (m.Director||'').toLowerCase().includes(q) ||
-            (m.Notes||'').toLowerCase().includes(q))) return false;
-        if (!statuses.includes(m.Status || 'Unwatched')) return false;
-        if (!priorities.includes(String(m.Priority || 3))) return false;
-        const mGenres = parseList(m.Genre);
-        if (genres.length && !mGenres.some(g => genres.includes(g))) return false;
-        if (langs.length && m.Language && !langs.includes(m.Language)) return false;
-        if (viewers.length && !parseList(m.Viewers).some(v => viewers.includes(v))) return false;
-        if (maxRuntime < 300 && m.Runtime && +m.Runtime > maxRuntime) return false;
-        if (m.Year && (+m.Year < yearFrom || +m.Year > yearTo)) return false;
-        return true;
-    });
-}
+        async function deleteMovie(rowId, title) {
+            if (!confirm(`Delete "${title}"?`)) return;
+            try {
+                await apiPost({ action: 'delete', rowId });
+                showToast('Deleted', 'success');
+                loadMovies();
+            } catch(e) {
+                showToast('Delete failed', 'error');
+            }
+        }
 
-function applySort(movies) {
-    const [field, dir] = sortKey.split('-');
-    return [...movies].sort((a, b) => {
-        let va, vb;
-        if (field === 'title')   { va = (a.Title||'').toLowerCase();  vb = (b.Title||'').toLowerCase(); }
-        if (field === 'year')    { va = +a.Year    || 0; vb = +b.Year    || 0; }
-        if (field === 'priority'){ va = +a.Priority|| 9; vb = +b.Priority|| 9; }
-        if (field === 'runtime') { va = +a.Runtime || 0; vb = +b.Runtime || 0; }
-        if (field === 'added')   { va = a.DateAdded||''; vb = b.DateAdded||''; }
-        if (va < vb) return dir === 'asc' ? -1 : 1;
-        if (va > vb) return dir === 'asc' ?  1 : -1;
-        return 0;
-    });
-}
+        async function toggleWatched(movie) {
+            const newStatus = movie.Status === 'Watched' ? 'Unwatched' : 'Watched';
+            try {
+                await apiPost({ action: 'update', movie: { ...movie, Status: newStatus } });
+                loadMovies();
+            } catch(e) {
+                showToast('Update failed', 'error');
+            }
+        }
 
-function resetFilters() {
-    document.getElementById('search').value = '';
-    document.querySelectorAll('#filter-status input, #filter-priority input, #filter-genre input, #filter-language input, #filter-viewers input')
-        .forEach(el => el.checked = true);
-    document.getElementById('filter-runtime').value = 300;
-    document.getElementById('runtime-val').textContent = 'Any';
-    document.getElementById('filter-year-from').value = '';
-    document.getElementById('filter-year-to').value = '';
-    renderList();
-}
+        function buildDynamicFilters() {
+            // Genres
+            const genres = [...new Set(allMovies.flatMap(m => parseList(m.Genre)))].sort();
+            buildCheckGroup('filter-genre', genres, false);
 
-function renderList() {
-    const filtered = applySort(applyFilters(allMovies));
-    const el = document.getElementById('movie-list');
-    document.getElementById('results-count').innerHTML =
-        `Showing <strong>${filtered.length}</strong> of ${allMovies.length} films`;
+            // Languages
+            const langs = [...new Set(allMovies.map(m => m.Language).filter(Boolean))].sort();
+            buildCheckGroup('filter-language', langs, true);
 
-    if (!filtered.length) {
-        el.innerHTML = `<div class="empty-state">
-            <div class="icon">🎬</div>
-            <h3>No films found</h3>
-            <p>Try adjusting your filters or add a new movie.</p>
-        </div>`;
-        return;
-    }
+            const viewers = [...new Set(allMovies.flatMap(m => parseList(m.Viewers)))].sort();
+            buildCheckGroup('filter-viewers', viewers, false);
+        }
 
-    if (view === 'table') renderTable(filtered, el);
-    else renderCards(filtered, el);
-}
+        function buildCheckGroup(id, values, checked) {
+            const el = document.getElementById(id);
+            el.innerHTML = '';
+            values.forEach(v => {
+                const lbl = document.createElement('label');
+                lbl.className = 'check-item';
+                lbl.innerHTML = `<input type="checkbox" value="${v}" ${checked?'checked':''}> ${v}`;
+                lbl.querySelector('input').addEventListener('change', renderList);
+                el.appendChild(lbl);
+            });
+        }
 
-function statusPill(s) {
-    const cls = { Watched: 'watched', Unwatched: 'unwatched'}[s] || 'unwatched';
-    return `<span class="status-pill status-${cls}">${s||'Unwatched'}</span>`;
-}
+        function getChecked(id) {
+            return [...document.querySelectorAll(`#${id} input:checked`)].map(el => el.value);
+        }
 
-function renderTable(movies, container) {
-    const rows = movies.map(m => {
-        const genres = parseList(m.Genre).map(g => `<span class="genre-tag">${g}</span>`).join('');
-        return `<tr class="${m.Status==='Watched'?'watched':''}"
-                            data-id="${m.RowID}">
-            <td class="movie-title-cell">
-                <strong>${esc(m.Title)}</strong>
-                <span class="year">${m.Year||'—'}</span>
-            </td>
-            <td>${genres}</td>
-            <td><span class="priority-badge priority-${m.Priority||3}">${m.Priority||3}</span></td>
-            <td class="runtime-cell">${m.Runtime ? m.Runtime+'m' : '—'}</td>
-            <td>${statusPill(m.Status)}</td>
-            <td>${esc(m.Director||'—')}</td>
-            <td>${esc(m.Language||'—')}</td>
-            <td>${esc(m.Viewers||'—')}</td>
-            <td>
-                <div class="row-actions">
-                    <button class="row-btn" onclick="event.stopPropagation();openEditModal('${m.RowID}')">✎</button>
-                    <button class="row-btn" onclick="event.stopPropagation();toggleWatched(${JSON.stringify(m).replace(/"/g,'&quot;')})">
-                        ${m.Status==='Watched'?'↩':'✓'}
-                    </button>
-                    <button class="row-btn del" onclick="event.stopPropagation();deleteMovie('${m.RowID}','${esc(m.Title)}')">✕</button>
-                </div>
-            </td>
-        </tr>`;
-    }).join('');
+        function parseList(str) {
+            if (!str) return [];
+            return str.split(/[,;|]/).map(s => s.trim()).filter(Boolean);
+        }
 
-    container.innerHTML = `
-        <div class="table-wrap">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Title</th>
-                        <th>Genre</th>
-                        <th>Priority</th>
-                        <th>Runtime</th>
-                        <th>Status</th>
-                        <th>Director</th>
-                        <th>Language</th>
-                        <th>Who Can Watch</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>${rows}</tbody>
-            </table>
-        </div>`;
-}
+        function applyFilters(movies) {
+            const q           = document.getElementById('search').value.toLowerCase().trim();
+            const statuses    = getChecked('filter-status');
+            const priorities  = getChecked('filter-priority');
+            const genres      = getChecked('filter-genre');
+            const langs       = getChecked('filter-language');
+            const viewers     = getChecked('filter-viewers');
+            const maxRuntime  = +document.getElementById('filter-runtime').value;
+            const yearFrom    = +document.getElementById('filter-year-from').value || 0;
+            const yearTo      = +document.getElementById('filter-year-to').value   || 9999;
 
-function renderCards(movies, container) {
-    const cards = movies.map(m => {
-        const genres = parseList(m.Genre).map(g => `<span class="genre-tag">${g}</span>`).join('');
-        return `<div class="movie-card ${m.Status==='Watched'?'watched':''}" data-id="${m.RowID}">
-            <div class="card-title">${esc(m.Title)}</div>
-            <div class="card-meta">${m.Year||'—'} · ${m.Runtime ? m.Runtime+'m' : '—'} · ${esc(m.Language||'—')}</div>
-            <div class="card-genres">${genres}</div>
-            <div style="display:flex;justify-content:space-between;align-items:center">
-                <span class="priority-badge priority-${m.Priority||3}">${m.Priority||3}</span>
-            </div>
-            <div class="card-footer">
-                ${statusPill(m.Status)}
-                ${m.Director ? `<span style="font-size:0.72rem;color:var(--text-dim)">${esc(m.Director)}</span>` : ''}
-            </div>
-            <div class="card-actions">
-                <button class="row-btn" onclick="openEditModal('${m.RowID}')">✎ Edit</button>
-                <button class="row-btn" onclick="toggleWatched(${JSON.stringify(m).replace(/"/g,'&quot;')})">
-                    ${m.Status==='Watched'?'↩ Unwatch':'✓ Watched'}
-                </button>
-                <button class="row-btn del" onclick="deleteMovie('${m.RowID}','${esc(m.Title)}')">✕</button>
-            </div>
-        </div>`;
-    }).join('');
+            return movies.filter(m => {
+                if (q && !((m.Title||'').toLowerCase().includes(q) ||
+                    (m.Director||'').toLowerCase().includes(q) ||
+                    (m.Notes||'').toLowerCase().includes(q))) return false;
+                if (!statuses.includes(m.Status || 'Unwatched')) return false;
+                if (!priorities.includes(String(m.Priority || 3))) return false;
+                const mGenres = parseList(m.Genre);
+                if (genres.length && !mGenres.some(g => genres.includes(g))) return false;
+                if (langs.length && m.Language && !langs.includes(m.Language)) return false;
+                if (viewers.length && !parseList(m.Viewers).some(v => viewers.includes(v))) return false;
+                if (maxRuntime < 300 && m.Runtime && +m.Runtime > maxRuntime) return false;
+                if (m.Year && (+m.Year < yearFrom || +m.Year > yearTo)) return false;
+                return true;
+            });
+        }
 
-    container.innerHTML = `<div class="card-grid">${cards}</div>`;
-}
+        function applySort(movies) {
+            const [field, dir] = sortKey.split('-');
+            return [...movies].sort((a, b) => {
+                let va, vb;
+                if (field === 'title')   { va = (a.Title||'').toLowerCase();  vb = (b.Title||'').toLowerCase(); }
+                if (field === 'year')    { va = +a.Year    || 0; vb = +b.Year    || 0; }
+                if (field === 'priority'){ va = +a.Priority|| 9; vb = +b.Priority|| 9; }
+                if (field === 'runtime') { va = +a.Runtime || 0; vb = +b.Runtime || 0; }
+                if (field === 'added')   { va = a.DateAdded||''; vb = b.DateAdded||''; }
+                if (va < vb) return dir === 'asc' ? -1 : 1;
+                if (va > vb) return dir === 'asc' ?  1 : -1;
+                return 0;
+            });
+        }
 
-function openAddModal() {
-    editingId = null;
-    document.getElementById('modal-title').innerHTML = 'Add <em>Movie</em>';
-    ['title','year','runtime','genre','director','language','notes','source'].forEach(f =>
-        document.getElementById('f-'+f).value = '');
-    document.getElementById('f-priority').value = '2';
-    document.getElementById('f-status').value   = 'Unwatched';
-    document.getElementById('movie-modal').classList.add('open');
-}
+        function resetFilters() {
+            document.getElementById('search').value = '';
+            document.querySelectorAll('#filter-status input, #filter-priority input, #filter-genre input, #filter-language input, #filter-viewers input')
+                .forEach(el => el.checked = true);
+            document.getElementById('filter-runtime').value = 300;
+            document.getElementById('runtime-val').textContent = 'Any';
+            document.getElementById('filter-year-from').value = '';
+            document.getElementById('filter-year-to').value = '';
+            renderList();
+        }
 
-function openEditModal(rowId) {
-    const m = allMovies.find(x => String(x.RowID) === String(rowId));
-    if (!m) return;
-    editingId = rowId;
-    document.getElementById('modal-title').innerHTML = 'Edit <em>Movie</em>';
-    document.getElementById('f-title').value    = m.Title    || '';
-    document.getElementById('f-year').value     = m.Year     || '';
-    document.getElementById('f-runtime').value  = m.Runtime  || '';
-    document.getElementById('f-genre').value    = m.Genre    || '';
-    document.getElementById('f-director').value = m.Director || '';
-    document.getElementById('f-language').value = m.Language || '';
-    document.getElementById('f-priority').value = m.Priority || '2';
-    document.getElementById('f-status').value   = m.Status   || 'Unwatched';
-    document.getElementById('f-viewers').value  = m.Viewers  || '';
-    document.getElementById('f-source').value   = m.Source   || '';
-    document.getElementById('f-notes').value    = m.Notes    || '';
-    document.getElementById('movie-modal').classList.add('open');
-}
+        function renderList() {
+            const filtered = applySort(applyFilters(allMovies));
+            const el = document.getElementById('movie-list');
+            document.getElementById('results-count').innerHTML =
+                `Showing <strong>${filtered.length}</strong> of ${allMovies.length} films`;
 
-function closeModal() {
-    document.getElementById('movie-modal').classList.remove('open');
-}
+            if (!filtered.length) {
+                el.innerHTML = `<div class="empty-state">
+                    <div class="icon">🎬</div>
+                    <h3>No films found</h3>
+                    <p>Try adjusting your filters or add a new movie.</p>
+                </div>`;
+                return;
+            }
 
-function esc(str) {
-    return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-</script>
-</body>
+            if (view === 'table') renderTable(filtered, el);
+            else renderCards(filtered, el);
+        }
+
+        function statusPill(s) {
+            const cls = { Watched: 'watched', Unwatched: 'unwatched'}[s] || 'unwatched';
+            return `<span class="status-pill status-${cls}">${s||'Unwatched'}</span>`;
+        }
+
+        function renderTable(movies, container) {
+            const rows = movies.map(m => {
+                const genres = parseList(m.Genre).map(g => `<span class="genre-tag">${g}</span>`).join('');
+                return `<tr class="${m.Status==='Watched'?'watched':''}"
+                                    data-id="${m.RowID}">
+                    <td class="movie-title-cell">
+                        <strong>${esc(m.Title)}</strong>
+                        <span class="year">${m.Year||'—'}</span>
+                    </td>
+                    <td>${genres}</td>
+                    <td><span class="priority-badge priority-${m.Priority||3}">${m.Priority||3}</span></td>
+                    <td class="runtime-cell">${m.Runtime ? m.Runtime+'m' : '—'}</td>
+                    <td>${statusPill(m.Status)}</td>
+                    <td>${esc(m.Director||'—')}</td>
+                    <td>${esc(m.Language||'—')}</td>
+                    <td>${esc(m.Viewers||'—')}</td>
+                    <td>
+                        <div class="row-actions">
+                            <button class="row-btn" onclick="event.stopPropagation();openEditModal('${m.RowID}')">✎</button>
+                            <button class="row-btn" onclick="event.stopPropagation();toggleWatched(${JSON.stringify(m).replace(/"/g,'&quot;')})">
+                                ${m.Status==='Watched'?'↩':'✓'}
+                            </button>
+                            <button class="row-btn del" onclick="event.stopPropagation();deleteMovie('${m.RowID}','${esc(m.Title)}')">✕</button>
+                        </div>
+                    </td>
+                </tr>`;
+            }).join('');
+
+            container.innerHTML = `
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Genre</th>
+                                <th>Priority</th>
+                                <th>Runtime</th>
+                                <th>Status</th>
+                                <th>Director</th>
+                                <th>Language</th>
+                                <th>Who Can Watch</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>${rows}</tbody>
+                    </table>
+                </div>`;
+        }
+
+        function renderCards(movies, container) {
+            const cards = movies.map(m => {
+                const genres = parseList(m.Genre).map(g => `<span class="genre-tag">${g}</span>`).join('');
+                return `<div class="movie-card ${m.Status==='Watched'?'watched':''}" data-id="${m.RowID}">
+                    <div class="card-title">${esc(m.Title)}</div>
+                    <div class="card-meta">${m.Year||'—'} · ${m.Runtime ? m.Runtime+'m' : '—'} · ${esc(m.Language||'—')}</div>
+                    <div class="card-genres">${genres}</div>
+                    <div style="display:flex;justify-content:space-between;align-items:center">
+                        <span class="priority-badge priority-${m.Priority||3}">${m.Priority||3}</span>
+                    </div>
+                    <div class="card-footer">
+                        ${statusPill(m.Status)}
+                        ${m.Director ? `<span style="font-size:0.72rem;color:var(--text-dim)">${esc(m.Director)}</span>` : ''}
+                    </div>
+                    <div class="card-actions">
+                        <button class="row-btn" onclick="openEditModal('${m.RowID}')">✎ Edit</button>
+                        <button class="row-btn" onclick="toggleWatched(${JSON.stringify(m).replace(/"/g,'&quot;')})">
+                            ${m.Status==='Watched'?'↩ Unwatch':'✓ Watched'}
+                        </button>
+                        <button class="row-btn del" onclick="deleteMovie('${m.RowID}','${esc(m.Title)}')">✕</button>
+                    </div>
+                </div>`;
+            }).join('');
+
+            container.innerHTML = `<div class="card-grid">${cards}</div>`;
+        }
+
+        function openAddModal() {
+            editingId = null;
+            document.getElementById('modal-title').innerHTML = 'Add <em>Movie</em>';
+            ['title','year','runtime','genre','director','language','notes','source'].forEach(f =>
+                document.getElementById('f-'+f).value = '');
+            document.getElementById('f-priority').value = '2';
+            document.getElementById('f-status').value   = 'Unwatched';
+            document.getElementById('movie-modal').classList.add('open');
+        }
+
+        function openEditModal(rowId) {
+            const m = allMovies.find(x => String(x.RowID) === String(rowId));
+            if (!m) return;
+            editingId = rowId;
+            document.getElementById('modal-title').innerHTML = 'Edit <em>Movie</em>';
+            document.getElementById('f-title').value    = m.Title    || '';
+            document.getElementById('f-year').value     = m.Year     || '';
+            document.getElementById('f-runtime').value  = m.Runtime  || '';
+            document.getElementById('f-genre').value    = m.Genre    || '';
+            document.getElementById('f-director').value = m.Director || '';
+            document.getElementById('f-language').value = m.Language || '';
+            document.getElementById('f-priority').value = m.Priority || '2';
+            document.getElementById('f-status').value   = m.Status   || 'Unwatched';
+            document.getElementById('f-viewers').value  = m.Viewers  || '';
+            document.getElementById('f-source').value   = m.Source   || '';
+            document.getElementById('f-notes').value    = m.Notes    || '';
+            document.getElementById('movie-modal').classList.add('open');
+        }
+
+        function closeModal() {
+            document.getElementById('movie-modal').classList.remove('open');
+        }
+
+        function esc(str) {
+            return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+        }
+        </script>
+    </body>
 </html>
