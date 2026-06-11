@@ -40,6 +40,212 @@
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
         }
 
+        /* ===================== SIGN-IN GATE ===================== */
+        #signin-gate {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            background: var(--bg);
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+        #signin-gate.hidden { display: none; }
+
+        .signin-logo {
+            font-family: 'Playfair Display', serif;
+            font-weight: 900;
+            font-size: 2rem;
+            letter-spacing: 0.25em;
+            color: var(--gold);
+            text-transform: uppercase;
+            margin-bottom: 0.4rem;
+        }
+        .signin-tagline {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            margin-bottom: 3rem;
+        }
+
+        .signin-heading {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            margin-bottom: 1.25rem;
+            align-self: flex-start;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .member-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.75rem;
+            max-width: 600px;
+            width: 100%;
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 520px) {
+            .member-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        .member-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 1.1rem 1rem;
+            cursor: pointer;
+            transition: all var(--transition);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.6rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .member-card::before {
+            content: '';
+            position: absolute; top: 0; left: 0; right: 0; height: 2px;
+            background: var(--gold);
+            opacity: 0;
+            transition: opacity var(--transition);
+        }
+        .member-card:hover,
+        .member-card.selected {
+            border-color: var(--gold-dim);
+            background: var(--surface2);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+        }
+        .member-card:hover::before,
+        .member-card.selected::before { opacity: 1; }
+
+        .member-avatar {
+            width: 48px; height: 48px;
+            border-radius: 50%;
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--gold);
+            transition: all var(--transition);
+            flex-shrink: 0;
+        }
+        .member-card.selected .member-avatar,
+        .member-card:hover .member-avatar {
+            border-color: var(--gold-dim);
+            background: rgba(201,168,76,0.08);
+        }
+        .member-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 0.9rem;
+            color: var(--text);
+            line-height: 1.2;
+        }
+        .member-email {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.58rem;
+            color: var(--text-dim);
+            letter-spacing: 0.03em;
+            word-break: break-all;
+        }
+
+        #pin-section {
+            max-width: 600px;
+            width: 100%;
+            display: none;
+            flex-direction: column;
+            gap: 0.75rem;
+            animation: fadeSlideUp 0.2s ease;
+        }
+        #pin-section.visible { display: flex; }
+
+        @keyframes fadeSlideUp {
+            from { opacity: 0; transform: translateY(8px); }
+            to   { opacity: 1; transform: none; }
+        }
+
+        .pin-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--text-dim);
+        }
+        .pin-label em {
+            color: var(--gold);
+            font-style: normal;
+        }
+
+        .pin-row {
+            display: flex;
+            gap: 0.6rem;
+        }
+        .pin-input {
+            flex: 1;
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            color: var(--text);
+            font-family: 'DM Mono', monospace;
+            font-size: 1rem;
+            letter-spacing: 0.3em;
+            padding: 0.65rem 1rem;
+            outline: none;
+            transition: border-color var(--transition);
+        }
+        .pin-input:focus { border-color: var(--gold-dim); }
+        .pin-input.error { border-color: var(--red); animation: shake 0.3s ease; }
+        .pin-input::placeholder { letter-spacing: 0.05em; color: var(--text-dim); }
+
+        @keyframes shake {
+            0%,100%{transform:translateX(0)}
+            25%{transform:translateX(-6px)}
+            75%{transform:translateX(6px)}
+        }
+
+        .btn-signin {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 0.65rem 1.5rem;
+            border-radius: var(--radius);
+            border: 1px solid var(--gold);
+            background: var(--gold);
+            color: #0a0a0b;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all var(--transition);
+            white-space: nowrap;
+        }
+        .btn-signin:hover { background: #d4b05c; }
+
+        .signin-error {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.68rem;
+            color: var(--red);
+            letter-spacing: 0.05em;
+            min-height: 1em;
+        }
+
+        /* ===================== MAIN APP ===================== */
+        #main-app { display: none; }
+        #main-app.visible { display: block; }
+
         header {
             border-bottom: 1px solid var(--border);
             padding: 0 2rem;
@@ -72,6 +278,36 @@
         }
 
         .header-actions { display: flex; gap: 0.75rem; align-items: center; }
+
+        .user-chip {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 0.3rem 0.75rem 0.3rem 0.4rem;
+            cursor: pointer;
+            transition: all var(--transition);
+        }
+        .user-chip:hover { border-color: var(--gold-dim); }
+        .user-chip-avatar {
+            width: 24px; height: 24px;
+            border-radius: 50%;
+            background: rgba(201,168,76,0.15);
+            border: 1px solid var(--gold-dim);
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--gold);
+        }
+        .user-chip-name {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.68rem;
+            color: var(--text-muted);
+            letter-spacing: 0.05em;
+        }
 
         .btn {
             font-family: 'DM Mono', monospace;
@@ -143,7 +379,6 @@
             margin-bottom: 0.75rem;
         }
 
-        /* Search */
         .search-wrap { position: relative; }
         .search-wrap input {
             width: 100%;
@@ -167,7 +402,6 @@
             pointer-events: none;
         }
 
-        /* Checkbox groups */
         .check-group { display: flex; flex-direction: column; gap: 0.45rem; }
         .check-item {
             display: flex; align-items: center; gap: 0.6rem;
@@ -199,7 +433,6 @@
             font-weight: 700;
         }
 
-        /* Range slider */
         .range-row { display: flex; align-items: center; gap: 0.5rem; }
         .range-row input[type="range"] {
             flex: 1;
@@ -291,11 +524,7 @@
         }
 
         .table-wrap { overflow-x: auto; }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.875rem;
-        }
+        table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
         thead th {
             font-family: 'DM Mono', monospace;
             font-size: 0.65rem;
@@ -310,9 +539,6 @@
             user-select: none;
         }
         thead th:hover { color: var(--gold); }
-        thead th .sort-arrow { opacity: 0.4; margin-left: 4px; }
-        thead th.sorted { color: var(--gold); }
-        thead th.sorted .sort-arrow { opacity: 1; }
 
         tbody tr {
             border-bottom: 1px solid var(--border);
@@ -383,8 +609,8 @@
             padding: 0.2rem 0.55rem;
             border-radius: 20px;
         }
-        .status-watched  { background: rgba(46,204,113,0.12); color: #2ecc71; border: 1px solid #1a8a46; }
-        .status-unwatched{ background: rgba(74,72,70,0.3); color: var(--text-dim); border: 1px solid var(--border); }
+        .status-watched   { background: rgba(46,204,113,0.12); color: #2ecc71; border: 1px solid #1a8a46; }
+        .status-unwatched { background: rgba(74,72,70,0.3); color: var(--text-dim); border: 1px solid var(--border); }
 
         .row-actions { display: flex; gap: 0.3rem; opacity: 0; transition: opacity var(--transition); }
         tbody tr:hover .row-actions { opacity: 1; }
@@ -425,42 +651,15 @@
         .movie-card:hover::before { opacity: 1; }
         .movie-card.watched { opacity: 0.45; }
 
-        .card-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 1rem;
-            line-height: 1.3;
-            margin-bottom: 0.3rem;
-        }
-        .card-meta {
-            font-family: 'DM Mono', monospace;
-            font-size: 0.65rem;
-            color: var(--text-dim);
-            letter-spacing: 0.05em;
-            margin-bottom: 0.75rem;
-        }
+        .card-title { font-family: 'Playfair Display', serif; font-size: 1rem; line-height: 1.3; margin-bottom: 0.3rem; }
+        .card-meta { font-family: 'DM Mono', monospace; font-size: 0.65rem; color: var(--text-dim); letter-spacing: 0.05em; margin-bottom: 0.75rem; }
         .card-genres { margin-bottom: 0.75rem; }
-        .card-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 0.75rem;
-            padding-top: 0.75rem;
-            border-top: 1px solid var(--border);
-        }
+        .card-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--border); }
         .card-actions { display: flex; gap: 0.3rem; margin-top: 0.75rem; }
 
-        .empty-state {
-            text-align: center;
-            padding: 4rem 2rem;
-            color: var(--text-dim);
-        }
+        .empty-state { text-align: center; padding: 4rem 2rem; color: var(--text-dim); }
         .empty-state .icon { font-size: 3rem; margin-bottom: 1rem; }
-        .empty-state h3 {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.2rem;
-            color: var(--text-muted);
-            margin-bottom: 0.5rem;
-        }
+        .empty-state h3 { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--text-muted); margin-bottom: 0.5rem; }
         .empty-state p { font-size: 0.82rem; }
 
         .modal-backdrop {
@@ -487,25 +686,14 @@
         }
         @keyframes modalIn { from{opacity:0;transform:scale(0.96)} to{opacity:1;transform:none} }
 
-        .modal h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.4rem;
-            margin-bottom: 1.5rem;
-            color: var(--text);
-        }
+        .modal h2 { font-family: 'Playfair Display', serif; font-size: 1.4rem; margin-bottom: 1.5rem; color: var(--text); }
         .modal h2 em { color: var(--gold); font-style: normal; }
 
         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
         .form-grid .full { grid-column: 1 / -1; }
 
         .field { display: flex; flex-direction: column; gap: 0.4rem; }
-        .field label {
-            font-family: 'DM Mono', monospace;
-            font-size: 0.62rem;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            color: var(--text-dim);
-        }
+        .field label { font-family: 'DM Mono', monospace; font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-dim); }
         .field input, .field select, .field textarea {
             background: var(--surface2);
             border: 1px solid var(--border);
@@ -518,20 +706,11 @@
             outline: none;
             transition: border-color var(--transition);
         }
-        .field input:focus,
-        .field select:focus,
-        .field textarea:focus { border-color: var(--gold-dim); }
+        .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--gold-dim); }
         .field textarea { resize: vertical; min-height: 70px; }
         .field select option { background: var(--surface2); }
 
-        .modal-footer {
-            display: flex;
-            justify-content: flex-end;
-            gap: 0.75rem;
-            margin-top: 1.5rem;
-            padding-top: 1.25rem;
-            border-top: 1px solid var(--border);
-        }
+        .modal-footer { display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid var(--border); }
 
         #toast {
             position: fixed;
@@ -554,598 +733,740 @@
         #toast.success { border-color: #1a8a46; color: #2ecc71; }
         #toast.error   { border-color: #5a2020; color: var(--red); }
 
-
-
         ::-webkit-scrollbar { width: 5px; height: 5px; }
         ::-webkit-scrollbar-track { background: var(--surface); }
         ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--gold-dim); }
+
+        /* User dropdown */
+        .user-menu { position: relative; }
+        .user-dropdown {
+            display: none;
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            min-width: 200px;
+            padding: 0.5rem;
+            z-index: 150;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+            animation: modalIn 0.15s ease;
+        }
+        .user-dropdown.open { display: block; }
+        .user-dropdown-header { padding: 0.6rem 0.75rem 0.75rem; border-bottom: 1px solid var(--border); margin-bottom: 0.4rem; }
+        .user-dropdown-name { font-family: 'Playfair Display', serif; font-size: 0.95rem; color: var(--text); }
+        .user-dropdown-email { font-family: 'DM Mono', monospace; font-size: 0.6rem; color: var(--text-dim); margin-top: 2px; }
+        .dropdown-item {
+            display: block; width: 100%; text-align: left;
+            background: none; border: none; color: var(--text-muted);
+            font-family: 'DM Mono', monospace; font-size: 0.7rem;
+            letter-spacing: 0.07em; text-transform: uppercase;
+            padding: 0.5rem 0.75rem; border-radius: var(--radius);
+            cursor: pointer; transition: all var(--transition);
+        }
+        .dropdown-item:hover { background: var(--surface2); color: var(--red); }
     </style>
 </head>
-    <body>
+<body>
 
-        <header>
-            <div class="logo">Alaniz Movie Watchlist</div>
-            <div class="header-actions">
-                <button class="btn" id="btn-refresh" title="Reload from Google Sheets">⟳ Sync</button>
-                <button class="btn primary" id="btn-add">+ Add Movie</button>
+<!-- ==================== SIGN-IN GATE ==================== -->
+<div id="signin-gate">
+    <div class="signin-logo">Alaniz</div>
+    <div class="signin-tagline">Family Watchlist &middot; Members Only</div>
+
+    <div class="signin-heading">Select your profile</div>
+
+    <div class="member-grid" id="member-grid">
+        <!-- populated by JS -->
+    </div>
+
+    <div id="pin-section">
+        <div class="pin-label">Enter password for <em id="pin-for-name"></em></div>
+        <div class="pin-row">
+            <input type="password" class="pin-input" id="pin-input" placeholder="Password" autocomplete="off" />
+            <button class="btn-signin" id="btn-signin">Sign In</button>
+        </div>
+        <div class="signin-error" id="signin-error"></div>
+    </div>
+</div>
+
+<!-- ==================== MAIN APP ==================== -->
+<div id="main-app">
+
+<header>
+    <div class="logo">Alaniz<span></span>Watchlist</div>
+    <div class="header-actions">
+        <button class="btn" id="btn-refresh" title="Reload from Google Sheets">&#x27F3; Sync</button>
+        <button class="btn primary" id="btn-add">+ Add Movie</button>
+
+        <div class="user-menu" id="user-menu">
+            <div class="user-chip" id="user-chip">
+                <div class="user-chip-avatar" id="chip-avatar"></div>
+                <span class="user-chip-name" id="chip-name"></span>
+                <span style="font-size:0.6rem;color:var(--text-dim);margin-left:2px">&#9662;</span>
             </div>
-        </header>
+            <div class="user-dropdown" id="user-dropdown">
+                <div class="user-dropdown-header">
+                    <div class="user-dropdown-name" id="dropdown-name"></div>
+                    <div class="user-dropdown-email" id="dropdown-email"></div>
+                </div>
+                <button class="dropdown-item" id="btn-signout">&#x21A9; Sign out</button>
+            </div>
+        </div>
+    </div>
+</header>
 
-        <div id="status-bar">
-            <span><span class="dot" id="conn-dot"></span><span id="conn-text">Connecting…</span></span>
-            <span id="stat-total"></span>
-            <span id="stat-watched"></span>
-            <span id="stat-unwatched"></span>
+<div id="status-bar">
+    <span><span class="dot" id="conn-dot"></span><span id="conn-text">Connecting&#x2026;</span></span>
+    <span id="stat-total"></span>
+    <span id="stat-watched"></span>
+    <span id="stat-unwatched"></span>
+</div>
+
+<div class="app" id="app-shell">
+
+    <aside>
+        <div class="filter-section">
+            <h3>Search</h3>
+            <div class="search-wrap">
+                <span class="icon">&#x1F50D;</span>
+                <input type="text" id="search" placeholder="Title, director&#x2026;" />
+            </div>
         </div>
 
-        <div class="app" id="app-shell">
-
-            <aside>
-                <!-- Search -->
-                <div class="filter-section">
-                    <h3>Search</h3>
-                    <div class="search-wrap">
-                        <span class="icon">🔍</span>
-                        <input type="text" id="search" placeholder="Title, director…" />
-                    </div>
-                </div>
-
-                <div class="filter-section">
-                    <h3>Status</h3>
-                    <div class="check-group" id="filter-status">
-                        <label class="check-item"><input type="checkbox" value="Unwatched" checked> Unwatched</label>
-                        <label class="check-item"><input type="checkbox" value="Watched"   checked> Watched</label>
-                    </div>
-                </div>
-
-                <!-- Priority -->
-                <div class="filter-section">
-                    <h3>Priority</h3>
-                    <div class="check-group" id="filter-priority">
-                        <label class="check-item"><input type="checkbox" value="1" checked> 🥇 Must-Watch</label>
-                        <label class="check-item"><input type="checkbox" value="2" checked> 🥈 High</label>
-                        <label class="check-item"><input type="checkbox" value="3" checked> 🥉 Normal</label>
-                    </div>
-                </div>
-
-                <!-- Genre -->
-                <div class="filter-section">
-                    <h3>Genre</h3>
-                    <div class="check-group" id="filter-genre"></div>
-                </div>
-
-                <!-- Length -->
-                <div class="filter-section">
-                    <h3>Max Runtime</h3>
-                    <div class="range-row">
-                        <input type="range" id="filter-runtime" min="30" max="300" value="300" step="5">
-                        <span class="range-val" id="runtime-val">Any</span>
-                    </div>
-                </div>
-
-                <div class="filter-section">
-                    <h3>Year Range</h3>
-                    <div style="display:flex;gap:0.5rem">
-                        <input type="number" id="filter-year-from" class="filter-select" placeholder="From" min="1900" max="2099" style="width:50%">
-                        <input type="number" id="filter-year-to"   class="filter-select" placeholder="To"   min="1900" max="2099" style="width:50%">
-                    </div>
-                </div>
-
-                <!-- Language -->
-                <div class="filter-section">
-                    <h3>Language</h3>
-                    <div class="check-group" id="filter-language"></div>
-                </div>
-
-                <div class="filter-section">
-                    <h3>Who Is Watching</h3>
-                    <div class="check-group" id="filter-viewers"></div>
-                </div>
-
-                <button class="reset-link" id="btn-reset">↺ Reset all filters</button>
-            </aside>
-
-            <!-- MAIN -->
-            <main>
-                <div class="toolbar">
-                    <span class="results-count" id="results-count"></span>
-                    <div style="display:flex;gap:1rem;align-items:center;flex-wrap:wrap">
-                        <div class="sort-row">
-                            <label>Sort</label>
-                            <select id="sort-select" class="filter-select" style="width:auto">
-                                <option value="title-asc">Title A→Z</option>
-                                <option value="title-desc">Title Z→A</option>
-                                <option value="year-desc">Newest first</option>
-                                <option value="year-asc">Oldest first</option>
-                                <option value="priority-asc">Priority ↑</option>
-                                <option value="runtime-asc">Shortest first</option>
-                                <option value="runtime-desc">Longest first</option>
-                                <option value="added-desc">Recently added</option>
-                            </select>
-                        </div>
-                        <div class="view-toggle">
-                            <button id="view-table" class="active" title="Table view">☰</button>
-                            <button id="view-cards" title="Card view">⊞</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="movie-list"></div>
-            </main>
+        <div class="filter-section">
+            <h3>Status</h3>
+            <div class="check-group" id="filter-status">
+                <label class="check-item"><input type="checkbox" value="Unwatched" checked> Unwatched</label>
+                <label class="check-item"><input type="checkbox" value="Watched"   checked> Watched</label>
+            </div>
         </div>
 
-        <!-- Add or edit thingy -->
-        <div class="modal-backdrop" id="movie-modal">
-            <div class="modal">
-                <h2 id="modal-title">Add <em>Movie</em></h2>
-                <input type="hidden" id="edit-row-id">
-                <div class="form-grid">
-                    <div class="field full">
-                        <label>Title *</label>
-                        <input type="text" id="f-title" placeholder="Movie title" required>
-                    </div>
-                    <div class="field">
-                        <label>Year</label>
-                        <input type="number" id="f-year" placeholder="2024" min="1888" max="2099">
-                    </div>
-                    <div class="field">
-                        <label>Runtime (min)</label>
-                        <input type="number" id="f-runtime" placeholder="120" min="1">
-                    </div>
-                    <div class="field full">
-                        <label>Genre(s)</label>
-                        <input type="text" id="f-genre" placeholder="Drama, Thriller">
-                    </div>
-                    <div class="field">
-                        <label>Director</label>
-                        <input type="text" id="f-director" placeholder="Director name">
-                    </div>
-                    <div class="field">
-                        <label>Language</label>
-                        <input type="text" id="f-language" placeholder="English">
-                    </div>
-                    <div class="field">
-                        <label>Priority</label>
-                        <select id="f-priority">
-                            <option value="1">1 — Must-Watch</option>
-                            <option value="2" selected>2 — High</option>
-                            <option value="3">3 — Normal</option>
-                        </select>
-                    </div>
-                    <div class="field">
-                        <label>Status</label>
-                        <select id="f-status">
-                            <option value="Unwatched" selected>Unwatched</option>
-                            <option value="Watched">Watched</option>
-                        </select>
-                    </div>
-                    <div class="field full">
-                        <label>Viewers</label>
-                        <input type="text" id="f-viewers" placeholder="Aidan; Jordan">
-                    </div>
-                    <div class="field">
-                        <label>Source / Platform</label>
-                        <input type="text" id="f-source" placeholder="Prime, DVD...">
-                    </div>
-                    <div class="field full">
-                        <label>Notes</label>
-                        <textarea id="f-notes" placeholder="Why you want to watch it, recommendations…"></textarea>
-                    </div>
+        <div class="filter-section">
+            <h3>Priority</h3>
+            <div class="check-group" id="filter-priority">
+                <label class="check-item"><input type="checkbox" value="1" checked> &#x1F947; Must-Watch</label>
+                <label class="check-item"><input type="checkbox" value="2" checked> &#x1F948; High</label>
+                <label class="check-item"><input type="checkbox" value="3" checked> &#x1F949; Normal</label>
+            </div>
+        </div>
+
+        <div class="filter-section">
+            <h3>Genre</h3>
+            <div class="check-group" id="filter-genre"></div>
+        </div>
+
+        <div class="filter-section">
+            <h3>Max Runtime</h3>
+            <div class="range-row">
+                <input type="range" id="filter-runtime" min="30" max="300" value="300" step="5">
+                <span class="range-val" id="runtime-val">Any</span>
+            </div>
+        </div>
+
+        <div class="filter-section">
+            <h3>Year Range</h3>
+            <div style="display:flex;gap:0.5rem">
+                <input type="number" id="filter-year-from" class="filter-select" placeholder="From" min="1900" max="2099" style="width:50%">
+                <input type="number" id="filter-year-to"   class="filter-select" placeholder="To"   min="1900" max="2099" style="width:50%">
+            </div>
+        </div>
+
+        <div class="filter-section">
+            <h3>Language</h3>
+            <div class="check-group" id="filter-language"></div>
+        </div>
+
+        <div class="filter-section">
+            <h3>Who Is Watching</h3>
+            <div class="check-group" id="filter-viewers"></div>
+        </div>
+
+        <button class="reset-link" id="btn-reset">&#x21BA; Reset all filters</button>
+    </aside>
+
+    <main>
+        <div class="toolbar">
+            <span class="results-count" id="results-count"></span>
+            <div style="display:flex;gap:1rem;align-items:center;flex-wrap:wrap">
+                <div class="sort-row">
+                    <label>Sort</label>
+                    <select id="sort-select" class="filter-select" style="width:auto">
+                        <option value="title-asc">Title A&#x2192;Z</option>
+                        <option value="title-desc">Title Z&#x2192;A</option>
+                        <option value="year-desc">Newest first</option>
+                        <option value="year-asc">Oldest first</option>
+                        <option value="priority-asc">Priority &#x2191;</option>
+                        <option value="runtime-asc">Shortest first</option>
+                        <option value="runtime-desc">Longest first</option>
+                        <option value="added-desc">Recently added</option>
+                    </select>
                 </div>
-                <div class="modal-footer">
-                    <button class="btn" id="modal-cancel">Cancel</button>
-                    <button class="btn primary" id="modal-save">Save Movie</button>
+                <div class="view-toggle">
+                    <button id="view-table" class="active" title="Table view">&#x2630;</button>
+                    <button id="view-cards" title="Card view">&#x229E;</button>
                 </div>
             </div>
         </div>
 
-        <div id="toast"></div>
+        <div id="movie-list"></div>
+    </main>
+</div>
 
-        <script>
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwzbr1JGGrbkAyy4KGbUpRBl26BmuGU42vCc7E-tLLmcjyR9DufIWYSh_FcsMGfMRq3/exec';
+<!-- Add / Edit Modal -->
+<div class="modal-backdrop" id="movie-modal">
+    <div class="modal">
+        <h2 id="modal-title">Add <em>Movie</em></h2>
+        <input type="hidden" id="edit-row-id">
+        <div class="form-grid">
+            <div class="field full">
+                <label>Title *</label>
+                <input type="text" id="f-title" placeholder="Movie title" required>
+            </div>
+            <div class="field">
+                <label>Year</label>
+                <input type="number" id="f-year" placeholder="2024" min="1888" max="2099">
+            </div>
+            <div class="field">
+                <label>Runtime (min)</label>
+                <input type="number" id="f-runtime" placeholder="120" min="1">
+            </div>
+            <div class="field full">
+                <label>Genre(s) &#x2014; comma separated</label>
+                <input type="text" id="f-genre" placeholder="Drama, Thriller">
+            </div>
+            <div class="field">
+                <label>Director</label>
+                <input type="text" id="f-director" placeholder="Director name">
+            </div>
+            <div class="field">
+                <label>Language</label>
+                <input type="text" id="f-language" placeholder="English">
+            </div>
+            <div class="field">
+                <label>Priority</label>
+                <select id="f-priority">
+                    <option value="1">1 &#x2014; Must-Watch</option>
+                    <option value="2" selected>2 &#x2014; High</option>
+                    <option value="3">3 &#x2014; Normal</option>
+                </select>
+            </div>
+            <div class="field">
+                <label>Status</label>
+                <select id="f-status">
+                    <option value="Unwatched" selected>Unwatched</option>
+                    <option value="Watched">Watched</option>
+                </select>
+            </div>
+            <div class="field full">
+                <label>Viewers &#x2014; semicolon separated</label>
+                <input type="text" id="f-viewers" placeholder="Aidan; Jordan">
+            </div>
+            <div class="field">
+                <label>Source / Platform</label>
+                <input type="text" id="f-source" placeholder="Prime video, DVD...">
+            </div>
+            <div class="field full">
+                <label>Notes</label>
+                <textarea id="f-notes" placeholder="Why you want to watch it, recommendations&#x2026;"></textarea>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn" id="modal-cancel">Cancel</button>
+            <button class="btn primary" id="modal-save">Save Movie</button>
+        </div>
+    </div>
+</div>
 
-        let allMovies  = [];
-        let view       = 'table';
-        let sortKey    = 'title-asc';
-        let editingId  = null;
+</div><!-- /main-app -->
 
-        document.addEventListener('DOMContentLoaded', () => {
-            loadMovies();
+<div id="toast"></div>
 
-            // Toolbar
-            document.getElementById('btn-refresh').addEventListener('click', loadMovies);
-            document.getElementById('btn-add').addEventListener('click', openAddModal);
+<script>
+// ================================================================
+//  ACCOUNTS
+//  Edit names, emails, initials, and passwords here.
+//  Passwords are checked client-side only — fine for a family app,
+//  but do NOT store anything truly sensitive here.
+// ================================================================
+const ACCOUNTS = [
+    { name: 'Aidan',   email: 'aidan@example.com',   password: 'popcorn1', initials: 'A' },
+    { name: 'Jordan',  email: 'jordan@example.com',  password: 'popcorn2', initials: 'J' },
+    { name: 'Casey',   email: 'casey@example.com',   password: 'popcorn3', initials: 'C' },
+    { name: 'Morgan',  email: 'morgan@example.com',  password: 'popcorn4', initials: 'M' },
+    { name: 'Taylor',  email: 'taylor@example.com',  password: 'popcorn5', initials: 'T' },
+    { name: 'Riley',   email: 'riley@example.com',   password: 'popcorn6', initials: 'R' },
+];
 
-            // Sort / view
-            document.getElementById('sort-select').addEventListener('change', e => { sortKey = e.target.value; renderList(); });
-            document.getElementById('view-table').addEventListener('click', () => setView('table'));
-            document.getElementById('view-cards').addEventListener('click', () => setView('cards'));
+const STORAGE_KEY = 'alaniz_current_user';
 
-            // Filters
-            document.getElementById('search').addEventListener('input', renderList);
-            document.querySelectorAll('#filter-status input, #filter-priority input').forEach(el =>
-                el.addEventListener('change', renderList));
-            document.getElementById('filter-runtime').addEventListener('input', e => {
-                const v = +e.target.value;
-                document.getElementById('runtime-val').textContent = v >= 300 ? 'Any' : v + ' min';
-                renderList();
-            });
-            document.getElementById('filter-year-from').addEventListener('input', renderList);
-            document.getElementById('filter-year-to').addEventListener('input', renderList);
-            document.getElementById('btn-reset').addEventListener('click', resetFilters);
+// ================================================================
+//  SIGN-IN LOGIC
+// ================================================================
+let currentUser    = null;
+let selectedAccount = null;
 
-            document.getElementById('modal-cancel').addEventListener('click', closeModal);
-            document.getElementById('modal-save').addEventListener('click', saveMovie);
-            document.getElementById('movie-modal').addEventListener('click', e => {
-                if (e.target === document.getElementById('movie-modal')) closeModal();
-            });
-        });
+function buildMemberGrid() {
+    const grid = document.getElementById('member-grid');
+    grid.innerHTML = '';
+    ACCOUNTS.forEach((acc, i) => {
+        const card = document.createElement('div');
+        card.className = 'member-card';
+        card.dataset.index = i;
+        card.innerHTML =
+            '<div class="member-avatar">' + acc.initials + '</div>' +
+            '<div class="member-name">'   + acc.name    + '</div>' +
+            '<div class="member-email">'  + acc.email   + '</div>';
+        card.addEventListener('click', function() { selectAccount(i, card); });
+        grid.appendChild(card);
+    });
+}
 
-        function setView(v) {
-            view = v;
-            document.getElementById('view-table').classList.toggle('active', v === 'table');
-            document.getElementById('view-cards').classList.toggle('active', v === 'cards');
-            renderList();
-        }
+function selectAccount(index, cardEl) {
+    document.querySelectorAll('.member-card').forEach(function(c) { c.classList.remove('selected'); });
+    cardEl.classList.add('selected');
+    selectedAccount = ACCOUNTS[index];
+    document.getElementById('pin-for-name').textContent  = selectedAccount.name;
+    document.getElementById('signin-error').textContent  = '';
+    document.getElementById('pin-input').value           = '';
+    var section = document.getElementById('pin-section');
+    section.classList.add('visible');
+    setTimeout(function() { document.getElementById('pin-input').focus(); }, 50);
+}
 
-        function setStatus(state, msg) {
-            const dot  = document.getElementById('conn-dot');
-            const text = document.getElementById('conn-text');
-            dot.className = 'dot ' + state;
-            text.textContent = msg;
-        }
+function attemptSignIn() {
+    if (!selectedAccount) return;
+    var val   = document.getElementById('pin-input').value;
+    var input = document.getElementById('pin-input');
+    if (val === selectedAccount.password) {
+        currentUser = selectedAccount;
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({ name: currentUser.name, email: currentUser.email }));
+        showApp();
+    } else {
+        input.classList.add('error');
+        document.getElementById('signin-error').textContent = 'Incorrect password. Try again.';
+        input.value = '';
+        setTimeout(function() { input.classList.remove('error'); }, 400);
+        input.focus();
+    }
+}
 
-        function showToast(msg, type = '') {
-            const t = document.getElementById('toast');
-            t.textContent = msg;
-            t.className = 'show ' + type;
-            clearTimeout(t._timer);
-            t._timer = setTimeout(() => t.className = '', 3000);
-        }
-
-        function updateStats() {
-            const watched   = allMovies.filter(m => m.Status === 'Watched').length;
-            const unwatched = allMovies.filter(m => m.Status === 'Unwatched').length;
-            document.getElementById('stat-total').textContent    = allMovies.length + ' films';
-            document.getElementById('stat-watched').textContent  = watched   + ' watched';
-            document.getElementById('stat-unwatched').textContent= unwatched + ' to watch';
-        }
-
-        function jsonp(params) {
-            return new Promise((resolve, reject) => {
-                const callbackName = 'cb_' + Date.now();
-                const url = new URL(SCRIPT_URL);
-                Object.entries(params).forEach(([k, v]) => url.searchParams.set(k, v));
-                url.searchParams.set('callback', callbackName);
-                const script = document.createElement('script');
-                script.src = url.toString();
-                const timer = setTimeout(() => {
-                    cleanup();
-                    reject(new Error('Timeout'));
-                }, 10000);
-                window[callbackName] = (data) => {
-                    cleanup();
-                    resolve(data);
-                };
-                function cleanup() {
-                    clearTimeout(timer);
-                    delete window[callbackName];
-                    script.remove();
-                }
-                script.onerror = () => { cleanup(); reject(new Error('Script load failed')); };
-                document.head.appendChild(script);
-            });
-        }
-
-        async function apiFetch(params) {
-            return jsonp(params);
-        }
-
-        async function apiPost(body) {
-            const url = new URL(SCRIPT_URL);
-            url.searchParams.set('action', body.action);
-            url.searchParams.set('payload', JSON.stringify(body));
-            url.searchParams.set('callback', 'ignore_' + Date.now());
-            return jsonp({ ...body, payload: JSON.stringify(body) });
-        }
-
-        async function loadMovies() {
-            setStatus('loading', 'Syncing…');
-            try {
-                const data = await apiFetch({ action: 'getAll' });
-                allMovies = data.movies || [];
-                updateStats();
-                buildDynamicFilters();
-                renderList();
-                setStatus('connected', 'Connected · ' + new Date().toLocaleTimeString());
-            } catch(e) {
-                setStatus('error', 'Error — check URL');
-                showToast('Failed to load: ' + e.message, 'error');
-            }
-        }
-
-        async function saveMovie() {
-            const movie = {
-                Title:    document.getElementById('f-title').value.trim(),
-                Year:     document.getElementById('f-year').value.trim(),
-                Runtime:  document.getElementById('f-runtime').value.trim(),
-                Genre:    document.getElementById('f-genre').value.trim(),
-                Director: document.getElementById('f-director').value.trim(),
-                Language: document.getElementById('f-language').value.trim(),
-                Priority: document.getElementById('f-priority').value,
-                Status:   document.getElementById('f-status').value,
-                Viewers:  document.getElementById('f-viewers').value.trim(),
-                Source:   document.getElementById('f-source').value.trim(),
-                Notes:    document.getElementById('f-notes').value.trim(),
-            };
-            if (!movie.Title) { showToast('Title is required', 'error'); return; }
-
-            const btn = document.getElementById('modal-save');
-            btn.textContent = 'Saving…'; btn.disabled = true;
-
-            try {
-                if (editingId) {
-                    movie.RowID = editingId;
-                    await apiPost({ action: 'update', movie });
-                    showToast('Movie updated ✓', 'success');
-                } else {
-                    await apiPost({ action: 'add', movie });
-                    showToast('Movie added ✓', 'success');
-                }
-                closeModal();
-                loadMovies();
-            } catch(e) {
-                showToast('Save failed: ' + e.message, 'error');
-            } finally {
-                btn.textContent = 'Save Movie'; btn.disabled = false;
-            }
-        }
-
-        async function deleteMovie(rowId, title) {
-            if (!confirm(`Delete "${title}"?`)) return;
-            try {
-                await apiPost({ action: 'delete', rowId });
-                showToast('Deleted', 'success');
-                loadMovies();
-            } catch(e) {
-                showToast('Delete failed', 'error');
-            }
-        }
-
-        async function toggleWatched(movie) {
-            const newStatus = movie.Status === 'Watched' ? 'Unwatched' : 'Watched';
-            try {
-                await apiPost({ action: 'update', movie: { ...movie, Status: newStatus } });
-                loadMovies();
-            } catch(e) {
-                showToast('Update failed', 'error');
-            }
-        }
-
-        function buildDynamicFilters() {
-            // Genres
-            const genres = [...new Set(allMovies.flatMap(m => parseList(m.Genre)))].sort();
-            buildCheckGroup('filter-genre', genres, false);
-
-            // Languages
-            const langs = [...new Set(allMovies.map(m => m.Language).filter(Boolean))].sort();
-            buildCheckGroup('filter-language', langs, true);
-
-            const viewers = [...new Set(allMovies.flatMap(m => parseList(m.Viewers)))].sort();
-            buildCheckGroup('filter-viewers', viewers, false);
-        }
-
-        function buildCheckGroup(id, values, checked) {
-            const el = document.getElementById(id);
-            el.innerHTML = '';
-            values.forEach(v => {
-                const lbl = document.createElement('label');
-                lbl.className = 'check-item';
-                lbl.innerHTML = `<input type="checkbox" value="${v}" ${checked?'checked':''}> ${v}`;
-                lbl.querySelector('input').addEventListener('change', renderList);
-                el.appendChild(lbl);
-            });
-        }
-
-        function getChecked(id) {
-            return [...document.querySelectorAll(`#${id} input:checked`)].map(el => el.value);
-        }
-
-        function parseList(str) {
-            if (!str) return [];
-            return str.split(/[,;|]/).map(s => s.trim()).filter(Boolean);
-        }
-
-        function applyFilters(movies) {
-            const q           = document.getElementById('search').value.toLowerCase().trim();
-            const statuses    = getChecked('filter-status');
-            const priorities  = getChecked('filter-priority');
-            const genres      = getChecked('filter-genre');
-            const langs       = getChecked('filter-language');
-            const viewers     = getChecked('filter-viewers');
-            const maxRuntime  = +document.getElementById('filter-runtime').value;
-            const yearFrom    = +document.getElementById('filter-year-from').value || 0;
-            const yearTo      = +document.getElementById('filter-year-to').value   || 9999;
-
-            return movies.filter(m => {
-                if (q && !((m.Title||'').toLowerCase().includes(q) ||
-                    (m.Director||'').toLowerCase().includes(q) ||
-                    (m.Notes||'').toLowerCase().includes(q))) return false;
-                if (!statuses.includes(m.Status || 'Unwatched')) return false;
-                if (!priorities.includes(String(m.Priority || 3))) return false;
-                const mGenres = parseList(m.Genre);
-                if (genres.length && !mGenres.some(g => genres.includes(g))) return false;
-                if (langs.length && m.Language && !langs.includes(m.Language)) return false;
-                if (viewers.length && !parseList(m.Viewers).some(v => viewers.includes(v))) return false;
-                if (maxRuntime < 300 && m.Runtime && +m.Runtime > maxRuntime) return false;
-                if (m.Year && (+m.Year < yearFrom || +m.Year > yearTo)) return false;
+function checkStoredSession() {
+    try {
+        var stored = localStorage.getItem(STORAGE_KEY);
+        if (stored) {
+            var data = JSON.parse(stored);
+            var acc  = ACCOUNTS.find(function(a) { return a.name === data.name && a.email === data.email; });
+            if (acc) {
+                currentUser = acc;
+                showApp();
                 return true;
-            });
-        }
-
-        function applySort(movies) {
-            const [field, dir] = sortKey.split('-');
-            return [...movies].sort((a, b) => {
-                let va, vb;
-                if (field === 'title')   { va = (a.Title||'').toLowerCase();  vb = (b.Title||'').toLowerCase(); }
-                if (field === 'year')    { va = +a.Year    || 0; vb = +b.Year    || 0; }
-                if (field === 'priority'){ va = +a.Priority|| 9; vb = +b.Priority|| 9; }
-                if (field === 'runtime') { va = +a.Runtime || 0; vb = +b.Runtime || 0; }
-                if (field === 'added')   { va = a.DateAdded||''; vb = b.DateAdded||''; }
-                if (va < vb) return dir === 'asc' ? -1 : 1;
-                if (va > vb) return dir === 'asc' ?  1 : -1;
-                return 0;
-            });
-        }
-
-        function resetFilters() {
-            document.getElementById('search').value = '';
-            document.querySelectorAll('#filter-status input, #filter-priority input, #filter-genre input, #filter-language input, #filter-viewers input')
-                .forEach(el => el.checked = true);
-            document.getElementById('filter-runtime').value = 300;
-            document.getElementById('runtime-val').textContent = 'Any';
-            document.getElementById('filter-year-from').value = '';
-            document.getElementById('filter-year-to').value = '';
-            renderList();
-        }
-
-        function renderList() {
-            const filtered = applySort(applyFilters(allMovies));
-            const el = document.getElementById('movie-list');
-            document.getElementById('results-count').innerHTML =
-                `Showing <strong>${filtered.length}</strong> of ${allMovies.length} films`;
-
-            if (!filtered.length) {
-                el.innerHTML = `<div class="empty-state">
-                    <div class="icon">🎬</div>
-                    <h3>No films found</h3>
-                    <p>Try adjusting your filters or add a new movie.</p>
-                </div>`;
-                return;
             }
-
-            if (view === 'table') renderTable(filtered, el);
-            else renderCards(filtered, el);
         }
+    } catch(e) {}
+    return false;
+}
 
-        function statusPill(s) {
-            const cls = { Watched: 'watched', Unwatched: 'unwatched'}[s] || 'unwatched';
-            return `<span class="status-pill status-${cls}">${s||'Unwatched'}</span>`;
-        }
+function showApp() {
+    document.getElementById('signin-gate').classList.add('hidden');
+    document.getElementById('main-app').classList.add('visible');
+    document.getElementById('chip-avatar').textContent    = currentUser.initials;
+    document.getElementById('chip-name').textContent      = currentUser.name;
+    document.getElementById('dropdown-name').textContent  = currentUser.name;
+    document.getElementById('dropdown-email').textContent = currentUser.email;
+    loadMovies();
+}
 
-        function renderTable(movies, container) {
-            const rows = movies.map(m => {
-                const genres = parseList(m.Genre).map(g => `<span class="genre-tag">${g}</span>`).join('');
-                return `<tr class="${m.Status==='Watched'?'watched':''}"
-                                    data-id="${m.RowID}">
-                    <td class="movie-title-cell">
-                        <strong>${esc(m.Title)}</strong>
-                        <span class="year">${m.Year||'—'}</span>
-                    </td>
-                    <td>${genres}</td>
-                    <td><span class="priority-badge priority-${m.Priority||3}">${m.Priority||3}</span></td>
-                    <td class="runtime-cell">${m.Runtime ? m.Runtime+'m' : '—'}</td>
-                    <td>${statusPill(m.Status)}</td>
-                    <td>${esc(m.Director||'—')}</td>
-                    <td>${esc(m.Language||'—')}</td>
-                    <td>${esc(m.Viewers||'—')}</td>
-                    <td>
-                        <div class="row-actions">
-                            <button class="row-btn" onclick="event.stopPropagation();openEditModal('${m.RowID}')">✎</button>
-                            <button class="row-btn" onclick="event.stopPropagation();toggleWatched(${JSON.stringify(m).replace(/"/g,'&quot;')})">
-                                ${m.Status==='Watched'?'↩':'✓'}
-                            </button>
-                            <button class="row-btn del" onclick="event.stopPropagation();deleteMovie('${m.RowID}','${esc(m.Title)}')">✕</button>
-                        </div>
-                    </td>
-                </tr>`;
-            }).join('');
+function signOut() {
+    localStorage.removeItem(STORAGE_KEY);
+    currentUser     = null;
+    selectedAccount = null;
+    document.getElementById('main-app').classList.remove('visible');
+    document.getElementById('signin-gate').classList.remove('hidden');
+    document.getElementById('pin-section').classList.remove('visible');
+    document.getElementById('pin-input').value          = '';
+    document.getElementById('signin-error').textContent = '';
+    document.querySelectorAll('.member-card').forEach(function(c) { c.classList.remove('selected'); });
+    closeUserDropdown();
+}
 
-            container.innerHTML = `
-                <div class="table-wrap">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Title</th>
-                                <th>Genre</th>
-                                <th>Priority</th>
-                                <th>Runtime</th>
-                                <th>Status</th>
-                                <th>Director</th>
-                                <th>Language</th>
-                                <th>Who Can Watch</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>${rows}</tbody>
-                    </table>
-                </div>`;
-        }
+function closeUserDropdown() {
+    document.getElementById('user-dropdown').classList.remove('open');
+}
 
-        function renderCards(movies, container) {
-            const cards = movies.map(m => {
-                const genres = parseList(m.Genre).map(g => `<span class="genre-tag">${g}</span>`).join('');
-                return `<div class="movie-card ${m.Status==='Watched'?'watched':''}" data-id="${m.RowID}">
-                    <div class="card-title">${esc(m.Title)}</div>
-                    <div class="card-meta">${m.Year||'—'} · ${m.Runtime ? m.Runtime+'m' : '—'} · ${esc(m.Language||'—')}</div>
-                    <div class="card-genres">${genres}</div>
-                    <div style="display:flex;justify-content:space-between;align-items:center">
-                        <span class="priority-badge priority-${m.Priority||3}">${m.Priority||3}</span>
-                    </div>
-                    <div class="card-footer">
-                        ${statusPill(m.Status)}
-                        ${m.Director ? `<span style="font-size:0.72rem;color:var(--text-dim)">${esc(m.Director)}</span>` : ''}
-                    </div>
-                    <div class="card-actions">
-                        <button class="row-btn" onclick="openEditModal('${m.RowID}')">✎ Edit</button>
-                        <button class="row-btn" onclick="toggleWatched(${JSON.stringify(m).replace(/"/g,'&quot;')})">
-                            ${m.Status==='Watched'?'↩ Unwatch':'✓ Watched'}
-                        </button>
-                        <button class="row-btn del" onclick="deleteMovie('${m.RowID}','${esc(m.Title)}')">✕</button>
-                    </div>
-                </div>`;
-            }).join('');
+// ================================================================
+//  MAIN APP
+// ================================================================
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwzbr1JGGrbkAyy4KGbUpRBl26BmuGU42vCc7E-tLLmcjyR9DufIWYSh_FcsMGfMRq3/exec';
 
-            container.innerHTML = `<div class="card-grid">${cards}</div>`;
-        }
+var allMovies = [];
+var view      = 'table';
+var sortKey   = 'title-asc';
+var editingId = null;
 
-        function openAddModal() {
-            editingId = null;
-            document.getElementById('modal-title').innerHTML = 'Add <em>Movie</em>';
-            ['title','year','runtime','genre','director','language','notes','source'].forEach(f =>
-                document.getElementById('f-'+f).value = '');
-            document.getElementById('f-priority').value = '2';
-            document.getElementById('f-status').value   = 'Unwatched';
-            document.getElementById('movie-modal').classList.add('open');
-        }
+document.addEventListener('DOMContentLoaded', function() {
+    buildMemberGrid();
+    checkStoredSession();
 
-        function openEditModal(rowId) {
-            const m = allMovies.find(x => String(x.RowID) === String(rowId));
-            if (!m) return;
-            editingId = rowId;
-            document.getElementById('modal-title').innerHTML = 'Edit <em>Movie</em>';
-            document.getElementById('f-title').value    = m.Title    || '';
-            document.getElementById('f-year').value     = m.Year     || '';
-            document.getElementById('f-runtime').value  = m.Runtime  || '';
-            document.getElementById('f-genre').value    = m.Genre    || '';
-            document.getElementById('f-director').value = m.Director || '';
-            document.getElementById('f-language').value = m.Language || '';
-            document.getElementById('f-priority').value = m.Priority || '2';
-            document.getElementById('f-status').value   = m.Status   || 'Unwatched';
-            document.getElementById('f-viewers').value  = m.Viewers  || '';
-            document.getElementById('f-source').value   = m.Source   || '';
-            document.getElementById('f-notes').value    = m.Notes    || '';
-            document.getElementById('movie-modal').classList.add('open');
-        }
+    // Sign-in
+    document.getElementById('pin-input').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') attemptSignIn();
+    });
+    document.getElementById('btn-signin').addEventListener('click', attemptSignIn);
 
-        function closeModal() {
-            document.getElementById('movie-modal').classList.remove('open');
-        }
+    // Header user menu
+    document.getElementById('user-chip').addEventListener('click', function(e) {
+        e.stopPropagation();
+        document.getElementById('user-dropdown').classList.toggle('open');
+    });
+    document.addEventListener('click', closeUserDropdown);
+    document.getElementById('btn-signout').addEventListener('click', signOut);
 
-        function esc(str) {
-            return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-        }
-        </script>
-    </body>
+    // Toolbar
+    document.getElementById('btn-refresh').addEventListener('click', loadMovies);
+    document.getElementById('btn-add').addEventListener('click', openAddModal);
+
+    // Sort / view
+    document.getElementById('sort-select').addEventListener('change', function(e) { sortKey = e.target.value; renderList(); });
+    document.getElementById('view-table').addEventListener('click', function() { setView('table'); });
+    document.getElementById('view-cards').addEventListener('click', function() { setView('cards'); });
+
+    // Filters
+    document.getElementById('search').addEventListener('input', renderList);
+    document.querySelectorAll('#filter-status input, #filter-priority input').forEach(function(el) {
+        el.addEventListener('change', renderList);
+    });
+    document.getElementById('filter-runtime').addEventListener('input', function(e) {
+        var v = +e.target.value;
+        document.getElementById('runtime-val').textContent = v >= 300 ? 'Any' : v + ' min';
+        renderList();
+    });
+    document.getElementById('filter-year-from').addEventListener('input', renderList);
+    document.getElementById('filter-year-to').addEventListener('input', renderList);
+    document.getElementById('btn-reset').addEventListener('click', resetFilters);
+
+    document.getElementById('modal-cancel').addEventListener('click', closeModal);
+    document.getElementById('modal-save').addEventListener('click', saveMovie);
+    document.getElementById('movie-modal').addEventListener('click', function(e) {
+        if (e.target === document.getElementById('movie-modal')) closeModal();
+    });
+});
+
+function setView(v) {
+    view = v;
+    document.getElementById('view-table').classList.toggle('active', v === 'table');
+    document.getElementById('view-cards').classList.toggle('active', v === 'cards');
+    renderList();
+}
+
+function setStatus(state, msg) {
+    document.getElementById('conn-dot').className  = 'dot ' + state;
+    document.getElementById('conn-text').textContent = msg;
+}
+
+function showToast(msg, type) {
+    type = type || '';
+    var t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className   = 'show ' + type;
+    clearTimeout(t._timer);
+    t._timer = setTimeout(function() { t.className = ''; }, 3000);
+}
+
+function updateStats() {
+    var watched   = allMovies.filter(function(m) { return m.Status === 'Watched'; }).length;
+    var unwatched = allMovies.filter(function(m) { return m.Status === 'Unwatched'; }).length;
+    document.getElementById('stat-total').textContent     = allMovies.length + ' films';
+    document.getElementById('stat-watched').textContent   = watched   + ' watched';
+    document.getElementById('stat-unwatched').textContent = unwatched + ' to watch';
+}
+
+function jsonp(params) {
+    return new Promise(function(resolve, reject) {
+        var callbackName = 'cb_' + Date.now();
+        var url = new URL(SCRIPT_URL);
+        Object.entries(params).forEach(function(entry) { url.searchParams.set(entry[0], entry[1]); });
+        url.searchParams.set('callback', callbackName);
+        var script = document.createElement('script');
+        script.src = url.toString();
+        var timer = setTimeout(function() { cleanup(); reject(new Error('Timeout')); }, 10000);
+        window[callbackName] = function(data) { cleanup(); resolve(data); };
+        function cleanup() { clearTimeout(timer); delete window[callbackName]; script.remove(); }
+        script.onerror = function() { cleanup(); reject(new Error('Script load failed')); };
+        document.head.appendChild(script);
+    });
+}
+
+function apiFetch(params) { return jsonp(params); }
+function apiPost(body) {
+    return jsonp(Object.assign({}, body, { payload: JSON.stringify(body) }));
+}
+
+function loadMovies() {
+    setStatus('loading', 'Syncing\u2026');
+    apiFetch({ action: 'getAll' }).then(function(data) {
+        allMovies = data.movies || [];
+        updateStats();
+        buildDynamicFilters();
+        renderList();
+        setStatus('connected', 'Connected \xb7 ' + new Date().toLocaleTimeString());
+    }).catch(function(e) {
+        setStatus('error', 'Error \u2014 check URL');
+        showToast('Failed to load: ' + e.message, 'error');
+    });
+}
+
+function saveMovie() {
+    var movie = {
+        Title:    document.getElementById('f-title').value.trim(),
+        Year:     document.getElementById('f-year').value.trim(),
+        Runtime:  document.getElementById('f-runtime').value.trim(),
+        Genre:    document.getElementById('f-genre').value.trim(),
+        Director: document.getElementById('f-director').value.trim(),
+        Language: document.getElementById('f-language').value.trim(),
+        Priority: document.getElementById('f-priority').value,
+        Status:   document.getElementById('f-status').value,
+        Viewers:  document.getElementById('f-viewers').value.trim(),
+        Source:   document.getElementById('f-source').value.trim(),
+        Notes:    document.getElementById('f-notes').value.trim(),
+    };
+    if (!movie.Title) { showToast('Title is required', 'error'); return; }
+
+    var btn = document.getElementById('modal-save');
+    btn.textContent = 'Saving\u2026'; btn.disabled = true;
+
+    var promise;
+    if (editingId) {
+        movie.RowID = editingId;
+        promise = apiPost({ action: 'update', movie: movie });
+    } else {
+        promise = apiPost({ action: 'add', movie: movie });
+    }
+    promise.then(function() {
+        showToast(editingId ? 'Movie updated \u2713' : 'Movie added \u2713', 'success');
+        closeModal();
+        loadMovies();
+    }).catch(function(e) {
+        showToast('Save failed: ' + e.message, 'error');
+    }).finally(function() {
+        btn.textContent = 'Save Movie'; btn.disabled = false;
+    });
+}
+
+function deleteMovie(rowId, title) {
+    if (!confirm('Delete "' + title + '"?')) return;
+    apiPost({ action: 'delete', rowId: rowId }).then(function() {
+        showToast('Deleted', 'success');
+        loadMovies();
+    }).catch(function() {
+        showToast('Delete failed', 'error');
+    });
+}
+
+function toggleWatched(movie) {
+    var updated = Object.assign({}, movie, { Status: movie.Status === 'Watched' ? 'Unwatched' : 'Watched' });
+    apiPost({ action: 'update', movie: updated }).then(function() {
+        loadMovies();
+    }).catch(function() {
+        showToast('Update failed', 'error');
+    });
+}
+
+function buildDynamicFilters() {
+    var genres = Array.from(new Set(allMovies.flatMap(function(m) { return parseList(m.Genre); }))).sort();
+    buildCheckGroup('filter-genre', genres, false);
+
+    var langs = Array.from(new Set(allMovies.map(function(m) { return m.Language; }).filter(Boolean))).sort();
+    buildCheckGroup('filter-language', langs, true);
+
+    var viewers = Array.from(new Set(allMovies.flatMap(function(m) { return parseList(m.Viewers); }))).sort();
+    buildCheckGroup('filter-viewers', viewers, false);
+}
+
+function buildCheckGroup(id, values, checked) {
+    var el = document.getElementById(id);
+    el.innerHTML = '';
+    values.forEach(function(v) {
+        var lbl = document.createElement('label');
+        lbl.className = 'check-item';
+        lbl.innerHTML = '<input type="checkbox" value="' + v + '" ' + (checked ? 'checked' : '') + '> ' + v;
+        lbl.querySelector('input').addEventListener('change', renderList);
+        el.appendChild(lbl);
+    });
+}
+
+function getChecked(id) {
+    return Array.from(document.querySelectorAll('#' + id + ' input:checked')).map(function(el) { return el.value; });
+}
+
+function parseList(str) {
+    if (!str) return [];
+    return str.split(/[,;|]/).map(function(s) { return s.trim(); }).filter(Boolean);
+}
+
+function applyFilters(movies) {
+    var q          = document.getElementById('search').value.toLowerCase().trim();
+    var statuses   = getChecked('filter-status');
+    var priorities = getChecked('filter-priority');
+    var genres     = getChecked('filter-genre');
+    var langs      = getChecked('filter-language');
+    var viewers    = getChecked('filter-viewers');
+    var maxRuntime = +document.getElementById('filter-runtime').value;
+    var yearFrom   = +document.getElementById('filter-year-from').value || 0;
+    var yearTo     = +document.getElementById('filter-year-to').value   || 9999;
+
+    return movies.filter(function(m) {
+        if (q && !((m.Title||'').toLowerCase().includes(q) ||
+            (m.Director||'').toLowerCase().includes(q) ||
+            (m.Notes||'').toLowerCase().includes(q))) return false;
+        if (!statuses.includes(m.Status || 'Unwatched')) return false;
+        if (!priorities.includes(String(m.Priority || 3))) return false;
+        var mGenres = parseList(m.Genre);
+        if (genres.length && !mGenres.some(function(g) { return genres.includes(g); })) return false;
+        if (langs.length && m.Language && !langs.includes(m.Language)) return false;
+        if (viewers.length && !parseList(m.Viewers).some(function(v) { return viewers.includes(v); })) return false;
+        if (maxRuntime < 300 && m.Runtime && +m.Runtime > maxRuntime) return false;
+        if (m.Year && (+m.Year < yearFrom || +m.Year > yearTo)) return false;
+        return true;
+    });
+}
+
+function applySort(movies) {
+    var parts = sortKey.split('-');
+    var field = parts[0];
+    var dir   = parts[1];
+    return movies.slice().sort(function(a, b) {
+        var va, vb;
+        if (field === 'title')    { va = (a.Title||'').toLowerCase();  vb = (b.Title||'').toLowerCase(); }
+        if (field === 'year')     { va = +a.Year    || 0; vb = +b.Year    || 0; }
+        if (field === 'priority') { va = +a.Priority|| 9; vb = +b.Priority|| 9; }
+        if (field === 'runtime')  { va = +a.Runtime || 0; vb = +b.Runtime || 0; }
+        if (field === 'added')    { va = a.DateAdded||''; vb = b.DateAdded||''; }
+        if (va < vb) return dir === 'asc' ? -1 : 1;
+        if (va > vb) return dir === 'asc' ?  1 : -1;
+        return 0;
+    });
+}
+
+function resetFilters() {
+    document.getElementById('search').value = '';
+    document.querySelectorAll('#filter-status input, #filter-priority input, #filter-genre input, #filter-language input, #filter-viewers input')
+        .forEach(function(el) { el.checked = true; });
+    document.getElementById('filter-runtime').value    = 300;
+    document.getElementById('runtime-val').textContent = 'Any';
+    document.getElementById('filter-year-from').value  = '';
+    document.getElementById('filter-year-to').value    = '';
+    renderList();
+}
+
+function renderList() {
+    var filtered = applySort(applyFilters(allMovies));
+    var el = document.getElementById('movie-list');
+    document.getElementById('results-count').innerHTML =
+        'Showing <strong>' + filtered.length + '</strong> of ' + allMovies.length + ' films';
+
+    if (!filtered.length) {
+        el.innerHTML = '<div class="empty-state"><div class="icon">\uD83C\uDFAC</div><h3>No films found</h3><p>Try adjusting your filters or add a new movie.</p></div>';
+        return;
+    }
+    if (view === 'table') renderTable(filtered, el);
+    else renderCards(filtered, el);
+}
+
+function statusPill(s) {
+    var cls = s === 'Watched' ? 'watched' : 'unwatched';
+    return '<span class="status-pill status-' + cls + '">' + (s || 'Unwatched') + '</span>';
+}
+
+function renderTable(movies, container) {
+    var rows = movies.map(function(m) {
+        var genres = parseList(m.Genre).map(function(g) { return '<span class="genre-tag">' + esc(g) + '</span>'; }).join('');
+        var mj = JSON.stringify(m).replace(/"/g, '&quot;');
+        return '<tr class="' + (m.Status === 'Watched' ? 'watched' : '') + '" data-id="' + m.RowID + '">' +
+            '<td class="movie-title-cell"><strong>' + esc(m.Title) + '</strong><span class="year">' + (m.Year||'\u2014') + '</span></td>' +
+            '<td>' + genres + '</td>' +
+            '<td><span class="priority-badge priority-' + (m.Priority||3) + '">' + (m.Priority||3) + '</span></td>' +
+            '<td class="runtime-cell">' + (m.Runtime ? m.Runtime + 'm' : '\u2014') + '</td>' +
+            '<td>' + statusPill(m.Status) + '</td>' +
+            '<td>' + esc(m.Director||'\u2014') + '</td>' +
+            '<td>' + esc(m.Language||'\u2014') + '</td>' +
+            '<td>' + esc(m.Viewers||'\u2014') + '</td>' +
+            '<td><div class="row-actions">' +
+                '<button class="row-btn" onclick="event.stopPropagation();openEditModal(\'' + m.RowID + '\')">\u270E</button>' +
+                '<button class="row-btn" onclick="event.stopPropagation();toggleWatched(' + mj + ')">' + (m.Status === 'Watched' ? '\u21A9' : '\u2713') + '</button>' +
+                '<button class="row-btn del" onclick="event.stopPropagation();deleteMovie(\'' + m.RowID + '\',\'' + esc(m.Title) + '\')">\u2715</button>' +
+            '</div></td></tr>';
+    }).join('');
+
+    container.innerHTML = '<div class="table-wrap"><table>' +
+        '<thead><tr>' +
+        '<th>Title</th><th>Genre</th><th>Priority</th><th>Runtime</th>' +
+        '<th>Status</th><th>Director</th><th>Language</th><th>Who Can Watch</th><th></th>' +
+        '</tr></thead><tbody>' + rows + '</tbody></table></div>';
+}
+
+function renderCards(movies, container) {
+    var cards = movies.map(function(m) {
+        var genres = parseList(m.Genre).map(function(g) { return '<span class="genre-tag">' + esc(g) + '</span>'; }).join('');
+        var mj = JSON.stringify(m).replace(/"/g, '&quot;');
+        return '<div class="movie-card ' + (m.Status === 'Watched' ? 'watched' : '') + '" data-id="' + m.RowID + '">' +
+            '<div class="card-title">' + esc(m.Title) + '</div>' +
+            '<div class="card-meta">' + (m.Year||'\u2014') + ' \xb7 ' + (m.Runtime ? m.Runtime + 'm' : '\u2014') + ' \xb7 ' + esc(m.Language||'\u2014') + '</div>' +
+            '<div class="card-genres">' + genres + '</div>' +
+            '<span class="priority-badge priority-' + (m.Priority||3) + '">' + (m.Priority||3) + '</span>' +
+            '<div class="card-footer">' + statusPill(m.Status) +
+                (m.Director ? '<span style="font-size:0.72rem;color:var(--text-dim)">' + esc(m.Director) + '</span>' : '') +
+            '</div>' +
+            '<div class="card-actions">' +
+                '<button class="row-btn" onclick="openEditModal(\'' + m.RowID + '\')">\u270E Edit</button>' +
+                '<button class="row-btn" onclick="toggleWatched(' + mj + ')">' + (m.Status === 'Watched' ? '\u21A9 Unwatch' : '\u2713 Watched') + '</button>' +
+                '<button class="row-btn del" onclick="deleteMovie(\'' + m.RowID + '\',\'' + esc(m.Title) + '\')">\u2715</button>' +
+            '</div></div>';
+    }).join('');
+    container.innerHTML = '<div class="card-grid">' + cards + '</div>';
+}
+
+function openAddModal() {
+    editingId = null;
+    document.getElementById('modal-title').innerHTML = 'Add <em>Movie</em>';
+    ['title','year','runtime','genre','director','language','notes','source'].forEach(function(f) {
+        document.getElementById('f-' + f).value = '';
+    });
+    document.getElementById('f-priority').value = '2';
+    document.getElementById('f-status').value   = 'Unwatched';
+    // Pre-fill Viewers with the signed-in user's name
+    document.getElementById('f-viewers').value  = currentUser ? currentUser.name : '';
+    document.getElementById('movie-modal').classList.add('open');
+}
+
+function openEditModal(rowId) {
+    var m = allMovies.find(function(x) { return String(x.RowID) === String(rowId); });
+    if (!m) return;
+    editingId = rowId;
+    document.getElementById('modal-title').innerHTML = 'Edit <em>Movie</em>';
+    document.getElementById('f-title').value    = m.Title    || '';
+    document.getElementById('f-year').value     = m.Year     || '';
+    document.getElementById('f-runtime').value  = m.Runtime  || '';
+    document.getElementById('f-genre').value    = m.Genre    || '';
+    document.getElementById('f-director').value = m.Director || '';
+    document.getElementById('f-language').value = m.Language || '';
+    document.getElementById('f-priority').value = m.Priority || '2';
+    document.getElementById('f-status').value   = m.Status   || 'Unwatched';
+    document.getElementById('f-viewers').value  = m.Viewers  || '';
+    document.getElementById('f-source').value   = m.Source   || '';
+    document.getElementById('f-notes').value    = m.Notes    || '';
+    document.getElementById('movie-modal').classList.add('open');
+}
+
+function closeModal() {
+    document.getElementById('movie-modal').classList.remove('open');
+}
+
+function esc(str) {
+    return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+</script>
+</body>
 </html>
