@@ -1540,8 +1540,13 @@
             var existing = allRatings.find(function(r) {
                 return String(r.RowID) === String(rowId) && r.UserName === currentUser.name;
             });
-            if (existing) { existing.Rating = rating; }
-            else { allRatings.push({ RowID: String(rowId), UserName: currentUser.name, Rating: rating }); }
+            if (existing) {
+                if (existing.Rating == rating) {
+                    existing.Rating = 0;
+                } else {
+                    existing.Rating = rating;
+                }
+            } else { allRatings.push({ RowID: String(rowId), UserName: currentUser.name, Rating: rating }); }
             renderList();
 
             apiPost({ action: 'setRating', rowId: rowId, userName: currentUser.name, rating: rating })
