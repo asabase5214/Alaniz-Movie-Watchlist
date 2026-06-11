@@ -1542,8 +1542,8 @@
             });
             if (existing) {
                 if (existing.Rating == rating) {
-                    existing.Rating = 0;
-                    apiPost({ action: 'setRating', rowId: rowId, userName: currentUser.name, rating: '' })
+                    existing.Rating = null;
+                    apiPost({ action: 'setRating', rowId: rowId, userName: currentUser.name, rating: null })
                     .catch(function() { showToast('Rating save failed', 'error'); });
                 } else {
                     existing.Rating = rating;
