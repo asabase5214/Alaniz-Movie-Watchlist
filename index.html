@@ -1000,7 +1000,7 @@ function builduserGrid() {
         card.dataset.index = i;
         card.innerHTML =
             '<div class="user-avatar">' + acc.initials + '</div>' +
-            '<div class="user-name">'   + acc.name    + '</div>' +
+            '<div class="user-name">'   + acc.name    + '</div>';
         card.addEventListener('click', function() { selectAccount(i, card); });
         grid.appendChild(card);
     });
