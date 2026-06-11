@@ -1542,7 +1542,8 @@
             });
             if (existing) {
                 if (existing.Rating == rating) {
-                    allRatings.push({ RowID: String(rowId), UserName: currentUser.name, Rating: '' });
+                    apiPost({ action: 'setRating', rowId: rowId, userName: currentUser.name, rating: '' })
+                    .catch(function() { showToast('Rating save failed', 'error'); });
                 } else {
                     existing.Rating = rating;
                 }
