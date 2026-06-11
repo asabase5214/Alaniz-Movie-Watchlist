@@ -86,7 +86,7 @@
             width: 100%;
         }
 
-        .member-grid {
+        .user-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 0.75rem;
@@ -96,10 +96,10 @@
         }
 
         @media (max-width: 520px) {
-            .member-grid { grid-template-columns: repeat(2, 1fr); }
+            .user-grid { grid-template-columns: repeat(2, 1fr); }
         }
 
-        .member-card {
+        .user-card {
             background: var(--surface);
             border: 1px solid var(--border);
             border-radius: var(--radius-lg);
@@ -114,24 +114,24 @@
             position: relative;
             overflow: hidden;
         }
-        .member-card::before {
+        .user-card::before {
             content: '';
             position: absolute; top: 0; left: 0; right: 0; height: 2px;
             background: var(--gold);
             opacity: 0;
             transition: opacity var(--transition);
         }
-        .member-card:hover,
-        .member-card.selected {
+        .user-card:hover,
+        .user-card.selected {
             border-color: var(--gold-dim);
             background: var(--surface2);
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(0,0,0,0.4);
         }
-        .member-card:hover::before,
-        .member-card.selected::before { opacity: 1; }
+        .user-card:hover::before,
+        .user-card.selected::before { opacity: 1; }
 
-        .member-avatar {
+        .user-avatar {
             width: 48px; height: 48px;
             border-radius: 50%;
             background: var(--surface2);
@@ -144,23 +144,16 @@
             transition: all var(--transition);
             flex-shrink: 0;
         }
-        .member-card.selected .member-avatar,
-        .member-card:hover .member-avatar {
+        .user-card.selected .user-avatar,
+        .user-card:hover .user-avatar {
             border-color: var(--gold-dim);
             background: rgba(201,168,76,0.08);
         }
-        .member-name {
+        .user-name {
             font-family: 'Playfair Display', serif;
             font-size: 0.9rem;
             color: var(--text);
             line-height: 1.2;
-        }
-        .member-email {
-            font-family: 'DM Mono', monospace;
-            font-size: 0.58rem;
-            color: var(--text-dim);
-            letter-spacing: 0.03em;
-            word-break: break-all;
         }
 
         #pin-section {
@@ -757,7 +750,6 @@
         .user-dropdown.open { display: block; }
         .user-dropdown-header { padding: 0.6rem 0.75rem 0.75rem; border-bottom: 1px solid var(--border); margin-bottom: 0.4rem; }
         .user-dropdown-name { font-family: 'Playfair Display', serif; font-size: 0.95rem; color: var(--text); }
-        .user-dropdown-email { font-family: 'DM Mono', monospace; font-size: 0.6rem; color: var(--text-dim); margin-top: 2px; }
         .dropdown-item {
             display: block; width: 100%; text-align: left;
             background: none; border: none; color: var(--text-muted);
@@ -771,15 +763,13 @@
 </head>
 <body>
 
-<!-- ==================== SIGN-IN GATE ==================== -->
+<!--sign-in gate -->
 <div id="signin-gate">
-    <div class="signin-logo">Alaniz</div>
-    <div class="signin-tagline">Family Watchlist</div>
+    <div class="signin-logo">Alaniz Movie Watchlist</div>
 
     <div class="signin-heading">Select your profile</div>
 
-    <div class="member-grid" id="member-grid">
-        <!-- populated by JS -->
+    <div class="user-grid" id="user-grid">
     </div>
 
     <div id="pin-section">
@@ -792,7 +782,7 @@
     </div>
 </div>
 
-<!-- ==================== MAIN APP ==================== -->
+<!--main-->
 <div id="main-app">
 
 <header>
@@ -810,7 +800,6 @@
             <div class="user-dropdown" id="user-dropdown">
                 <div class="user-dropdown-header">
                     <div class="user-dropdown-name" id="dropdown-name"></div>
-                    <div class="user-dropdown-email" id="dropdown-email"></div>
                 </div>
                 <button class="dropdown-item" id="btn-signout">&#x21A9; Sign out</button>
             </div>
@@ -980,18 +969,18 @@
     </div>
 </div>
 
-</div><!-- /main-app -->
+</div>
 
 <div id="toast"></div>
 
 <script>
 const ACCOUNTS = [
-    { name: 'Aidan',   email: 'aidandalaniz@gmail.com',   password: 'popcorn', initials: 'A' },
-    { name: 'Jordan',  email: 'jordan',  password: 'popcorn', initials: 'J' },
-    { name: 'Asa',   email: 'asajalaniz@outlook.com',   password: 'popcorn', initials: 'A' },
-    { name: 'Jaelle',  email: 'jellybean5215@outlook.com',  password: 'popcorn', initials: 'J' },
-    { name: 'Anna',  email: 'thealanizes@gmail.com',  password: 'popcorn', initials: 'A' },
-    { name: 'Andrew',   email: 'andrewdalaniz@gmail.com',   password: 'popcorn', initials: 'A' },
+    { name: 'Aidan', password: 'popcorn', initials: 'A' },
+    { name: 'Jordan', password: 'popcorn', initials: 'J' },
+    { name: 'Asa', password: 'popcorn', initials: 'A' },
+    { name: 'Jaelle', password: 'popcorn', initials: 'J' },
+    { name: 'Anna', password: 'popcorn', initials: 'A' },
+    { name: 'Andrew', password: 'popcorn', initials: 'A' },
 ];
 
 const STORAGE_KEY = 'alaniz_current_user';
@@ -1002,24 +991,23 @@ const STORAGE_KEY = 'alaniz_current_user';
 let currentUser    = null;
 let selectedAccount = null;
 
-function buildMemberGrid() {
-    const grid = document.getElementById('member-grid');
+function builduserGrid() {
+    const grid = document.getElementById('user-grid');
     grid.innerHTML = '';
     ACCOUNTS.forEach((acc, i) => {
         const card = document.createElement('div');
-        card.className = 'member-card';
+        card.className = 'user-card';
         card.dataset.index = i;
         card.innerHTML =
-            '<div class="member-avatar">' + acc.initials + '</div>' +
-            '<div class="member-name">'   + acc.name    + '</div>' +
-            '<div class="member-email">'  + acc.email   + '</div>';
+            '<div class="user-avatar">' + acc.initials + '</div>' +
+            '<div class="user-name">'   + acc.name    + '</div>' +
         card.addEventListener('click', function() { selectAccount(i, card); });
         grid.appendChild(card);
     });
 }
 
 function selectAccount(index, cardEl) {
-    document.querySelectorAll('.member-card').forEach(function(c) { c.classList.remove('selected'); });
+    document.querySelectorAll('.user-card').forEach(function(c) { c.classList.remove('selected'); });
     cardEl.classList.add('selected');
     selectedAccount = ACCOUNTS[index];
     document.getElementById('pin-for-name').textContent  = selectedAccount.name;
@@ -1036,7 +1024,7 @@ function attemptSignIn() {
     var input = document.getElementById('pin-input');
     if (val === selectedAccount.password) {
         currentUser = selectedAccount;
-        localStorage.setItem(STORAGE_KEY, JSON.stringify({ name: currentUser.name, email: currentUser.email }));
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({ name: currentUser.name}));
         showApp();
     } else {
         input.classList.add('error');
@@ -1052,7 +1040,7 @@ function checkStoredSession() {
         var stored = localStorage.getItem(STORAGE_KEY);
         if (stored) {
             var data = JSON.parse(stored);
-            var acc  = ACCOUNTS.find(function(a) { return a.name === data.name && a.email === data.email; });
+            var acc  = ACCOUNTS.find(function(a) { return a.name === data.name });
             if (acc) {
                 currentUser = acc;
                 showApp();
@@ -1069,7 +1057,6 @@ function showApp() {
     document.getElementById('chip-avatar').textContent    = currentUser.initials;
     document.getElementById('chip-name').textContent      = currentUser.name;
     document.getElementById('dropdown-name').textContent  = currentUser.name;
-    document.getElementById('dropdown-email').textContent = currentUser.email;
     loadMovies();
 }
 
@@ -1082,7 +1069,7 @@ function signOut() {
     document.getElementById('pin-section').classList.remove('visible');
     document.getElementById('pin-input').value          = '';
     document.getElementById('signin-error').textContent = '';
-    document.querySelectorAll('.member-card').forEach(function(c) { c.classList.remove('selected'); });
+    document.querySelectorAll('.user-card').forEach(function(c) { c.classList.remove('selected'); });
     closeUserDropdown();
 }
 
@@ -1101,7 +1088,7 @@ var sortKey   = 'title-asc';
 var editingId = null;
 
 document.addEventListener('DOMContentLoaded', function() {
-    buildMemberGrid();
+    builduserGrid();
     checkStoredSession();
 
     // Sign-in
