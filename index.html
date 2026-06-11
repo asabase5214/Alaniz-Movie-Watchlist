@@ -1542,7 +1542,8 @@
             });
             if (existing) {
                 if (existing.Rating == rating) {
-                    existing.Rating = 0;
+                    existing.Rating = '';
+                    allRatings.push({ RowID: String(rowId), UserName: currentUser.name, Rating: rating });
                 } else {
                     existing.Rating = rating;
                 }
