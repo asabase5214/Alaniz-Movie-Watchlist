@@ -774,7 +774,7 @@
 <!-- ==================== SIGN-IN GATE ==================== -->
 <div id="signin-gate">
     <div class="signin-logo">Alaniz</div>
-    <div class="signin-tagline">Family Watchlist &middot; Members Only</div>
+    <div class="signin-tagline">Family Watchlist</div>
 
     <div class="signin-heading">Select your profile</div>
 
@@ -985,19 +985,13 @@
 <div id="toast"></div>
 
 <script>
-// ================================================================
-//  ACCOUNTS
-//  Edit names, emails, initials, and passwords here.
-//  Passwords are checked client-side only — fine for a family app,
-//  but do NOT store anything truly sensitive here.
-// ================================================================
 const ACCOUNTS = [
-    { name: 'Aidan',   email: 'aidan@example.com',   password: 'popcorn1', initials: 'A' },
-    { name: 'Jordan',  email: 'jordan@example.com',  password: 'popcorn2', initials: 'J' },
-    { name: 'Casey',   email: 'casey@example.com',   password: 'popcorn3', initials: 'C' },
-    { name: 'Morgan',  email: 'morgan@example.com',  password: 'popcorn4', initials: 'M' },
-    { name: 'Taylor',  email: 'taylor@example.com',  password: 'popcorn5', initials: 'T' },
-    { name: 'Riley',   email: 'riley@example.com',   password: 'popcorn6', initials: 'R' },
+    { name: 'Aidan',   email: 'aidandalaniz@gmail.com',   password: 'popcorn', initials: 'A' },
+    { name: 'Jordan',  email: 'jordan',  password: 'popcorn', initials: 'J' },
+    { name: 'Asa',   email: 'asajalaniz@outlook.com',   password: 'popcorn', initials: 'A' },
+    { name: 'Jaelle',  email: 'jellybean5215@outlook.com',  password: 'popcorn', initials: 'J' },
+    { name: 'Anna',  email: 'thealanizes@gmail.com',  password: 'popcorn', initials: 'A' },
+    { name: 'Andrew',   email: 'andrewdalaniz@gmail.com',   password: 'popcorn', initials: 'A' },
 ];
 
 const STORAGE_KEY = 'alaniz_current_user';
@@ -1436,7 +1430,6 @@ function openAddModal() {
     });
     document.getElementById('f-priority').value = '2';
     document.getElementById('f-status').value   = 'Unwatched';
-    // Pre-fill Viewers with the signed-in user's name
     document.getElementById('f-viewers').value  = currentUser ? currentUser.name : '';
     document.getElementById('movie-modal').classList.add('open');
 }
