@@ -1448,7 +1448,6 @@
                     '<td>' + statusPill(m.Status) + '</td>' +
                     '<td>' + esc(m.Director||'\u2014') + '</td>' +
                     '<td>' + esc(m.Language||'\u2014') + '</td>' +
-                    '<td>' + esc(m.Viewers||'\u2014') + '</td>' +
                     '<td>' + buildStarHTML(m.RowID) + '</td>' +
                     '<td>' + (!isOnMyList(m) ? '<button class="add-to-list-btn" onclick="event.stopPropagation();addToMyList(' + mj + ')">+ My List</button>' : '') + '</td>' +
                     '<td>' + buildViewerPips(m) + '</td>' +
@@ -1462,7 +1461,7 @@
             container.innerHTML = '<div class="table-wrap"><table>' +
                 '<thead><tr>' +
                 '<th>Title</th><th>Genre</th><th>Priority</th><th>Runtime</th>' +
-                '<th>Status</th><th>Director</th><th>Language</th><th>Who Can Watch</th><th></th>' +
+                '<th>Status</th><th>Director</th><th>Language</th><th>Rating</th><th>On List</th><th></th>' +
                 '</tr></thead><tbody>' + rows + '</tbody></table></div>';
         }
 
@@ -1478,7 +1477,11 @@
                     '<div class="card-footer">' + statusPill(m.Status) +
                         (m.Director ? '<span style="font-size:0.72rem;color:var(--text-dim)">' + esc(m.Director) + '</span>' : '') +
                     '</div>' +
+                    '<div style="display:flex;justify-content:space-between;align-items:center;margin-top:0.75rem">' +
+                        buildStarHTML(m.RowID) + buildViewerPips(m) +
+                    '</div>' +
                     '<div class="card-actions">' +
+                        (!isOnMyList(m) ? '<button class="add-to-list-btn" onclick="addToMyList(' + mj + ')">+ My List</button>' : '') +
                         '<button class="row-btn" onclick="openEditModal(\'' + m.RowID + '\')">\u270E Edit</button>' +
                         '<button class="row-btn" onclick="toggleWatched(' + mj + ')">' + (m.Status === 'Watched' ? '\u21A9 Unwatch' : '\u2713 Watched') + '</button>' +
                         '<button class="row-btn del" onclick="deleteMovie(\'' + m.RowID + '\',\'' + esc(m.Title) + '\')">\u2715</button>' +
