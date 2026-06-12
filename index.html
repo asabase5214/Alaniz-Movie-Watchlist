@@ -491,8 +491,8 @@
                 top: calc(68px + 32px);
                 z-index: 98;
                 background: var(--bg);
-                padding: 0.75rem 0;
-                margin-top: -0.75rem;
+                padding: 0.5rem 0;
+                margin-top: 0;
             }
 
             .results-count {
@@ -540,6 +540,10 @@
                 cursor: pointer;
                 white-space: nowrap;
                 user-select: none;
+                position: sticky;
+                top: calc(68px + 32px + 53px);
+                background: var(--bg);
+                z-index: 1;
             }
             thead th:hover { color: var(--gold); }
 
