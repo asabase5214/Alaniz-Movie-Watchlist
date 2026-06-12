@@ -477,6 +477,7 @@
             main {
                 flex: 1;
                 overflow-y: auto;
+                overflow-x: auto;
                 padding: 1.5rem 2rem;
             }
 
@@ -526,7 +527,10 @@
                 text-transform: uppercase;
             }
 
-            .table-wrap { overflow-x: auto; }
+            .table-wrap {
+                overflow-x: visible;
+                overflow-y: visible;
+            }
             table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
             thead th {
                 font-family: 'DM Mono', monospace;
