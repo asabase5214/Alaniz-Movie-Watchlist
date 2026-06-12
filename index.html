@@ -508,15 +508,15 @@
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
-                margin-bottom: 1.25rem;
                 gap: 1rem;
                 flex-wrap: wrap;
                 position: sticky;
                 top: calc(var(--header-h) + var(--status-h));
                 z-index: 98;
                 background: var(--bg);
-                padding: 1.5rem 0 0.5rem 0;
-                margin-top: 0;
+                padding: 0.5rem 2rem;
+                border-bottom: 1px solid var(--border);
+                margin: 0;
             }
 
             .results-count {
@@ -1028,6 +1028,29 @@
             <span id="stat-unwatched"></span>
         </div>
 
+        <div class="toolbar">
+            <span class="results-count" id="results-count"></span>
+            <div style="display:flex;gap:1rem;align-items:center;flex-wrap:wrap">
+                <div class="sort-row">
+                    <label>Sort</label>
+                    <select id="sort-select" class="filter-select" style="width:auto">
+                        <option value="title-asc">Title A&#x2192;Z</option>
+                        <option value="title-desc">Title Z&#x2192;A</option>
+                        <option value="year-desc">Newest first</option>
+                        <option value="year-asc">Oldest first</option>
+                        <option value="priority-asc">Priority &#x2191;</option>
+                        <option value="runtime-asc">Shortest first</option>
+                        <option value="runtime-desc">Longest first</option>
+                        <option value="added-desc">Recently added</option>
+                        <option value="recommended">&#x2605; Recommended for group</option>
+                    </select>
+                </div>
+                <div class="view-toggle">
+                    <button id="view-table" class="active" title="Table view">&#x2630;</button>
+                    <button id="view-cards" title="Card view">&#x229E;</button>
+                </div>
+            </div>
+        </div>
         <div class="app" id="app-shell">
             <div id="mobile-filter-toggle">
                 <span>⚙ Filters</span>
@@ -1094,30 +1117,6 @@
             </aside>
 
             <main>
-                <div class="toolbar">
-                    <span class="results-count" id="results-count"></span>
-                    <div style="display:flex;gap:1rem;align-items:center;flex-wrap:wrap">
-                        <div class="sort-row">
-                            <label>Sort</label>
-                            <select id="sort-select" class="filter-select" style="width:auto">
-                                <option value="title-asc">Title A&#x2192;Z</option>
-                                <option value="title-desc">Title Z&#x2192;A</option>
-                                <option value="year-desc">Newest first</option>
-                                <option value="year-asc">Oldest first</option>
-                                <option value="priority-asc">Priority &#x2191;</option>
-                                <option value="runtime-asc">Shortest first</option>
-                                <option value="runtime-desc">Longest first</option>
-                                <option value="added-desc">Recently added</option>
-                                <option value="recommended">&#x2605; Recommended for who's watching</option>
-                            </select>
-                        </div>
-                        <div class="view-toggle">
-                            <button id="view-table" class="active" title="Table view">&#x2630;</button>
-                            <button id="view-cards" title="Card view">&#x229E;</button>
-                        </div>
-                    </div>
-                </div>
-
                 <div id="movie-list"></div>
             </main>
         </div>
