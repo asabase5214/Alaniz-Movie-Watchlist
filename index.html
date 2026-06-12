@@ -1263,23 +1263,30 @@
         }
 
         async function fetchMovieData(title, year) {
-        var url = 'https://www.omdbapi.com/?apikey=' + OMDB_KEY +
-                '&t=' + encodeURIComponent(title) +
-                (year ? '&y=' + year : '') +
-                '&plot=short';
-        try {
-            var res  = await fetch(url);
-            var data = await res.json();
-            if (data.Response !== 'True') {
-                showToast('OMDB: ' + (data.Error || 'Not found'), 'error');
+            var url = 'https://www.omdbapi.com/?apikey=' + OMDB_KEY +
+                    '&t=' + encodeURIComponent(title) +
+                    (year ? '&y=' + year : '') +
+                    '&plot=short';
+            try {
+                var res  = await fetch(url);
+                var data = await res.json();
+                if (data.Response !== 'True') {
+                    showToast('OMDB: ' + (data.Error || 'Not found'), 'error');
+                    return null;
+                }
+                return data;
+            } catch(e) {
+                showToast('OMDB fetch failed: ' + e.message, 'error');
                 return null;
             }
-            return data;
-        } catch(e) {
-            showToast('OMDB fetch failed: ' + e.message, 'error');
-            return null;
         }
-    }
+
+        function iWatched(movie) {
+            if (!currentUser) return false;
+            return parseList(movie.WatchedBy || '').some(function(v) {
+                return v.trim().toLowerCase() === currentUser.name.toLowerCase();
+            });
+        }
 
         // ================================================================
         //  MAIN APP
@@ -1383,8 +1390,8 @@
         }
 
         function updateStats() {
-            var watched   = allMovies.filter(function(m) { return m.Status === 'Watched'; }).length;
-            var unwatched = allMovies.filter(function(m) { return m.Status === 'Unwatched'; }).length;
+            var watched   = allMovies.filter(function(m) { return iWatched(m); }).length;
+            var unwatched = allMovies.filter(function(m) { return !iWatched(m); }).length;
             document.getElementById('stat-total').textContent     = allMovies.length + ' films';
             document.getElementById('stat-watched').textContent   = watched   + ' watched';
             document.getElementById('stat-unwatched').textContent = unwatched + ' to watch';
@@ -1551,7 +1558,8 @@
                 if (q && !((m.Title||'').toLowerCase().includes(q) ||
                     (m.Director||'').toLowerCase().includes(q) ||
                     (m.Notes||'').toLowerCase().includes(q))) return false;
-                if (!statuses.includes(m.Status || 'Unwatched')) return false;
+                var myStatus = iWatched(m) ? 'Watched' : 'Unwatched';
+                if (!statuses.includes(myStatus)) return false;
                 if (!priorities.includes(String(m.Priority || 3))) return false;
                 var mGenres = parseList(m.Genre);
                 if (genres.length && !mGenres.some(function(g) { return genres.includes(g); })) return false;
@@ -1606,23 +1614,25 @@
             else renderCards(filtered, el);
         }
 
-        function statusPill(s) {
-            var cls = s === 'Watched' ? 'watched' : 'unwatched';
-            return '<span class="status-pill status-' + cls + '">' + (s || 'Unwatched') + '</span>';
+        function statusPill(movie) {
+            var watched = iWatched(movie);
+            var cls  = watched ? 'watched' : 'unwatched';
+            var text = watched ? 'Watched' : 'Unwatched';
+            return '<span class="status-pill status-' + cls + '">' + text + '</span>';
         }
 
         function renderTable(movies, container) {
             var rows = movies.map(function(m) {
                 var genres = parseList(m.Genre).map(function(g) { return '<span class="genre-tag">' + esc(g) + '</span>'; }).join('');
                 var mj = JSON.stringify(m).replace(/"/g, '&quot;');
-                return '<tr class="' + (m.Status === 'Watched' ? 'watched' : '') + '" data-id="' + m.RowID + '">' +
+                return '<tr class="' + (iWatched(m) ? 'watched' : '') + '" data-id="' + m.RowID + '">' +
                     '<td class="movie-title-cell">' +
                     (m.Poster ? '<img src="' + esc(m.Poster) + '" style="width:36px;height:52px;object-fit:cover;border-radius:3px;margin-right:10px;vertical-align:middle;border:1px solid var(--border)" loading="lazy">' : '<div style="width:36px;height:52px;background:var(--surface2);border:1px solid var(--border);border-radius:3px;margin-right:10px;display:inline-block;vertical-align:middle"></div>') +
                     '<span style="vertical-align:middle"><strong>' + esc(m.Title) + '</strong><span class="year" style="display:block">' + (m.Year||'—') + '</span></span></td>' +
                     '<td>' + genres + '</td>' +
                     '<td><span class="priority-badge priority-' + (m.Priority||3) + '">' + (m.Priority||3) + '</span></td>' +
                     '<td class="runtime-cell">' + (m.Runtime ? m.Runtime + 'm' : '\u2014') + '</td>' +
-                    '<td>' + statusPill(m.Status) + '</td>' +
+                    '<td>' + statusPill(m) + '</td>' +
                     '<td>' + esc(m.Director||'\u2014') + '</td>' +
                     '<td>' + esc(m.Language||'\u2014') + '</td>' +
                     '<td>' + buildStarHTML(m.RowID) + '</td>' +
@@ -1631,7 +1641,7 @@
                     '<td>' + buildWatchedByPips(m) + '</td>' +
                     '<td><div class="row-actions">' +
                         '<button class="row-btn" onclick="event.stopPropagation();openEditModal(\'' + m.RowID + '\')">\u270E</button>' +
-                        '<button class="row-btn" onclick="event.stopPropagation();toggleWatched(' + mj + ')">' + (m.Status === 'Watched' ? '\u21A9' : '\u2713') + '</button>' +
+                        '<button class="row-btn" onclick="event.stopPropagation();toggleWatched(' + mj + ')">' + (iWatched(m) ? '↩' : '✓') + '</button>' +
                         '<button class="row-btn del" onclick="event.stopPropagation();deleteMovie(\'' + m.RowID + '\',\'' + esc(m.Title) + '\')">\u2715</button>' +
                     '</div></td></tr>';
             }).join('');
@@ -1647,13 +1657,13 @@
             var cards = movies.map(function(m) {
                 var genres = parseList(m.Genre).map(function(g) { return '<span class="genre-tag">' + esc(g) + '</span>'; }).join('');
                 var mj = JSON.stringify(m).replace(/"/g, '&quot;');
-                return '<div class="movie-card ' + (m.Status === 'Watched' ? 'watched' : '') + '" data-id="' + m.RowID + '">' +
+                return '<div class="movie-card ' + (iWatched(m) ? 'watched' : '') + '" data-id="' + m.RowID + '">' +
                     (m.Poster ? '<img src="' + esc(m.Poster) + '" style="width:100%;height:160px;object-fit:cover;border-radius:6px;margin-bottom:0.75rem;border:1px solid var(--border)" loading="lazy">' : '') +
                     '<div class="card-title">' + esc(m.Title) + '</div>' +
                     '<div class="card-meta">' + (m.Year||'\u2014') + ' \xb7 ' + (m.Runtime ? m.Runtime + 'm' : '\u2014') + ' \xb7 ' + esc(m.Language||'\u2014') + '</div>' +
                     '<div class="card-genres">' + genres + '</div>' +
                     '<span class="priority-badge priority-' + (m.Priority||3) + '">' + (m.Priority||3) + '</span>' +
-                    '<div class="card-footer">' + statusPill(m.Status) +
+                    '<div class="card-footer">' + statusPill(m) +
                         (m.Director ? '<span style="font-size:0.72rem;color:var(--text-dim)">' + esc(m.Director) + '</span>' : '') +
                     '</div>' +
                     '<div style="display:flex;justify-content:space-between;align-items:center;margin-top:0.75rem">' +
@@ -1662,7 +1672,7 @@
                     '<div class="card-actions">' +
                         (!isOnMyList(m) ? '<button class="add-to-list-btn" onclick="addToMyList(' + mj + ')">+ My List</button>' : '') +
                         '<button class="row-btn" onclick="openEditModal(\'' + m.RowID + '\')">\u270E Edit</button>' +
-                        '<button class="row-btn" onclick="toggleWatched(' + mj + ')">' + (m.Status === 'Watched' ? '\u21A9 Unwatch' : '\u2713 Watched') + '</button>' +
+                        '<button class="row-btn" onclick="toggleWatched(' + mj + ')">' + (iWatched(m) ? '↩ Unwatch' : '✓ Watched') + '</button>' +
                         '<button class="row-btn del" onclick="deleteMovie(\'' + m.RowID + '\',\'' + esc(m.Title) + '\')">\u2715</button>' +
                     '</div></div>';
             }).join('');
