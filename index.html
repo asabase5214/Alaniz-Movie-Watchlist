@@ -338,7 +338,7 @@
                 align-items: center;
                 gap: 1.5rem;
                 position: sticky;
-                top: 68px;
+                top: var(--header-h);
                 z-index: 99;
             }
 
@@ -488,7 +488,7 @@
                 gap: 1rem;
                 flex-wrap: wrap;
                 position: sticky;
-                top: calc(68px + 32px);
+                top: calc(var(--header-h) + var(--status-h));
                 z-index: 98;
                 background: var(--bg);
                 padding: 0.5rem 0;
@@ -541,7 +541,7 @@
                 white-space: nowrap;
                 user-select: none;
                 position: sticky;
-                top: calc(68px + 32px + 53px);
+                top: calc(var(--header-h) + var(--status-h) + var(--toolbar-h));
                 background: var(--bg);
                 z-index: 1;
             }
@@ -1393,6 +1393,15 @@
             });
         }
 
+        function updateStickyOffsets() {
+            var headerH  = document.querySelector('header').offsetHeight;
+            var statusH  = document.getElementById('status-bar').offsetHeight;
+            var toolbarH = document.querySelector('.toolbar') ? document.querySelector('.toolbar').offsetHeight : 0;
+            document.documentElement.style.setProperty('--header-h',  headerH + 'px');
+            document.documentElement.style.setProperty('--status-h',  statusH + 'px');
+            document.documentElement.style.setProperty('--toolbar-h', toolbarH + 'px');
+        }
+
         // ================================================================
         //  MAIN APP
         // ================================================================
@@ -1484,6 +1493,8 @@
                     openDetailModal(row.dataset.id);
                 }
             });
+            updateStickyOffsets();
+            window.addEventListener('resize', updateStickyOffsets);
         });
 
         function setView(v) {
@@ -1730,6 +1741,7 @@
             }
             if (view === 'table') renderTable(filtered, el);
             else renderCards(filtered, el);
+            updateStickyOffsets();
         }
 
         function statusPill(movie) {
