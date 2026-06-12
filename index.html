@@ -898,6 +898,10 @@
             }
 
             #mobile-filter-toggle { display: none; }
+
+            @media (max-width: 768px) {
+                #mobile-filter-toggle { display: flex; }
+            }
         </style>
     </head>
     <body>
@@ -1720,8 +1724,10 @@
         }
 
         function getAvgRating(rowId) {
-            var relevant = allRatings.filter(function(r) { return String(r.RowID) === String(rowId) && r.Rating !== null; });
-            if (!relevant.length || relevant.length === 0) return null;
+            var relevant = allRatings.filter(function(r) {
+                return String(r.RowID) === String(rowId) && r.Rating !== null && +r.Rating > 0;
+            });
+            if (!relevant.length) return null;
             var sum = relevant.reduce(function(a, r) { return a + (+r.Rating); }, 0);
             return Math.round((sum / relevant.length) * 10) / 10;
         }
@@ -1755,11 +1761,9 @@
                 stars += '<span class="' + cls + '" onclick="event.stopPropagation();setRating(\'' + rowId + '\',' + s + ')" ' +
                         'onmouseover="hoverStars(this,' + s + ')" onmouseout="unhoverStars(this)">\u2605</span>';
             }
-            if (avg !== 0) {
-                var avgStr = avg !== null ? '<span class="avg-rating">' + avg + ' avg</span>' : '';
-            } else {
-                var avgStr = '<span class="avg-rating">No ratings</span>';
-            }
+            var avgStr = avg !== null
+            ? '<span class="avg-rating">' + avg + ' avg</span>'
+            : '<span class="avg-rating">No ratings</span>';
             return '<div class="star-row">' + stars + avgStr + '</div>';
         }
 
