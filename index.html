@@ -1011,6 +1011,7 @@
                         <div class="user-dropdown-header">
                             <div class="user-dropdown-name" id="dropdown-name"></div>
                         </div>
+                        <button class="dropdown-item" id="btn-edit-profile">&#x270E; Edit Profile</button>
                         <button class="dropdown-item" id="btn-signout">&#x21A9; Sign out</button>
                     </div>
                 </div>
@@ -1115,6 +1116,30 @@
             <main>
                 <div id="movie-list"></div>
             </main>
+            <!-- Edit Profile Modal -->
+            <div class="modal-backdrop" id="profile-modal">
+                <div class="modal" style="max-width:380px">
+                    <h2>Edit <em>Profile</em></h2>
+                    <div style="display:flex;flex-direction:column;gap:1rem">
+                        <div class="field">
+                            <label>Initials (1–3 characters)</label>
+                            <input type="text" id="profile-initials" maxlength="3" placeholder="A">
+                        </div>
+                        <div class="field">
+                            <label>New Password (leave blank to keep current)</label>
+                            <input type="password" id="profile-password" placeholder="New password">
+                        </div>
+                        <div class="field">
+                            <label>Confirm New Password</label>
+                            <input type="password" id="profile-password-confirm" placeholder="Confirm password">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn" id="profile-cancel">Cancel</button>
+                        <button class="btn primary" id="profile-save">Save Changes</button>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- Add / Edit Modal -->
@@ -1393,6 +1418,41 @@
             document.getElementById('detail-modal').classList.add('open');
         }
 
+        function openProfileModal() {
+            document.getElementById('profile-initials').value        = currentUser.initials || '';
+            document.getElementById('profile-password').value        = '';
+            document.getElementById('profile-password-confirm').value = '';
+            document.getElementById('profile-modal').classList.add('open');
+            closeUserDropdown();
+        }
+
+        function saveProfile() {
+            var initials = document.getElementById('profile-initials').value.trim().toUpperCase();
+            var pw1      = document.getElementById('profile-password').value;
+            var pw2      = document.getElementById('profile-password-confirm').value;
+
+            if (!initials) { showToast('Initials cannot be empty', 'error'); return; }
+            if (pw1 && pw1 !== pw2) { showToast('Passwords do not match', 'error'); return; }
+
+            var acc = ACCOUNTS.find(function(a) { return a.name === currentUser.name; });
+            if (acc) {
+                acc.initials = initials;
+                if (pw1) acc.password = pw1;
+            }
+            currentUser.initials = initials;
+            if (pw1) currentUser.password = pw1;
+
+            document.getElementById('chip-avatar').textContent = initials;
+            document.getElementById('profile-modal').classList.remove('open');
+
+            var payload = { name: currentUser.name, initials: initials };
+            if (pw1) payload.password = pw1;
+
+            apiPost({ action: 'saveProfile', payload: JSON.stringify(payload) })
+                .then(function() { showToast('Profile updated ✓', 'success'); })
+                .catch(function() { showToast('Saved locally but failed to sync', 'error'); });
+        }
+
         async function fetchMovieData(title, year) {
             var url = 'https://www.omdbapi.com/?apikey=' + OMDB_KEY +
                     '&t=' + encodeURIComponent(title) +
@@ -1440,7 +1500,7 @@
         //  MAIN APP
         // ================================================================
 
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby6NPEtiF_-3rjCr6OfYlm5YUGuN2F23gulNwKIwKk6mfrLhfKHBOAIndDq1G019Eir/exec';
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwdixdcYIo7Peu1bcUqTViSGC6jOwI9Msyb1e_M2UfYecFOg6Ki58D5rPWLbTP_3Ofm/exec';
 
         var allMovies  = [];
         var allRatings = [];
@@ -1593,6 +1653,23 @@
                 }).catch(function() {
                     allRatings = [];
                     renderList();
+                });
+                apiFetch({ action: 'getUsers' }).then(function(udata) {
+                    (udata.users || []).forEach(function(u) {
+                        var acc = ACCOUNTS.find(function(a) { return a.name === u.name; });
+                        if (acc) {
+                            if (u.initials) acc.initials = u.initials;
+                            if (u.password) acc.password = u.password;
+                        }
+                    });
+                    // refresh avatar in case initials changed
+                    if (currentUser) {
+                        var acc = ACCOUNTS.find(function(a) { return a.name === currentUser.name; });
+                        if (acc) {
+                            currentUser.initials = acc.initials;
+                            document.getElementById('chip-avatar').textContent = currentUser.initials;
+                        }
+                    }
                 });
                 setStatus('connected', 'Connected \xb7 ' + new Date().toLocaleTimeString());
             }).catch(function(e) {
