@@ -353,7 +353,7 @@
 
             @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
 
-            .app { display: flex; height: calc(100vh - 68px - 32px); }
+            .app { display: flex; min-height: calc(100vh - 68px - 32px); }
 
             aside {
                 width: 260px;
@@ -476,7 +476,6 @@
 
             main {
                 flex: 1;
-                overflow-y: auto;
                 overflow-x: auto;
                 padding: 1.5rem 2rem;
             }
