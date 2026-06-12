@@ -1108,7 +1108,7 @@
                                 <option value="runtime-asc">Shortest first</option>
                                 <option value="runtime-desc">Longest first</option>
                                 <option value="added-desc">Recently added</option>
-                                <option value="recommended">&#x2605; Recommended for group</option>
+                                <option value="recommended">&#x2605; Recommended for who's watching</option>
                             </select>
                         </div>
                         <div class="view-toggle">
@@ -1425,24 +1425,24 @@
         }
 
         function updateStickyOffsets() {
-            var headerH  = document.querySelector('header').offsetHeight;
-            var statusH  = document.getElementById('status-bar').offsetHeight;
-            var toolbarEl = document.querySelector('.toolbar');
-            var toolbarH  = toolbarEl ? toolbarEl.offsetHeight : 0;
+            requestAnimationFrame(function() {
+                var headerH   = document.querySelector('header').offsetHeight;
+                var statusH   = document.getElementById('status-bar').offsetHeight;
+                var toolbarEl = document.querySelector('.toolbar');
+                var toolbarH  = toolbarEl ? toolbarEl.offsetHeight : 0;
 
-            document.documentElement.style.setProperty('--header-h',  headerH  + 'px');
-            document.documentElement.style.setProperty('--status-h',  statusH  + 'px');
-            document.documentElement.style.setProperty('--toolbar-h', toolbarH + 'px');
+                document.documentElement.style.setProperty('--header-h',  headerH  + 'px');
+                document.documentElement.style.setProperty('--status-h',  statusH  + 'px');
+                document.documentElement.style.setProperty('--toolbar-h', toolbarH + 'px');
 
-            // Set directly in JS to bypass any CSS specificity issues
-            var statusBar = document.getElementById('status-bar');
-            if (statusBar) statusBar.style.top = headerH + 'px';
+                var statusBar = document.getElementById('status-bar');
+                if (statusBar) statusBar.style.top = headerH + 'px';
+                if (toolbarEl) toolbarEl.style.top = (headerH + statusH) + 'px';
 
-            if (toolbarEl) toolbarEl.style.top = (headerH + statusH) + 'px';
-
-            var ths = document.querySelectorAll('thead th');
-            ths.forEach(function(th) {
-                th.style.top = (headerH + statusH + toolbarH) + 'px';
+                var ths = document.querySelectorAll('thead th');
+                ths.forEach(function(th) {
+                    th.style.top = (headerH + statusH + toolbarH) + 'px';
+                });
             });
         }
 
