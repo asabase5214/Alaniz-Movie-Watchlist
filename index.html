@@ -500,7 +500,7 @@
             main {
                 flex: 1;
                 overflow-x: auto;
-                padding: 1.5rem 2rem;
+                padding: 0 2rem 1.5rem 2rem;
                 min-width: 0;
             }
 
@@ -515,7 +515,7 @@
                 top: calc(var(--header-h) + var(--status-h));
                 z-index: 98;
                 background: var(--bg);
-                padding: 0.5rem 0;
+                padding: 1.5rem 0 0.5rem 0;
                 margin-top: 0;
             }
 
@@ -1028,11 +1028,11 @@
             <span id="stat-unwatched"></span>
         </div>
 
-        <div id="mobile-filter-toggle">
-            <span>⚙ Filters</span>
-            <span id="filter-toggle-arrow">▼</span>
-        </div>
         <div class="app" id="app-shell">
+            <div id="mobile-filter-toggle">
+                <span>⚙ Filters</span>
+                <span id="filter-toggle-arrow">▼</span>
+            </div>
             <aside id="sidebar">
                 <div class="filter-section">
                     <h3>Search</h3>
