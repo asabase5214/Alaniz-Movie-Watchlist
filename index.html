@@ -29,9 +29,10 @@
                 --transition: 0.2s cubic-bezier(0.4,0,0.2,1);
             }
 
-            html {
+            html, body {
                 scroll-behavior: smooth;
                 height: 100%;
+                overflow: auto;
             }
 
             body {
@@ -362,7 +363,11 @@
 
             @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
 
-            .app { display: flex; min-height: 0; flex: 1; }
+            .app {
+                display: flex;
+                min-height: 0;
+                flex: 1;
+            }
 
             aside {
                 width: 260px;
@@ -487,6 +492,7 @@
                 flex: 1;
                 overflow-x: auto;
                 padding: 1.5rem 2rem;
+                min-width: 0;
             }
 
             .toolbar {
@@ -869,15 +875,19 @@
                 .app { flex-direction: column; height: auto; }
 
                 aside {
-                    width: 100%;
-                    min-width: unset;
-                    border-right: none;
-                    border-bottom: 1px solid var(--border);
-                    padding: 0;
-                    max-height: 0;
-                    overflow: hidden;
-                    transition: max-height 0.3s ease, padding 0.3s ease;
-                    gap: 1.25rem;
+                    width: 260px;
+                    min-width: 260px;
+                    border-right: 1px solid var(--border);
+                    background: var(--surface);
+                    overflow-y: auto;
+                    padding: 1.5rem 1.25rem;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 1.75rem;
+                    align-self: flex-start;
+                    position: sticky;
+                    top: 0;
+                    max-height: 100vh;
                 }
                 aside.mobile-open {
                     max-height: none;
