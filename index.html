@@ -1400,11 +1400,23 @@
         function updateStickyOffsets() {
             var headerH  = document.querySelector('header').offsetHeight;
             var statusH  = document.getElementById('status-bar').offsetHeight;
-            var toolbarH = document.querySelector('.toolbar') ? document.querySelector('.toolbar').offsetHeight : 0;
-            document.documentElement.style.setProperty('--header-h',  headerH + 'px');
-            document.documentElement.style.setProperty('--status-h',  statusH + 'px');
+            var toolbarEl = document.querySelector('.toolbar');
+            var toolbarH  = toolbarEl ? toolbarEl.offsetHeight : 0;
+
+            document.documentElement.style.setProperty('--header-h',  headerH  + 'px');
+            document.documentElement.style.setProperty('--status-h',  statusH  + 'px');
             document.documentElement.style.setProperty('--toolbar-h', toolbarH + 'px');
-            console.log('header:', headerH, 'status:', statusH, 'toolbar:', toolbarH);
+
+            // Set directly in JS to bypass any CSS specificity issues
+            var statusBar = document.getElementById('status-bar');
+            if (statusBar) statusBar.style.top = headerH + 'px';
+
+            if (toolbarEl) toolbarEl.style.top = (headerH + statusH) + 'px';
+
+            var ths = document.querySelectorAll('thead th');
+            ths.forEach(function(th) {
+                th.style.top = (headerH + statusH + toolbarH) + 'px';
+            });
         }
 
         // ================================================================
