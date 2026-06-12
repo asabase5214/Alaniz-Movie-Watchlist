@@ -337,7 +337,11 @@
                 display: flex;
                 align-items: center;
                 gap: 1.5rem;
+                position: sticky;
+                top: 68px;
+                z-index: 99;
             }
+
             #status-bar .dot {
                 width: 7px; height: 7px; border-radius: 50%;
                 display: inline-block; margin-right: 6px;
@@ -484,6 +488,11 @@
                 gap: 1rem;
                 flex-wrap: wrap;
                 position: sticky;
+                top: calc(68px + 32px);
+                z-index: 98;
+                background: var(--bg);
+                padding: 0.75rem 0;
+                margin-top: -0.75rem;
             }
 
             .results-count {
@@ -898,12 +907,35 @@
                 .modal { padding: 1.25rem; margin: 1rem; }
                 .form-grid { grid-template-columns: 1fr; }
                 .form-grid .full { grid-column: 1; }
+
+                #status-bar {
+                    position: static;
+                }
+                .toolbar {
+                    position: static;
+                }
             }
 
             #mobile-filter-toggle { display: none; }
 
             @media (max-width: 768px) {
                 #mobile-filter-toggle { display: flex; }
+            }
+
+            @media (min-width: 769px) {
+                table th:first-child,
+                table td:first-child {
+                    position: sticky;
+                    left: 0;
+                    background: var(--bg);
+                    z-index: 2;
+                }
+                tbody tr:hover td:first-child {
+                    background: var(--surface2);
+                }
+                tbody tr.watched td:first-child {
+                    background: var(--bg);
+                }
             }
         </style>
     </head>
@@ -1154,6 +1186,26 @@
             </div>
         </div>
 
+        <!-- detail Modal -->
+        <div class="modal-backdrop" id="detail-modal">
+            <div class="modal" style="max-width:560px">
+                <div style="display:flex;gap:1.25rem;align-items:flex-start;margin-bottom:1.25rem">
+                    <img id="detail-poster" src="" style="width:80px;height:118px;object-fit:cover;border-radius:6px;border:1px solid var(--border);flex-shrink:0;display:none">
+                    <div style="flex:1">
+                        <h2 id="detail-title" style="margin-bottom:0.25rem"></h2>
+                        <div id="detail-meta" style="font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--text-dim);letter-spacing:0.05em;margin-bottom:0.75rem"></div>
+                        <div id="detail-genres"></div>
+                    </div>
+                </div>
+                <div id="detail-body" style="display:flex;flex-direction:column;gap:0.75rem"></div>
+                <div class="modal-footer">
+                    <button class="btn" id="detail-close">Close</button>
+                    <button class="btn" id="detail-edit">✎ Edit</button>
+                    <button class="btn primary" id="detail-watch-toggle"></button>
+                </div>
+            </div>
+        </div>
+
         </div>
 
         <div id="toast"></div>
@@ -1262,6 +1314,55 @@
             document.getElementById('user-dropdown').classList.remove('open');
         }
 
+        function openDetailModal(rowId) {
+            var m = allMovies.find(function(x) { return String(x.RowID) === String(rowId); });
+            if (!m) return;
+
+            // Poster
+            var poster = document.getElementById('detail-poster');
+            if (m.Poster) { poster.src = m.Poster; poster.style.display = 'block'; }
+            else { poster.style.display = 'none'; }
+
+            // Title + meta
+            document.getElementById('detail-title').textContent = m.Title || '';
+            document.getElementById('detail-meta').textContent  =
+                [m.Year, m.Runtime ? m.Runtime + ' min' : null, m.Language].filter(Boolean).join(' · ');
+
+            // Genres
+            document.getElementById('detail-genres').innerHTML =
+                parseList(m.Genre).map(function(g) { return '<span class="genre-tag">' + esc(g) + '</span>'; }).join('');
+
+            // Body rows
+            var rows = [
+                ['Director',  m.Director],
+                ['Source',    m.Source],
+                ['Notes',     m.Notes],
+                ['Viewers',   m.Viewers],
+                ['Watched By',m.WatchedBy],
+            ].filter(function(r) { return r[1]; });
+
+            document.getElementById('detail-body').innerHTML = rows.map(function(r) {
+                return '<div style="display:flex;gap:0.75rem;font-size:0.85rem">' +
+                    '<span style="font-family:\'DM Mono\',monospace;font-size:0.65rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.1em;min-width:80px;padding-top:2px">' + r[0] + '</span>' +
+                    '<span>' + esc(r[1]) + '</span>' +
+                '</div>';
+            }).join('') +
+            '<div style="margin-top:0.25rem">' + buildStarHTML(m.RowID) + '</div>';
+
+            // Footer buttons
+            document.getElementById('detail-watch-toggle').textContent = iWatched(m) ? '↩ Unwatch' : '✓ Mark Watched';
+            document.getElementById('detail-watch-toggle').onclick = function() {
+                toggleWatched(m);
+                document.getElementById('detail-modal').classList.remove('open');
+            };
+            document.getElementById('detail-edit').onclick = function() {
+                document.getElementById('detail-modal').classList.remove('open');
+                openEditModal(rowId);
+            };
+
+            document.getElementById('detail-modal').classList.add('open');
+        }
+
         async function fetchMovieData(title, year) {
             var url = 'https://www.omdbapi.com/?apikey=' + OMDB_KEY +
                     '&t=' + encodeURIComponent(title) +
@@ -1366,6 +1467,19 @@
                     arrow.textContent = sidebar.classList.contains('mobile-open') ? '▲' : '▼';
                 });
             }
+            document.getElementById('detail-close').addEventListener('click', function() {
+                document.getElementById('detail-modal').classList.remove('open');
+            });
+            document.getElementById('detail-modal').addEventListener('click', function(e) {
+                if (e.target === document.getElementById('detail-modal'))
+                    document.getElementById('detail-modal').classList.remove('open');
+            });
+            document.getElementById('movie-list').addEventListener('click', function(e) {
+                var row = e.target.closest('tr[data-id], div.movie-card[data-id]');
+                if (row && !e.target.closest('button, .star, .add-to-list-btn')) {
+                    openDetailModal(row.dataset.id);
+                }
+            });
         });
 
         function setView(v) {
@@ -1631,10 +1745,7 @@
                     '<span style="vertical-align:middle"><strong>' + esc(m.Title) + '</strong><span class="year" style="display:block">' + (m.Year||'—') + '</span></span></td>' +
                     '<td>' + genres + '</td>' +
                     '<td><span class="priority-badge priority-' + (m.Priority||3) + '">' + (m.Priority||3) + '</span></td>' +
-                    '<td class="runtime-cell">' + (m.Runtime ? m.Runtime + 'm' : '\u2014') + '</td>' +
                     '<td>' + statusPill(m) + '</td>' +
-                    '<td>' + esc(m.Director||'\u2014') + '</td>' +
-                    '<td>' + esc(m.Language||'\u2014') + '</td>' +
                     '<td>' + buildStarHTML(m.RowID) + '</td>' +
                     '<td>' + (!isOnMyList(m) ? '<button class="add-to-list-btn" onclick="event.stopPropagation();addToMyList(' + mj + ')">+ My List</button>' : '') + '</td>' +
                     '<td>' + buildViewerPips(m) + '</td>' +
@@ -1648,8 +1759,8 @@
 
             container.innerHTML = '<div class="table-wrap"><table>' +
                 '<thead><tr>' +
-                '<th>Title</th><th>Genre</th><th>Priority</th><th>Runtime</th>' +
-                '<th>Status</th><th>Director</th><th>Language</th><th>Rating</th><th>On List</th><th>Who Can Watch</th><th>Watched By</th><th></th>' +
+                '<th>Title</th><th>Genre</th><th>Priority</th>' +
+                '<th>Status</th><th>Rating</th><th>On List</th><th>Who Can Watch</th><th>Watched By</th><th></th>' +
                 '</tr></thead><tbody>' + rows + '</tbody></table></div>';
         }
 
