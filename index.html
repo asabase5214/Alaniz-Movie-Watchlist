@@ -825,6 +825,79 @@
                 cursor: pointer; transition: all var(--transition);
             }
             .dropdown-item:hover { background: var(--surface2); color: var(--red); }
+            @media (max-width: 768px) {
+                header {
+                    padding: 0 1rem;
+                    height: auto;
+                    flex-wrap: wrap;
+                    gap: 0.5rem;
+                    padding-top: 0.75rem;
+                    padding-bottom: 0.75rem;
+                }
+                .logo { font-size: 1.2rem; }
+                .header-actions { gap: 0.4rem; flex-wrap: wrap; }
+                .btn { padding: 0.4rem 0.7rem; font-size: 0.65rem; }
+
+                #status-bar { padding: 0.4rem 1rem; gap: 0.75rem; font-size: 0.65rem; flex-wrap: wrap; }
+
+                .app { flex-direction: column; height: auto; }
+
+                aside {
+                    width: 100%;
+                    min-width: unset;
+                    border-right: none;
+                    border-bottom: 1px solid var(--border);
+                    padding: 0;
+                    max-height: 0;
+                    overflow: hidden;
+                    transition: max-height 0.3s ease, padding 0.3s ease;
+                    gap: 1.25rem;
+                }
+                aside.mobile-open {
+                    max-height: 1000px;
+                    padding: 1.25rem 1rem;
+                }
+
+                #mobile-filter-toggle {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    padding: 0.6rem 1rem;
+                    background: var(--surface);
+                    border-bottom: 1px solid var(--border);
+                    cursor: pointer;
+                    font-family: 'DM Mono', monospace;
+                    font-size: 0.7rem;
+                    color: var(--text-muted);
+                    letter-spacing: 0.08em;
+                    text-transform: uppercase;
+                    user-select: none;
+                }
+
+                main { padding: 1rem; }
+
+                .toolbar { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
+
+                .table-wrap { font-size: 0.78rem; }
+                thead th { font-size: 0.58rem; padding: 0 0.4rem 0.6rem; }
+                td { padding: 0.6rem 0.4rem; }
+
+                /* Hide less important columns on mobile */
+                table th:nth-child(6),
+                table td:nth-child(6),
+                table th:nth-child(7),
+                table td:nth-child(7),
+                table th:nth-child(10),
+                table td:nth-child(10) { display: none; }
+
+                .card-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 0.75rem; }
+
+                .modal { padding: 1.25rem; margin: 1rem; }
+                .form-grid { grid-template-columns: 1fr; }
+                .form-grid .full { grid-column: 1; }
+            }
+
+            #mobile-filter-toggle { display: none; }
         </style>
     </head>
     <body>
@@ -854,7 +927,8 @@
         <header>
             <div class="logo">Alaniz<span></span>Watchlist</div>
             <div class="header-actions">
-                <button class="btn" id="btn-refresh" title="Reload from Google Sheets">&#x27F3; Sync</button>
+                <button class="btn" id="btn-refresh" title="Reload from Google Sheets">⟳ Sync</button>
+                <button class="btn" id="btn-tonights-pick" style="border-color:var(--gold-dim);color:var(--gold)">🎬 Tonight's Pick</button>
                 <button class="btn primary" id="btn-add">+ Add Movie</button>
 
                 <div class="user-menu" id="user-menu">
@@ -881,8 +955,11 @@
         </div>
 
         <div class="app" id="app-shell">
-
-            <aside>
+            <div id="mobile-filter-toggle">
+                <span>⚙ Filters</span>
+                <span id="filter-toggle-arrow">▼</span>
+            </div>
+            <aside id="sidebar">
                 <div class="filter-section">
                     <h3>Search</h3>
                     <div class="search-wrap">
@@ -978,9 +1055,16 @@
                 <input type="hidden" id="edit-row-id">
                 <div class="form-grid">
                     <div class="field full">
-                        <label>Title *</label>
-                        <input type="text" id="f-title" placeholder="Movie title" required>
+                    <label>Title *</label>
+                    <div style="display:flex;gap:0.5rem">
+                        <input type="text" id="f-title" placeholder="Movie title" required style="flex:1">
+                        <button type="button" id="omdb-autofill-btn" class="btn" style="white-space:nowrap;font-size:0.68rem">Auto-fill from OMDB</button>
                     </div>
+                </div>
+                <div class="field full">
+                    <label>Poster URL (auto-filled or paste manually)</label>
+                    <input type="text" id="f-poster" placeholder="https://…">
+                </div>
                     <div class="field">
                         <label>Year</label>
                         <input type="number" id="f-year" placeholder="2024" min="1888" max="2099">
@@ -1032,6 +1116,33 @@
                 <div class="modal-footer">
                     <button class="btn" id="modal-cancel">Cancel</button>
                     <button class="btn primary" id="modal-save">Save Movie</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tonight's Pick Modal -->
+        <div class="modal-backdrop" id="pick-modal">
+            <div class="modal" style="max-width:480px">
+                <h2>🎬 <em>Tonight's Pick</em></h2>
+
+                <div id="pick-step-1">
+                    <div class="field" style="margin-bottom:1rem">
+                        <label>Who's watching tonight?</label>
+                        <div class="check-group" id="pick-viewers-group"></div>
+                    </div>
+                    <div class="modal-footer" style="margin-top:0">
+                        <button class="btn" id="pick-cancel-1">Cancel</button>
+                        <button class="btn primary" id="pick-go">Find Top Picks →</button>
+                    </div>
+                </div>
+
+                <div id="pick-step-2" style="display:none">
+                    <div style="font-family:'DM Mono',monospace;font-size:0.65rem;color:var(--text-dim);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:1rem" id="pick-subtitle"></div>
+                    <div id="pick-results"></div>
+                    <div class="modal-footer">
+                        <button class="btn" id="pick-back">← Back</button>
+                        <button class="btn" id="pick-close">Done</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1212,6 +1323,26 @@
             document.getElementById('movie-modal').addEventListener('click', function(e) {
                 if (e.target === document.getElementById('movie-modal')) closeModal();
             });
+            document.getElementById('btn-tonights-pick').addEventListener('click', openPickModal);
+            document.getElementById('pick-cancel-1').addEventListener('click', function() { document.getElementById('pick-modal').classList.remove('open'); });
+            document.getElementById('pick-close').addEventListener('click', function() { document.getElementById('pick-modal').classList.remove('open'); });
+            document.getElementById('pick-back').addEventListener('click', function() {
+                document.getElementById('pick-step-1').style.display = 'block';
+                document.getElementById('pick-step-2').style.display = 'none';
+            });
+            document.getElementById('pick-go').addEventListener('click', runPickAlgorithm);
+            document.getElementById('pick-modal').addEventListener('click', function(e) {
+                if (e.target === document.getElementById('pick-modal')) document.getElementById('pick-modal').classList.remove('open');
+            });
+            var filterToggle = document.getElementById('mobile-filter-toggle');
+            if (filterToggle) {
+                filterToggle.addEventListener('click', function() {
+                    var sidebar = document.getElementById('sidebar');
+                    var arrow   = document.getElementById('filter-toggle-arrow');
+                    sidebar.classList.toggle('mobile-open');
+                    arrow.textContent = sidebar.classList.contains('mobile-open') ? '▲' : '▼';
+                });
+            }
         });
 
         function setView(v) {
@@ -1286,6 +1417,7 @@
 
         function saveMovie() {
             var movie = {
+                Poster: document.getElementById('f-poster').value.trim(),
                 Title:    document.getElementById('f-title').value.trim(),
                 Year:     document.getElementById('f-year').value.trim(),
                 Runtime:  document.getElementById('f-runtime').value.trim(),
@@ -1468,7 +1600,9 @@
                 var genres = parseList(m.Genre).map(function(g) { return '<span class="genre-tag">' + esc(g) + '</span>'; }).join('');
                 var mj = JSON.stringify(m).replace(/"/g, '&quot;');
                 return '<tr class="' + (m.Status === 'Watched' ? 'watched' : '') + '" data-id="' + m.RowID + '">' +
-                    '<td class="movie-title-cell"><strong>' + esc(m.Title) + '</strong><span class="year">' + (m.Year||'\u2014') + '</span></td>' +
+                    '<td class="movie-title-cell">' +
+                    (m.Poster ? '<img src="' + esc(m.Poster) + '" style="width:36px;height:52px;object-fit:cover;border-radius:3px;margin-right:10px;vertical-align:middle;border:1px solid var(--border)" loading="lazy">' : '<div style="width:36px;height:52px;background:var(--surface2);border:1px solid var(--border);border-radius:3px;margin-right:10px;display:inline-block;vertical-align:middle"></div>') +
+                    '<span style="vertical-align:middle"><strong>' + esc(m.Title) + '</strong><span class="year" style="display:block">' + (m.Year||'—') + '</span></span></td>' +
                     '<td>' + genres + '</td>' +
                     '<td><span class="priority-badge priority-' + (m.Priority||3) + '">' + (m.Priority||3) + '</span></td>' +
                     '<td class="runtime-cell">' + (m.Runtime ? m.Runtime + 'm' : '\u2014') + '</td>' +
@@ -1498,6 +1632,7 @@
                 var genres = parseList(m.Genre).map(function(g) { return '<span class="genre-tag">' + esc(g) + '</span>'; }).join('');
                 var mj = JSON.stringify(m).replace(/"/g, '&quot;');
                 return '<div class="movie-card ' + (m.Status === 'Watched' ? 'watched' : '') + '" data-id="' + m.RowID + '">' +
+                    (m.Poster ? '<img src="' + esc(m.Poster) + '" style="width:100%;height:160px;object-fit:cover;border-radius:6px;margin-bottom:0.75rem;border:1px solid var(--border)" loading="lazy">' : '') +
                     '<div class="card-title">' + esc(m.Title) + '</div>' +
                     '<div class="card-meta">' + (m.Year||'\u2014') + ' \xb7 ' + (m.Runtime ? m.Runtime + 'm' : '\u2014') + ' \xb7 ' + esc(m.Language||'\u2014') + '</div>' +
                     '<div class="card-genres">' + genres + '</div>' +
@@ -1524,6 +1659,7 @@
             ['title','year','runtime','genre','director','language','notes','source'].forEach(function(f) {
                 document.getElementById('f-' + f).value = '';
             });
+            document.getElementById('f-poster').value = '';
             document.getElementById('f-priority').value = '2';
             document.getElementById('f-status').value   = 'Unwatched';
             document.getElementById('f-viewers').value  = currentUser ? currentUser.name : '';
@@ -1535,6 +1671,30 @@
             if (!m) return;
             editingId = rowId;
             document.getElementById('modal-title').innerHTML = 'Edit <em>Movie</em>';
+            function setupOmdbAutofill() {
+                var titleInput = document.getElementById('f-title');
+                var yearInput  = document.getElementById('f-year');
+                var omdbBtn    = document.getElementById('omdb-autofill-btn');
+                if (!omdbBtn) return;
+                omdbBtn.addEventListener('click', async function() {
+                    var title = titleInput.value.trim();
+                    if (!title) { showToast('Enter a title first', 'error'); return; }
+                    omdbBtn.textContent = 'Fetching…';
+                    omdbBtn.disabled = true;
+                    var data = await fetchMovieData(title, yearInput.value.trim());
+                    omdbBtn.textContent = 'Auto-fill from OMDB';
+                    omdbBtn.disabled = false;
+                    if (!data) { showToast('Movie not found on OMDB', 'error'); return; }
+                    if (data.Year)    yearInput.value = data.Year.replace(/[^0-9]/g,'');
+                    if (data.Runtime) document.getElementById('f-runtime').value  = data.Runtime.replace(/[^0-9]/g,'');
+                    if (data.Genre)   document.getElementById('f-genre').value    = data.Genre;
+                    if (data.Director && data.Director !== 'N/A') document.getElementById('f-director').value = data.Director;
+                    if (data.Language && data.Language !== 'N/A') document.getElementById('f-language').value = data.Language.split(',')[0].trim();
+                    if (data.Poster && data.Poster !== 'N/A')     document.getElementById('f-poster').value   = data.Poster;
+                    showToast('Auto-filled from OMDB ✓', 'success');
+                });
+            }
+            document.getElementById('f-poster').value   = m.Poster   || '';
             document.getElementById('f-title').value    = m.Title    || '';
             document.getElementById('f-year').value     = m.Year     || '';
             document.getElementById('f-runtime').value  = m.Runtime  || '';
@@ -1706,6 +1866,87 @@
 
         function esc(str) {
             return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+        }
+
+        // ---- Tonight's Pick ----
+
+        function openPickModal() {
+            // Build viewer checkboxes from all known accounts
+            var group = document.getElementById('pick-viewers-group');
+            group.innerHTML = '';
+            ACCOUNTS.forEach(function(acc) {
+                var lbl = document.createElement('label');
+                lbl.className = 'check-item';
+                var checked = currentUser && acc.name === currentUser.name ? 'checked' : '';
+                lbl.innerHTML = '<input type="checkbox" value="' + acc.name + '" ' + checked + '> ' + acc.name;
+                group.appendChild(lbl);
+            });
+            document.getElementById('pick-step-1').style.display = 'block';
+            document.getElementById('pick-step-2').style.display = 'none';
+            document.getElementById('pick-modal').classList.add('open');
+        }
+
+        function runPickAlgorithm() {
+            var selected = Array.from(document.querySelectorAll('#pick-viewers-group input:checked')).map(function(el) { return el.value; });
+            if (!selected.length) { showToast('Select at least one viewer', 'error'); return; }
+
+            var unwatched = allMovies.filter(function(m) { return m.Status !== 'Watched'; });
+            var scored = unwatched.map(function(m) {
+                return { movie: m, score: recommendationScoreForViewers(m, selected) };
+            }).sort(function(a, b) { return b.score - a.score; }).slice(0, 3);
+
+            var subtitle = 'Top picks for: ' + selected.join(', ');
+            document.getElementById('pick-subtitle').textContent = subtitle;
+
+            var html = scored.map(function(item, i) {
+                var m = item.movie;
+                var medals = ['🥇', '🥈', '🥉'];
+                return '<div style="display:flex;gap:1rem;align-items:flex-start;padding:0.85rem 0;border-bottom:1px solid var(--border)">' +
+                    (m.Poster ? '<img src="' + esc(m.Poster) + '" style="width:54px;height:78px;object-fit:cover;border-radius:4px;border:1px solid var(--border);flex-shrink:0">' :
+                        '<div style="width:54px;height:78px;background:var(--surface2);border:1px solid var(--border);border-radius:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1.2rem">' + medals[i] + '</div>') +
+                    '<div style="flex:1">' +
+                        '<div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.25rem">' +
+                            '<span style="font-size:1.1rem">' + medals[i] + '</span>' +
+                            '<span style="font-family:\'Playfair Display\',serif;font-size:1rem">' + esc(m.Title) + '</span>' +
+                        '</div>' +
+                        '<div style="font-family:\'DM Mono\',monospace;font-size:0.65rem;color:var(--text-dim);margin-bottom:0.4rem">' +
+                            (m.Year||'') + (m.Runtime ? ' · ' + m.Runtime + 'm' : '') + (m.Genre ? ' · ' + m.Genre.split(',')[0].trim() : '') +
+                        '</div>' +
+                        '<div style="font-family:\'DM Mono\',monospace;font-size:0.62rem;color:var(--gold)">' +
+                            'Score: ' + Math.round(item.score * 10) / 10 +
+                        '</div>' +
+                    '</div></div>';
+            }).join('');
+
+            if (!html) html = '<div style="color:var(--text-dim);font-size:0.85rem;padding:1rem 0">No unwatched movies found!</div>';
+            document.getElementById('pick-results').innerHTML = html;
+            document.getElementById('pick-step-1').style.display = 'none';
+            document.getElementById('pick-step-2').style.display = 'block';
+        }
+
+        function recommendationScoreForViewers(movie, viewers) {
+            var relevantRatings = allRatings.filter(function(r) {
+                return String(r.RowID) === String(movie.RowID) &&
+                    viewers.some(function(u) { return u.toLowerCase() === r.UserName.toLowerCase(); });
+            });
+            var directScore = relevantRatings.length
+                ? relevantRatings.reduce(function(a, r) { return a + (+r.Rating); }, 0) / relevantRatings.length : 0;
+
+            var movieGenres = parseList(movie.Genre);
+            var genreScore = 0;
+            if (movieGenres.length) {
+                var genreRatings = allRatings.filter(function(r) {
+                    if (!viewers.some(function(u) { return u.toLowerCase() === r.UserName.toLowerCase(); })) return false;
+                    var rMovie = allMovies.find(function(m) { return String(m.RowID) === String(r.RowID); });
+                    if (!rMovie) return false;
+                    return parseList(rMovie.Genre).some(function(g) { return movieGenres.indexOf(g) >= 0; });
+                });
+                if (genreRatings.length)
+                    genreScore = genreRatings.reduce(function(a, r) { return a + (+r.Rating); }, 0) / genreRatings.length;
+            }
+
+            var priorityBoost = movie.Priority == 1 ? 1 : movie.Priority == 2 ? 0.5 : 0;
+            return (directScore * 2) + genreScore + priorityBoost;
         }
         </script>
     </body>
