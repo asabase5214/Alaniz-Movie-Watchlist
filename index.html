@@ -483,6 +483,7 @@
                 margin-bottom: 1.25rem;
                 gap: 1rem;
                 flex-wrap: wrap;
+                position: sticky;
             }
 
             .results-count {
@@ -1160,20 +1161,19 @@
         <script>
         const ACCOUNTS = [
             { name: 'Aidan', password: 'popcorn', initials: 'A' },
-            { name: 'Andrew', password: 'popcorn', initials: 'A' },
-            { name: 'Anna', password: 'popcorn', initials: 'A' },
-            { name: 'Asa', password: 'popcorn', initials: 'A' },
-            { name: 'Jaelle', password: 'popcorn', initials: 'J' },
-            { name: 'Jordan', password: 'popcorn', initials: 'J' },
+            { name: 'Andrew', password: 'popcorn', initials: '117' },
+            { name: 'Anna', password: 'popcorn', initials: 'HLP' },
+            { name: 'Asa', password: 'popcorn', initials: 'ASA' },
+            { name: 'Jaelle', password: 'popcorn', initials: 'J15' },
+            { name: 'Jordan', password: 'popcorn', initials: 'JO3' },
         ];
 
         const STORAGE_KEY = 'alaniz_current_user';
         const OMDB_KEY = 'b51ed710';
 
-        // ================================================================
-        //  SIGN-IN LOGIC
-        // ================================================================
-        let currentUser    = null;
+        // sign in logic
+
+        let currentUser     = null;
         let selectedAccount = null;
 
         function builduserGrid() {
