@@ -854,7 +854,9 @@
                     gap: 1.25rem;
                 }
                 aside.mobile-open {
-                    max-height: 1000px;
+                    max-height: none;
+                    overflow-y: auto;
+                    max-height: 70vh;
                     padding: 1.25rem 1rem;
                 }
 
@@ -1261,13 +1263,23 @@
         }
 
         async function fetchMovieData(title, year) {
-            var url = 'https://www.omdbapi.com/?apikey=' + OMDB_KEY + '&t=' + encodeURIComponent(title) + (year ? '&y=' + year : '') + '&plot=short';
-            try {
-                var res = await fetch(url);
-                var data = await res.json();
-                return data.Response === 'True' ? data : null;
-            } catch(e) { return null; }
+        var url = 'https://www.omdbapi.com/?apikey=' + OMDB_KEY +
+                '&t=' + encodeURIComponent(title) +
+                (year ? '&y=' + year : '') +
+                '&plot=short';
+        try {
+            var res  = await fetch(url);
+            var data = await res.json();
+            if (data.Response !== 'True') {
+                showToast('OMDB: ' + (data.Error || 'Not found'), 'error');
+                return null;
+            }
+            return data;
+        } catch(e) {
+            showToast('OMDB fetch failed: ' + e.message, 'error');
+            return null;
         }
+    }
 
         // ================================================================
         //  MAIN APP
@@ -1668,6 +1680,7 @@
             document.getElementById('f-status').value   = 'Unwatched';
             document.getElementById('f-viewers').value  = currentUser ? currentUser.name : '';
             document.getElementById('movie-modal').classList.add('open');
+            setupOmdbAutofill();
         }
 
         function openEditModal(rowId) {
@@ -1675,29 +1688,6 @@
             if (!m) return;
             editingId = rowId;
             document.getElementById('modal-title').innerHTML = 'Edit <em>Movie</em>';
-            function setupOmdbAutofill() {
-                var titleInput = document.getElementById('f-title');
-                var yearInput  = document.getElementById('f-year');
-                var omdbBtn    = document.getElementById('omdb-autofill-btn');
-                if (!omdbBtn) return;
-                omdbBtn.addEventListener('click', async function() {
-                    var title = titleInput.value.trim();
-                    if (!title) { showToast('Enter a title first', 'error'); return; }
-                    omdbBtn.textContent = 'Fetching…';
-                    omdbBtn.disabled = true;
-                    var data = await fetchMovieData(title, yearInput.value.trim());
-                    omdbBtn.textContent = 'Auto-fill from OMDB';
-                    omdbBtn.disabled = false;
-                    if (!data) { showToast('Movie not found on OMDB', 'error'); return; }
-                    if (data.Year)    yearInput.value = data.Year.replace(/[^0-9]/g,'');
-                    if (data.Runtime) document.getElementById('f-runtime').value  = data.Runtime.replace(/[^0-9]/g,'');
-                    if (data.Genre)   document.getElementById('f-genre').value    = data.Genre;
-                    if (data.Director && data.Director !== 'N/A') document.getElementById('f-director').value = data.Director;
-                    if (data.Language && data.Language !== 'N/A') document.getElementById('f-language').value = data.Language.split(',')[0].trim();
-                    if (data.Poster && data.Poster !== 'N/A')     document.getElementById('f-poster').value   = data.Poster;
-                    showToast('Auto-filled from OMDB ✓', 'success');
-                });
-            }
             document.getElementById('f-poster').value   = m.Poster   || '';
             document.getElementById('f-title').value    = m.Title    || '';
             document.getElementById('f-year').value     = m.Year     || '';
@@ -1711,6 +1701,32 @@
             document.getElementById('f-source').value   = m.Source   || '';
             document.getElementById('f-notes').value    = m.Notes    || '';
             document.getElementById('movie-modal').classList.add('open');
+            setupOmdbAutofill();
+        }
+
+        function setupOmdbAutofill() {
+            var btn = document.getElementById('omdb-autofill-btn');
+            if (!btn) return;
+            var fresh = btn.cloneNode(true);
+            btn.parentNode.replaceChild(fresh, btn);
+            fresh.addEventListener('click', async function() {
+                var title = document.getElementById('f-title').value.trim();
+                var year  = document.getElementById('f-year').value.trim();
+                if (!title) { showToast('Enter a title first', 'error'); return; }
+                fresh.textContent = 'Fetching…';
+                fresh.disabled = true;
+                var data = await fetchMovieData(title, year);
+                fresh.textContent = 'Auto-fill from OMDB';
+                fresh.disabled = false;
+                if (!data) { showToast('Movie not found on OMDB', 'error'); return; }
+                if (data.Year)     document.getElementById('f-year').value     = data.Year.replace(/[^0-9]/g,'');
+                if (data.Runtime)  document.getElementById('f-runtime').value  = data.Runtime.replace(/[^0-9]/g,'');
+                if (data.Genre)    document.getElementById('f-genre').value    = data.Genre;
+                if (data.Director && data.Director !== 'N/A') document.getElementById('f-director').value = data.Director;
+                if (data.Language && data.Language !== 'N/A') document.getElementById('f-language').value = data.Language.split(',')[0].trim();
+                if (data.Poster   && data.Poster   !== 'N/A') document.getElementById('f-poster').value   = data.Poster;
+                showToast('Auto-filled from OMDB ✓', 'success');
+            });
         }
 
         // ---- ratings ----
