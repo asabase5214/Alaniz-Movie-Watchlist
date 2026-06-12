@@ -935,7 +935,7 @@
                 </div>
 
                 <div class="filter-section">
-                    <h3>Who Is Watching</h3>
+                    <h3>Who Can Watch</h3>
                     <div class="check-group" id="filter-viewers"></div>
                 </div>
 
@@ -1478,7 +1478,7 @@
             container.innerHTML = '<div class="table-wrap"><table>' +
                 '<thead><tr>' +
                 '<th>Title</th><th>Genre</th><th>Priority</th><th>Runtime</th>' +
-                '<th>Status</th><th>Director</th><th>Language</th><th>Rating</th><th>On List</th><th>Watched By</th><th></th>' +
+                '<th>Status</th><th>Director</th><th>Language</th><th>Rating</th><th>On List</th><th>Who Can Watch</th><th>Watched By</th><th></th>' +
                 '</tr></thead><tbody>' + rows + '</tbody></table></div>';
         }
 
@@ -1657,11 +1657,9 @@
         // ---- recommendation sort ----
 
         function recommendationScore(movie) {
-            // Get the viewers being filtered (or all users if none selected)
             var selectedViewers = getChecked('filter-viewers');
             var relevantUsers   = selectedViewers.length ? selectedViewers : ACCOUNTS.map(function(a) { return a.name; });
 
-            // Average rating given by relevant users to this movie
             var relevantRatings = allRatings.filter(function(r) {
                 return String(r.RowID) === String(movie.RowID) &&
                     relevantUsers.some(function(u) { return u.toLowerCase() === r.UserName.toLowerCase(); });
@@ -1670,7 +1668,6 @@
                 ? relevantRatings.reduce(function(a, r) { return a + (+r.Rating); }, 0) / relevantRatings.length
                 : 0;
 
-            // Genre affinity: average rating those users give to same genres
             var movieGenres = parseList(movie.Genre);
             var genreScore  = 0;
             if (movieGenres.length) {
