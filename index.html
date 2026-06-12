@@ -1051,6 +1051,7 @@
         ];
 
         const STORAGE_KEY = 'alaniz_current_user';
+        const OMDB_KEY = 'b51ed710';
 
         // ================================================================
         //  SIGN-IN LOGIC
@@ -1144,9 +1145,19 @@
             document.getElementById('user-dropdown').classList.remove('open');
         }
 
+        async function fetchMovieData(title, year) {
+            var url = 'https://www.omdbapi.com/?apikey=' + OMDB_KEY + '&t=' + encodeURIComponent(title) + (year ? '&y=' + year : '') + '&plot=short';
+            try {
+                var res = await fetch(url);
+                var data = await res.json();
+                return data.Response === 'True' ? data : null;
+            } catch(e) { return null; }
+        }
+
         // ================================================================
         //  MAIN APP
         // ================================================================
+
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby6NPEtiF_-3rjCr6OfYlm5YUGuN2F23gulNwKIwKk6mfrLhfKHBOAIndDq1G019Eir/exec';
 
         var allMovies  = [];
@@ -1549,7 +1560,7 @@
         }
 
         function getAvgRating(rowId) {
-            var relevant = allRatings.filter(function(r) { return String(r.RowID) === String(rowId); });
+            var relevant = allRatings.filter(function(r) { return String(r.RowID) === String(rowId) && r.Rating !== null; });
             if (!relevant.length || relevant.length === 0) return null;
             var sum = relevant.reduce(function(a, r) { return a + (+r.Rating); }, 0);
             return Math.round((sum / relevant.length) * 10) / 10;
