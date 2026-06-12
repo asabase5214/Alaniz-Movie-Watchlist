@@ -567,10 +567,6 @@
                 cursor: pointer;
                 white-space: nowrap;
                 user-select: none;
-                position: sticky;
-                top: calc(var(--header-h) + var(--status-h) + var(--toolbar-h));
-                background: var(--bg);
-                z-index: 1;
             }
             thead th:hover { color: var(--gold); }
 
@@ -1437,11 +1433,6 @@
                 var statusBar = document.getElementById('status-bar');
                 if (statusBar) statusBar.style.top = headerH + 'px';
                 if (toolbarEl) toolbarEl.style.top = (headerH + statusH) + 'px';
-
-                var ths = document.querySelectorAll('thead th');
-                ths.forEach(function(th) {
-                    th.style.top = (headerH + statusH + toolbarH) + 'px';
-                });
             });
         }
 
