@@ -1321,7 +1321,23 @@
         }
 
         function toggleWatched(movie) {
-            var updated = Object.assign({}, movie, { Status: movie.Status === 'Watched' ? 'Unwatched' : 'Watched' });
+            var isWatched = movie.Status === 'Watched';
+            var watchedBy = parseList(movie.WatchedBy || '');
+            if (!isWatched) {
+                // marking as watched — add current user if not already there
+                if (currentUser && !watchedBy.some(function(v) { return v.toLowerCase() === currentUser.name.toLowerCase(); })) {
+                    watchedBy.push(currentUser.name);
+                }
+            } else {
+                // marking as unwatched — remove current user
+                if (currentUser) {
+                    watchedBy = watchedBy.filter(function(v) { return v.toLowerCase() !== currentUser.name.toLowerCase(); });
+                }
+            }
+            var updated = Object.assign({}, movie, {
+                Status: isWatched ? 'Unwatched' : 'Watched',
+                WatchedBy: watchedBy.join('; ')
+            });
             apiPost({ action: 'update', movie: updated }).then(function() {
                 loadMovies();
             }).catch(function() {
@@ -1451,6 +1467,7 @@
                     '<td>' + buildStarHTML(m.RowID) + '</td>' +
                     '<td>' + (!isOnMyList(m) ? '<button class="add-to-list-btn" onclick="event.stopPropagation();addToMyList(' + mj + ')">+ My List</button>' : '') + '</td>' +
                     '<td>' + buildViewerPips(m) + '</td>' +
+                    '<td>' + buildWatchedByPips(m) + '</td>' +
                     '<td><div class="row-actions">' +
                         '<button class="row-btn" onclick="event.stopPropagation();openEditModal(\'' + m.RowID + '\')">\u270E</button>' +
                         '<button class="row-btn" onclick="event.stopPropagation();toggleWatched(' + mj + ')">' + (m.Status === 'Watched' ? '\u21A9' : '\u2713') + '</button>' +
@@ -1461,7 +1478,7 @@
             container.innerHTML = '<div class="table-wrap"><table>' +
                 '<thead><tr>' +
                 '<th>Title</th><th>Genre</th><th>Priority</th><th>Runtime</th>' +
-                '<th>Status</th><th>Director</th><th>Language</th><th>Rating</th><th>On List</th><th></th>' +
+                '<th>Status</th><th>Director</th><th>Language</th><th>Rating</th><th>On List</th><th>Watched By</th><th></th>' +
                 '</tr></thead><tbody>' + rows + '</tbody></table></div>';
         }
 
@@ -1620,6 +1637,19 @@
                     var initial = acc ? acc.initials : v.trim()[0].toUpperCase();
                     var isMe = currentUser && v.trim().toLowerCase() === currentUser.name.toLowerCase();
                     return '<div class="viewer-pip' + (isMe ? ' me' : '') + '" title="' + esc(v.trim()) + '">' + initial + '</div>';
+                }).join('') +
+            '</div>';
+        }
+
+        function buildWatchedByPips(movie) {
+            var watchers = parseList(movie.WatchedBy);
+            if (!watchers.length) return '<span style="font-size:0.65rem;color:var(--text-dim)">—</span>';
+            return '<div class="viewer-avatars">' +
+                watchers.map(function(v) {
+                    var acc = ACCOUNTS.find(function(a) { return a.name.toLowerCase() === v.trim().toLowerCase(); });
+                    var initial = acc ? acc.initials : v.trim()[0].toUpperCase();
+                    var isMe = currentUser && v.trim().toLowerCase() === currentUser.name.toLowerCase();
+                    return '<div class="viewer-pip' + (isMe ? ' me' : '') + '" title="' + esc(v.trim()) + ' watched">' + initial + '</div>';
                 }).join('') +
             '</div>';
         }
