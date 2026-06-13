@@ -1916,34 +1916,39 @@
                 allMovies = data.movies || [];
                 updateStats();
                 buildDynamicFilters();
-                apiFetch({ action: 'getRatings' }).then(function(rdata) {
+
+                var ratingsPromise = apiFetch({ action: 'getRatings' }).then(function(rdata) {
                     allRatings = rdata.ratings || [];
-                    renderList();
                 }).catch(function() {
                     allRatings = [];
-                    renderList();
                 });
-                apiFetch({ action: 'getUsers' }).then(function(udata) {
+
+                var usersPromise = apiFetch({ action: 'getUsers' }).then(function(udata) {
                     (udata.users || []).forEach(function(u) {
                         var acc = ACCOUNTS.find(function(a) { return a.name === u.name; });
                         if (acc) {
-                            if (u.initials) acc.initials = u.initials;
-                            if (u.password) acc.password = u.password;
+                            if (u.initials)    acc.initials    = u.initials;
+                            if (u.password)    acc.password    = u.password;
                             if (u.color)       acc.color       = u.color;
                             if (u.avatarStyle) acc.avatarStyle = u.avatarStyle;
                         }
                     });
-                    // refresh avatar in case initials changed
                     if (currentUser) {
                         var acc = ACCOUNTS.find(function(a) { return a.name === currentUser.name; });
                         if (acc) {
-                            currentUser.initials = acc.initials;
+                            currentUser.initials    = acc.initials;
+                            currentUser.color       = acc.color       || '';
+                            currentUser.avatarStyle = acc.avatarStyle || '';
                             document.getElementById('chip-avatar').textContent = currentUser.initials;
+                            applyAvatarStyle(document.getElementById('chip-avatar'), currentUser);
                         }
                     }
-                    document.getElementById('chip-avatar').textContent = currentUser.initials;
-                    applyAvatarStyle(document.getElementById('chip-avatar'), currentUser);  
+                }).catch(function() {});
+
+                Promise.all([ratingsPromise, usersPromise]).then(function() {
+                    renderList();
                 });
+
                 setStatus('connected', 'Connected \xb7 ' + new Date().toLocaleTimeString());
             }).catch(function(e) {
                 setStatus('error', 'Error \u2014 check URL');
