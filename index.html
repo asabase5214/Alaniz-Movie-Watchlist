@@ -1176,9 +1176,9 @@
                 <div class="filter-section">
                     <h3>Priority</h3>
                     <div class="check-group" id="filter-priority">
-                        <label class="check-item"><input type="checkbox" value="1" checked> &#x1F947; Must-Watch</label>
-                        <label class="check-item"><input type="checkbox" value="2" checked> &#x1F948; High</label>
-                        <label class="check-item"><input type="checkbox" value="3" checked> &#x1F949; Normal</label>
+                        <label class="check-item"><input type="checkbox" value="1" checked> &#x1F947;</label>
+                        <label class="check-item"><input type="checkbox" value="2" checked> &#x1F948;</label>
+                        <label class="check-item"><input type="checkbox" value="3" checked> &#x1F949;</label>
                     </div>
                 </div>
 
@@ -1278,11 +1278,11 @@
                     <label>Title *</label>
                     <div style="display:flex;gap:0.5rem">
                         <input type="text" id="f-title" placeholder="Movie title" required style="flex:1">
-                        <button type="button" id="omdb-autofill-btn" class="btn" style="white-space:nowrap;font-size:0.68rem">Auto-fill from OMDB</button>
+                        <button type="button" id="omdb-autofill-btn" class="btn" style="white-space:nowrap;font-size:0.68rem">Auto-fill</button>
                     </div>
                 </div>
                 <div class="field full">
-                    <label>Poster URL (auto-filled or paste manually)</label>
+                    <label>Poster URL</label>
                     <input type="text" id="f-poster" placeholder="https://…">
                 </div>
                     <div class="field">
@@ -1290,11 +1290,11 @@
                         <input type="number" id="f-year" placeholder="2024" min="1888" max="2099">
                     </div>
                     <div class="field">
-                        <label>Runtime (min)</label>
+                        <label>Runtime (in minutes)</label>
                         <input type="number" id="f-runtime" placeholder="120" min="1">
                     </div>
                     <div class="field full">
-                        <label>Genre(s) &#x2014; comma separated</label>
+                        <label>Genre(s) &#x2014; separate with a comma and a space (", ")</label>
                         <input type="text" id="f-genre" placeholder="Drama, Thriller">
                     </div>
                     <div class="field">
@@ -1308,9 +1308,9 @@
                     <div class="field">
                         <label>Priority</label>
                         <select id="f-priority">
-                            <option value="1">1 &#x2014; Must-Watch</option>
-                            <option value="2" selected>2 &#x2014; High</option>
-                            <option value="3">3 &#x2014; Normal</option>
+                            <option value="1">1 &#x2014;</option>
+                            <option value="2" selected>2 &#x2014;</option>
+                            <option value="3">3 &#x2014;</option>
                         </select>
                     </div>
                     <div class="field">
@@ -1321,16 +1321,19 @@
                         </select>
                     </div>
                     <div class="field full">
-                        <label>Viewers &#x2014; semicolon separated</label>
+                        <label>Viewers &#x2014; separate with a semicolon and a space ("; ")</label>
                         <input type="text" id="f-viewers" placeholder="Aidan; Jordan">
                     </div>
                     <div class="field">
-                        <label>Source / Platform</label>
-                        <input type="text" id="f-source" placeholder="Prime, DVD...">
+                        <label>Owned</label>
+                        <select id="f-source">
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                        </select>
                     </div>
                     <div class="field full">
                         <label>Notes</label>
-                        <textarea id="f-notes" placeholder="Why you want to watch it, etc&#x2026;"></textarea>
+                        <textarea id="f-notes"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -2341,7 +2344,7 @@
                 fresh.textContent = 'Fetching…';
                 fresh.disabled = true;
                 var data = await fetchMovieData(title, year);
-                fresh.textContent = 'Auto-fill from OMDB';
+                fresh.textContent = 'Auto-fill';
                 fresh.disabled = false;
                 if (!data) { showToast('Movie not found on OMDB', 'error'); return; }
                 if (data.Year)     document.getElementById('f-year').value     = data.Year.replace(/[^0-9]/g,'');
