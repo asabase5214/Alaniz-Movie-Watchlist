@@ -1464,7 +1464,7 @@
             var payload = { name: currentUser.name, initials: initials };
             if (pw1) payload.password = pw1;
 
-            apiPost({ action: 'saveProfile', payload: JSON.stringify(payload) })
+            apiPost({ action: 'saveProfile', name: payload.name, initials: payload.initials, password: payload.password || '' })
                 .then(function() { showToast('Profile updated ✓', 'success'); })
                 .catch(function() { showToast('Saved locally but failed to sync', 'error'); });
         }
