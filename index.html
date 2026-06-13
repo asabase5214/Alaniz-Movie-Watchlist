@@ -427,22 +427,25 @@
             }
 
             #status-bar .dot {
-                width: 7px; height: 7px; border-radius: 50%;
-                display: inline-block; margin-right: 6px;
+                width: 7px;
+                height: 7px;
+                border-radius: 50%;
+                display: inline-block;
+                margin-right: 6px;
                 background: var(--text-dim);
             }
 
-            #status-bar .dot .connected {
+            #status-bar .dot.connected {
                 background: var(--green);
                 box-shadow: 0 0 6px var(--green);
             }
 
-            #status-bar.dot .error {
+            #status-bar .dot.error {
                 background: var(--red);
                 box-shadow: 0 0 6px var(--red);
             }
 
-            #status-bar.dot .loading {
+            #status-bar.dot.loading {
                 background: var(--gold);
                 animation: pulse 1s infinite;
             }
