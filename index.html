@@ -1897,7 +1897,7 @@
                 url.searchParams.set('callback', callbackName);
                 var script = document.createElement('script');
                 script.src = url.toString();
-                var timer = setTimeout(function() { cleanup(); reject(new Error('Timeout')); }, 10000);
+                var timer = setTimeout(function() { cleanup(); reject(new Error('Timeout')); }, 20000);
                 window[callbackName] = function(data) { cleanup(); resolve(data); };
                 function cleanup() { clearTimeout(timer); delete window[callbackName]; script.remove(); }
                 script.onerror = function() { cleanup(); reject(new Error('Script load failed')); };
@@ -1917,36 +1917,50 @@
                 updateStats();
                 buildDynamicFilters();
 
-                var ratingsPromise = apiFetch({ action: 'getRatings' }).then(function(rdata) {
+                apiFetch({ action: 'getRatings' }).then(function(rdata) {
                     allRatings = rdata.ratings || [];
+
+                    apiFetch({ action: 'getUsers' }).then(function(udata) {
+                        (udata.users || []).forEach(function(u) {
+                            var acc = ACCOUNTS.find(function(a) { return a.name === u.name; });
+                            if (acc) {
+                                if (u.initials)    acc.initials    = u.initials;
+                                if (u.password)    acc.password    = u.password;
+                                if (u.color)       acc.color       = u.color;
+                                if (u.avatarStyle) acc.avatarStyle = u.avatarStyle;
+                            }
+                        });
+                        if (currentUser) {
+                            var acc = ACCOUNTS.find(function(a) { return a.name === currentUser.name; });
+                            if (acc) {
+                                currentUser.initials    = acc.initials;
+                                currentUser.color       = acc.color       || '';
+                                currentUser.avatarStyle = acc.avatarStyle || '';
+                                document.getElementById('chip-avatar').textContent = currentUser.initials;
+                                applyAvatarStyle(document.getElementById('chip-avatar'), currentUser);
+                            }
+                        }
+                        renderList();
+                    }).catch(function() {
+                        renderList();
+                    });
+
                 }).catch(function() {
                     allRatings = [];
-                });
-
-                var usersPromise = apiFetch({ action: 'getUsers' }).then(function(udata) {
-                    (udata.users || []).forEach(function(u) {
-                        var acc = ACCOUNTS.find(function(a) { return a.name === u.name; });
-                        if (acc) {
-                            if (u.initials)    acc.initials    = u.initials;
-                            if (u.password)    acc.password    = u.password;
-                            if (u.color)       acc.color       = u.color;
-                            if (u.avatarStyle) acc.avatarStyle = u.avatarStyle;
-                        }
+                    apiFetch({ action: 'getUsers' }).then(function(udata) {
+                        (udata.users || []).forEach(function(u) {
+                            var acc = ACCOUNTS.find(function(a) { return a.name === u.name; });
+                            if (acc) {
+                                if (u.initials)    acc.initials    = u.initials;
+                                if (u.password)    acc.password    = u.password;
+                                if (u.color)       acc.color       = u.color;
+                                if (u.avatarStyle) acc.avatarStyle = u.avatarStyle;
+                            }
+                        });
+                        renderList();
+                    }).catch(function() {
+                        renderList();
                     });
-                    if (currentUser) {
-                        var acc = ACCOUNTS.find(function(a) { return a.name === currentUser.name; });
-                        if (acc) {
-                            currentUser.initials    = acc.initials;
-                            currentUser.color       = acc.color       || '';
-                            currentUser.avatarStyle = acc.avatarStyle || '';
-                            document.getElementById('chip-avatar').textContent = currentUser.initials;
-                            applyAvatarStyle(document.getElementById('chip-avatar'), currentUser);
-                        }
-                    }
-                }).catch(function() {});
-
-                Promise.all([ratingsPromise, usersPromise]).then(function() {
-                    renderList();
                 });
 
                 setStatus('connected', 'Connected \xb7 ' + new Date().toLocaleTimeString());
