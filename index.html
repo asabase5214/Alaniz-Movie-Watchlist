@@ -1390,9 +1390,15 @@
                 const card = document.createElement('div');
                 card.className = 'user-card';
                 card.dataset.index = i;
-                card.innerHTML =
-                    '<div class="user-avatar">' + acc.initials + '</div>' +
-                    '<div class="user-name">'   + acc.name    + '</div>';
+                const avatarEl = document.createElement('div');
+                avatarEl.className = 'user-avatar';
+                avatarEl.textContent = acc.initials;
+                applyAvatarStyle(avatarEl, acc);
+                const nameEl = document.createElement('div');
+                nameEl.className = 'user-name';
+                nameEl.textContent = acc.name;
+                card.appendChild(avatarEl);
+                card.appendChild(nameEl);
                 card.addEventListener('click', function() { selectAccount(i, card); });
                 grid.appendChild(card);
             });
@@ -1740,6 +1746,21 @@
             }
         }
 
+        function loadUserStyles() {
+            apiFetch({ action: 'getUsers' }).then(function(udata) {
+                (udata.users || []).forEach(function(u) {
+                    var acc = ACCOUNTS.find(function(a) { return a.name === u.name; });
+                    if (acc) {
+                        if (u.initials)    acc.initials    = u.initials;
+                        if (u.color)       acc.color       = u.color;
+                        if (u.avatarStyle) acc.avatarStyle = u.avatarStyle;
+                        if (u.password)    acc.password    = u.password;
+                    }
+                });
+                builduserGrid();
+            }).catch(function() {});
+        }
+
         function iWatched(movie) {
             if (!currentUser) return false;
             return parseList(movie.WatchedBy || '').some(function(v) {
@@ -1778,6 +1799,7 @@
 
         document.addEventListener('DOMContentLoaded', function() {
             builduserGrid();
+            loadUserStyles();
             checkStoredSession();
 
             // Sign-in
