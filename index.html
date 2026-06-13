@@ -1607,6 +1607,14 @@
             window.addEventListener('resize', updateStickyOffsets);
 
             document.getElementById('btn-edit-profile').addEventListener('click', openProfileModal);
+            document.getElementById('profile-cancel').addEventListener('click', function() {
+                document.getElementById('profile-modal').classList.remove('open');
+            });
+            document.getElementById('profile-save').addEventListener('click', saveProfileChanges);
+            document.getElementById('profile-modal').addEventListener('click', function(e) {
+                if (e.target === document.getElementById('profile-modal'))
+                    document.getElementById('profile-modal').classList.remove('open');
+            });
         });
 
         function setView(v) {
