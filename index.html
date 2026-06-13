@@ -2005,7 +2005,7 @@
         }
 
         function toggleWatched(movie) {
-            var isWatched = movie.Status === 'Watched';
+            var isWatched = iWatched(movie);
             var watchedBy = parseList(movie.WatchedBy || '');
             if (!isWatched) {
                 // marking as watched — add current user if not already there
