@@ -2260,6 +2260,12 @@
             return r ? +r.Rating : 0;
         }
 
+        function getUserRatingCount(userName) {
+            return allRatings.filter(function(r) {
+                return r.UserName === userName && r.Rating !== null && +r.Rating > 0;
+            }).length;
+        }
+
         function getAvgRating(rowId) {
             var relevant = allRatings.filter(function(r) {
                 return String(r.RowID) === String(rowId) && r.Rating !== null && +r.Rating > 0;
