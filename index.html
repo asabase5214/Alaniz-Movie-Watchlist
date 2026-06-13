@@ -1009,9 +1009,12 @@
                 color: white !important;
             }
 
-            .avatar-pulse {
-                animation: avatarPulse 2s ease infinite !important;
+            .avatar-fire {
+                background: linear-gradient(135deg, #ff4500, #ff8c00, #ffd700) !important;
+                background-size: 300% 300% !important;
+                animation: fireShift 1.5s ease infinite alternate !important;
                 border-color: transparent !important;
+                color: white !important;
             }
 
             .avatar-shimmer {
@@ -1022,12 +1025,9 @@
                 color: #0a0a0b !important;
             }
 
-            .avatar-fire {
-                background: linear-gradient(135deg, #ff4500, #ff8c00, #ffd700) !important;
-                background-size: 300% 300% !important;
-                animation: fireShift 1.5s ease infinite alternate !important;
+            .avatar-pulse {
+                animation: avatarPulse 2s ease infinite !important;
                 border-color: transparent !important;
-                color: white !important;
             }
 
             @keyframes rainbowShift {
@@ -1478,14 +1478,22 @@
         }
 
         function applyAvatarStyle(el, acc) {
-            // Reset
-            el.className = el.className.replace(/\bavatar-\S+/g, '').trim();
-            el.style.background = '';
-            el.style.color      = '';
-            el.style.borderColor = '';
+            var classes = el.className.split(' ').filter(function(c) {
+                return !c.startsWith('avatar-');
+            });
+            el.className = classes.join(' ').trim();
+
+            el.style.background    = '';
+            el.style.backgroundImage = '';
+            el.style.backgroundSize = '';
+            el.style.backgroundPosition = '';
+            el.style.animation     = '';
+            el.style.color         = '';
+            el.style.borderColor   = '';
 
             var style = acc.avatarStyle || '';
             if (style && style !== 'none') {
+                void el.offsetWidth;
                 el.classList.add('avatar-' + style);
             } else if (acc.color) {
                 el.style.background  = acc.color;
