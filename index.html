@@ -1048,6 +1048,29 @@
                 0%,100% { transform: scale(1); box-shadow: 0 0 0 0 currentColor; }
                 50%      { transform: scale(1.08); box-shadow: 0 0 8px 2px currentColor; }
             }
+
+            .check-item input[type="radio"] {
+                appearance: none;
+                width: 14px; height: 14px;
+                border: 1px solid var(--border);
+                border-radius: 50%;
+                background: var(--surface2);
+                cursor: pointer;
+                flex-shrink: 0;
+                transition: all var(--transition);
+            }
+            .check-item input[type="radio"]:checked {
+                background: var(--gold);
+                border-color: var(--gold);
+            }
+            .check-item input[type="radio"]:checked::after {
+                content: '';
+                display: block;
+                width: 6px; height: 6px;
+                border-radius: 50%;
+                background: #0a0a0b;
+                margin: 3px auto;
+            }
         </style>
     </head>
     <body>
@@ -1326,6 +1349,14 @@
                     <div class="field" style="margin-bottom:1rem">
                         <label>Who's watching tonight?</label>
                         <div class="check-group" id="pick-viewers-group"></div>
+                    </div>
+                    <div class="field" style="margin-bottom:1rem">
+                        <label>Movie filter</label>
+                        <div class="check-group">
+                            <label class="check-item"><input type="radio" name="pick-watch-filter" value="new-to-everyone" checked> New to everyone</label>
+                            <label class="check-item"><input type="radio" name="pick-watch-filter" value="new-to-someone"> New to someone</label>
+                            <label class="check-item"><input type="radio" name="pick-watch-filter" value="any"> Any</label>
+                        </div>
                     </div>
                     <div class="modal-footer" style="margin-top:0">
                         <button class="btn" id="pick-cancel-1">Cancel</button>
@@ -2521,14 +2552,28 @@
             var selected = Array.from(document.querySelectorAll('#pick-viewers-group input:checked')).map(function(el) { return el.value; });
             if (!selected.length) { showToast('Select at least one viewer', 'error'); return; }
 
+            var watchFilter = document.querySelector('input[name="pick-watch-filter"]:checked').value;
+
             var unwatched = allMovies.filter(function(m) {
                 var watchedBy = parseList(m.WatchedBy || '');
-                // exclude if ALL selected viewers have watched it
-                return !selected.every(function(viewer) {
-                    return watchedBy.some(function(w) {
-                        return w.trim().toLowerCase() === viewer.toLowerCase();
+                if (watchFilter === 'new-to-everyone') {
+                    // nobody's seen it
+                    return !selected.some(function(viewer) {
+                        return watchedBy.some(function(w) {
+                            return w.trim().toLowerCase() === viewer.toLowerCase();
+                        });
                     });
-                });
+                } else if (watchFilter === 'new-to-someone') {
+                    // at least 1 person hasn't seen it
+                    return !selected.every(function(viewer) {
+                        return watchedBy.some(function(w) {
+                            return w.trim().toLowerCase() === viewer.toLowerCase();
+                        });
+                    });
+                } else {
+                    // any
+                    return true;
+                }
             });
             var scored = unwatched.map(function(m) {
                 return { movie: m, score: recommendationScoreForViewers(m, selected) };
