@@ -1367,12 +1367,12 @@
 
         <script>
         const ACCOUNTS = [
-            { name: 'Aidan', password: 'popcorn', initials: 'A' },
-            { name: 'Andrew', password: 'popcorn', initials: '117' },
-            { name: 'Anna', password: 'popcorn', initials: 'HLP' },
-            { name: 'Asa', password: 'popcorn', initials: 'ASA' },
-            { name: 'Jaelle', password: 'popcorn', initials: 'J15' },
-            { name: 'Jordan', password: 'popcorn', initials: 'JO3' },
+            { name: 'Aidan', password: 'popcorn', initials: 'Aid' },
+            { name: 'Andrew', password: 'popcorn', initials: 'And' },
+            { name: 'Anna', password: 'popcorn', initials: 'Ann' },
+            { name: 'Asa', password: 'popcorn', initials: 'Asa' },
+            { name: 'Jaelle', password: 'popcorn', initials: 'Jae' },
+            { name: 'Jordan', password: 'popcorn', initials: 'Jor' },
         ];
 
         const STORAGE_KEY = 'alaniz_current_user';
@@ -2491,7 +2491,15 @@
             var selected = Array.from(document.querySelectorAll('#pick-viewers-group input:checked')).map(function(el) { return el.value; });
             if (!selected.length) { showToast('Select at least one viewer', 'error'); return; }
 
-            var unwatched = allMovies.filter(function(m) { return m.Status !== 'Watched'; });
+            var unwatched = allMovies.filter(function(m) {
+                var watchedBy = parseList(m.WatchedBy || '');
+                // exclude if ALL selected viewers have watched it
+                return !selected.every(function(viewer) {
+                    return watchedBy.some(function(w) {
+                        return w.trim().toLowerCase() === viewer.toLowerCase();
+                    });
+                });
+            });
             var scored = unwatched.map(function(m) {
                 return { movie: m, score: recommendationScoreForViewers(m, selected) };
             }).sort(function(a, b) { return b.score - a.score; }).slice(0, 3);
