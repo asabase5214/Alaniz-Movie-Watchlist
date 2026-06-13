@@ -984,6 +984,67 @@
                     background: var(--bg);
                 }
             }
+
+            /* ===================== AVATAR STYLES ===================== */
+            .viewer-pip, .user-chip-avatar, .user-avatar {
+                transition: all 0.3s ease;
+            }
+
+            .avatar-gradient {
+                background: linear-gradient(135deg, #c9a84c, #e05c5c) !important;
+                border-color: transparent !important;
+                color: white !important;
+            }
+
+            .avatar-rainbow {
+                background: linear-gradient(135deg, #e05c5c, #e0a85c, #a8e05c, #5ce0c9, #5c8ce0, #c95ce0) !important;
+                background-size: 300% 300% !important;
+                animation: rainbowShift 4s ease infinite !important;
+                border-color: transparent !important;
+                color: white !important;
+            }
+
+            .avatar-pulse {
+                animation: avatarPulse 2s ease infinite !important;
+                border-color: transparent !important;
+            }
+
+            .avatar-shimmer {
+                background: linear-gradient(90deg, #c9a84c 0%, #fff8e7 50%, #c9a84c 100%) !important;
+                background-size: 200% 100% !important;
+                animation: shimmerSlide 2s linear infinite !important;
+                border-color: transparent !important;
+                color: #0a0a0b !important;
+            }
+
+            .avatar-fire {
+                background: linear-gradient(135deg, #ff4500, #ff8c00, #ffd700) !important;
+                background-size: 300% 300% !important;
+                animation: fireShift 1.5s ease infinite alternate !important;
+                border-color: transparent !important;
+                color: white !important;
+            }
+
+            @keyframes rainbowShift {
+                0%   { background-position: 0% 50%; }
+                50%  { background-position: 100% 50%; }
+                100% { background-position: 0% 50%; }
+            }
+
+            @keyframes avatarPulse {
+                0%,100% { transform: scale(1); box-shadow: 0 0 0 0 currentColor; }
+                50%      { transform: scale(1.08); box-shadow: 0 0 8px 2px currentColor; }
+            }
+
+            @keyframes shimmerSlide {
+                0%   { background-position: 200% 0; }
+                100% { background-position: -200% 0; }
+            }
+
+            @keyframes fireShift {
+                0%   { background-position: 0% 50%; }
+                100% { background-position: 100% 50%; }
+            }
         </style>
     </head>
     <body>
@@ -1132,15 +1193,36 @@
             <main>
                 <div id="movie-list"></div>
             </main>
-            <!-- Edit Profile Modal -->
             <div class="modal-backdrop" id="profile-modal">
-                <div class="modal" style="max-width:380px">
+                <div class="modal" style="max-width:420px">
                     <h2>Edit <em>Profile</em></h2>
-                    <div style="display:flex;flex-direction:column;gap:1rem">
+
+                    <div style="display:flex;flex-direction:column;gap:1.25rem">
                         <div class="field">
                             <label>Initials (1–3 characters)</label>
                             <input type="text" id="profile-initials" maxlength="3" placeholder="A">
                         </div>
+
+                        <div class="field">
+                            <label>Avatar Color</label>
+                            <div id="color-swatches" style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.5rem"></div>
+                            <div style="display:flex;align-items:center;gap:0.75rem;margin-top:0.25rem">
+                                <label style="font-family:'DM Mono',monospace;font-size:0.62rem;color:var(--text-dim);letter-spacing:0.08em;text-transform:uppercase">Custom</label>
+                                <input type="color" id="profile-color-custom" value="#c9a84c"
+                                    style="width:36px;height:36px;border:1px solid var(--border);border-radius:4px;background:none;cursor:pointer;padding:2px">
+                                <button class="btn" id="profile-color-custom-apply" style="font-size:0.65rem;padding:0.3rem 0.6rem">Use this</button>
+                            </div>
+                        </div>
+
+                        <div class="field" id="animated-styles-section">
+                            <label style="display:flex;align-items:center;gap:0.5rem">
+                                Animated Styles
+                                <span id="unlock-badge" style="font-size:0.6rem;padding:0.15rem 0.4rem;border-radius:10px;font-family:'DM Mono',monospace;letter-spacing:0.05em"></span>
+                            </label>
+                            <div id="animated-swatches" style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:0.4rem"></div>
+                            <div id="unlock-hint" style="font-family:'DM Mono',monospace;font-size:0.65rem;color:var(--text-dim);margin-top:0.4rem"></div>
+                        </div>
+
                         <div class="field">
                             <label>New Password (leave blank to keep current)</label>
                             <input type="password" id="profile-password" placeholder="New password">
@@ -1150,6 +1232,7 @@
                             <input type="password" id="profile-password-confirm" placeholder="Confirm password">
                         </div>
                     </div>
+
                     <div class="modal-footer">
                         <button class="btn" id="profile-cancel">Cancel</button>
                         <button class="btn primary" id="profile-save">Save Changes</button>
@@ -1362,12 +1445,12 @@
         function showApp() {
             document.getElementById('signin-gate').classList.add('hidden');
             document.getElementById('main-app').classList.add('visible');
-            document.getElementById('chip-avatar').textContent    = currentUser.initials;
-            document.getElementById('chip-name').textContent      = currentUser.name;
-            document.getElementById('dropdown-name').textContent  = currentUser.name;
+            document.getElementById('chip-avatar').textContent   = currentUser.initials;
+            document.getElementById('chip-name').textContent     = currentUser.name;
+            document.getElementById('dropdown-name').textContent = currentUser.name;
+            applyAvatarStyle(document.getElementById('chip-avatar'), currentUser);
             loadMovies();
         }
-
         function signOut() {
             localStorage.removeItem(STORAGE_KEY);
             currentUser     = null;
@@ -1379,6 +1462,45 @@
             document.getElementById('signin-error').textContent = '';
             document.querySelectorAll('.user-card').forEach(function(c) { c.classList.remove('selected'); });
             closeUserDropdown();
+        }
+
+        function applyAvatarStyle(el, acc) {
+            // Reset
+            el.className = el.className.replace(/\bavatar-\S+/g, '').trim();
+            el.style.background = '';
+            el.style.color      = '';
+            el.style.borderColor = '';
+
+            var style = acc.avatarStyle || '';
+            if (style && style !== 'none') {
+                el.classList.add('avatar-' + style);
+            } else if (acc.color) {
+                el.style.background  = acc.color;
+                el.style.borderColor = acc.color;
+                el.style.color       = contrastColor(acc.color);
+            }
+        }
+
+        function contrastColor(hex) {
+            hex = hex.replace('#', '');
+            if (hex.length === 3) hex = hex.split('').map(function(c) { return c+c; }).join('');
+            var r = parseInt(hex.substr(0,2),16);
+            var g = parseInt(hex.substr(2,2),16);
+            var b = parseInt(hex.substr(4,2),16);
+            var luminance = (0.299*r + 0.587*g + 0.114*b) / 255;
+            return luminance > 0.5 ? '#0a0a0b' : '#e8e4dc';
+        }
+
+        function getAvatarStyleAttr(acc, isMe) {
+            var base = 'viewer-pip' + (isMe ? ' me' : '');
+            var style = acc.avatarStyle || '';
+            if (style && style !== 'none') {
+                return 'class="' + base + ' avatar-' + style + '"';
+            } else if (acc.color) {
+                var fg = contrastColor(acc.color);
+                return 'class="' + base + '" style="background:' + acc.color + ';border-color:' + acc.color + ';color:' + fg + '"';
+            }
+            return 'class="' + base + '"';
         }
 
         function closeUserDropdown() {
@@ -1434,12 +1556,121 @@
             document.getElementById('detail-modal').classList.add('open');
         }
 
+        var selectedColor      = '';
+        var selectedAvatarStyle = '';
+
+        const PRESET_COLORS = [
+            '#c9a84c', '#e05c5c', '#5ce0a8', '#5c8ce0',
+            '#c95ce0', '#e0a85c', '#5ce0e0', '#e0e05c'
+        ];
+
+        const ANIMATED_STYLES = [
+            { key: 'gradient', label: 'Gradient',  preview: 'linear-gradient(135deg,#c9a84c,#e05c5c)' },
+            { key: 'rainbow',  label: 'Rainbow',   preview: 'linear-gradient(135deg,#e05c5c,#e0a85c,#a8e05c,#5ce0c9,#5c8ce0,#c95ce0)' },
+            { key: 'shimmer',  label: 'Shimmer',   preview: 'linear-gradient(90deg,#c9a84c,#fff8e7,#c9a84c)' },
+            { key: 'pulse',    label: 'Pulse',     preview: 'linear-gradient(135deg,#5c8ce0,#c95ce0)' },
+            { key: 'fire',     label: 'Fire',      preview: 'linear-gradient(135deg,#ff4500,#ffd700)' },
+        ];
+
         function openProfileModal() {
-            document.getElementById('profile-initials').value        = currentUser.initials || '';
-            document.getElementById('profile-password').value        = '';
+            selectedColor       = currentUser.color       || '';
+            selectedAvatarStyle = currentUser.avatarStyle || '';
+
+            document.getElementById('profile-initials').value         = currentUser.initials || '';
+            document.getElementById('profile-password').value         = '';
             document.getElementById('profile-password-confirm').value = '';
+
+            // Build preset color swatches
+            var swatchContainer = document.getElementById('color-swatches');
+            swatchContainer.innerHTML = '';
+            PRESET_COLORS.forEach(function(c) {
+                var sw = document.createElement('div');
+                sw.style.cssText = 'width:32px;height:32px;border-radius:50%;background:' + c +
+                    ';cursor:pointer;border:2px solid ' + (selectedColor === c && !selectedAvatarStyle ? 'white' : 'transparent') +
+                    ';transition:border-color 0.2s;flex-shrink:0';
+                sw.title = c;
+                sw.addEventListener('click', function() {
+                    selectedColor = c;
+                    selectedAvatarStyle = '';
+                    refreshSwatchSelections();
+                });
+                swatchContainer.appendChild(sw);
+            });
+
+            // Set custom color picker value
+            if (selectedColor && !PRESET_COLORS.includes(selectedColor)) {
+                document.getElementById('profile-color-custom').value = selectedColor;
+            }
+
+            // Custom color apply button
+            document.getElementById('profile-color-custom-apply').onclick = function() {
+                selectedColor = document.getElementById('profile-color-custom').value;
+                selectedAvatarStyle = '';
+                refreshSwatchSelections();
+            };
+
+            // Check unlock status
+            var myRatingCount = getUserRatingCount(currentUser.name);
+            var unlocked      = myRatingCount >= 10;
+            var remaining     = 10 - myRatingCount;
+
+            var badge    = document.getElementById('unlock-badge');
+            var hint     = document.getElementById('unlock-hint');
+            var animSect = document.getElementById('animated-swatches');
+            animSect.innerHTML = '';
+
+            if (unlocked) {
+                badge.textContent         = '✓ Unlocked';
+                badge.style.background    = 'rgba(46,204,113,0.15)';
+                badge.style.color         = '#2ecc71';
+                badge.style.border        = '1px solid #1a8a46';
+                hint.textContent          = '';
+            } else {
+                badge.textContent         = '🔒 Locked';
+                badge.style.background    = 'rgba(74,72,70,0.3)';
+                badge.style.color         = 'var(--text-dim)';
+                badge.style.border        = '1px solid var(--border)';
+                hint.textContent          = 'Rate ' + remaining + ' more movie' + (remaining === 1 ? '' : 's') + ' to unlock animated styles.';
+            }
+
+            ANIMATED_STYLES.forEach(function(s) {
+                var sw = document.createElement('div');
+                sw.style.cssText = 'width:32px;height:32px;border-radius:50%;background:' + s.preview +
+                    ';cursor:' + (unlocked ? 'pointer' : 'not-allowed') + ';border:2px solid ' +
+                    (selectedAvatarStyle === s.key ? 'white' : 'transparent') +
+                    ';transition:border-color 0.2s;flex-shrink:0;position:relative;' +
+                    (unlocked ? '' : 'opacity:0.35;filter:grayscale(0.5)');
+                sw.title = unlocked ? s.label : s.label + ' (locked)';
+                if (unlocked) {
+                    sw.addEventListener('click', function() {
+                        selectedAvatarStyle = s.key;
+                        selectedColor = '';
+                        refreshSwatchSelections();
+                    });
+                }
+                animSect.appendChild(sw);
+            });
+
+            refreshSwatchSelections();
             document.getElementById('profile-modal').classList.add('open');
             closeUserDropdown();
+        }
+
+        function refreshSwatchSelections() {
+            // Update preset swatch borders
+            var swatches = document.querySelectorAll('#color-swatches div');
+            swatches.forEach(function(sw, i) {
+                sw.style.borderColor = (!selectedAvatarStyle && selectedColor === PRESET_COLORS[i]) ? 'white' : 'transparent';
+            });
+            // Update animated swatch borders
+            var animSwatches = document.querySelectorAll('#animated-swatches div');
+            animSwatches.forEach(function(sw, i) {
+                sw.style.borderColor = selectedAvatarStyle === ANIMATED_STYLES[i].key ? 'white' : 'transparent';
+            });
+            // Live preview on the header chip
+            var chipEl = document.getElementById('chip-avatar');
+            var preview = Object.assign({}, currentUser, { color: selectedColor, avatarStyle: selectedAvatarStyle });
+            applyAvatarStyle(chipEl, preview);
         }
 
         function saveProfileChanges() {
@@ -1452,21 +1683,32 @@
 
             var acc = ACCOUNTS.find(function(a) { return a.name === currentUser.name; });
             if (acc) {
-                acc.initials = initials;
+                acc.initials    = initials;
+                acc.color       = selectedColor;
+                acc.avatarStyle = selectedAvatarStyle;
                 if (pw1) acc.password = pw1;
             }
-            currentUser.initials = initials;
+            currentUser.initials    = initials;
+            currentUser.color       = selectedColor;
+            currentUser.avatarStyle = selectedAvatarStyle;
             if (pw1) currentUser.password = pw1;
 
             document.getElementById('chip-avatar').textContent = initials;
+            applyAvatarStyle(document.getElementById('chip-avatar'), currentUser);
             document.getElementById('profile-modal').classList.remove('open');
 
-            var payload = { name: currentUser.name, initials: initials };
-            if (pw1) payload.password = pw1;
-
-            apiPost({ action: 'saveProfile', name: payload.name, initials: payload.initials, password: payload.password || '' })
-                .then(function() { showToast('Profile updated ✓', 'success'); })
-                .catch(function() { showToast('Saved locally but failed to sync', 'error'); });
+            apiPost({
+                action:      'saveProfile',
+                name:        currentUser.name,
+                initials:    initials,
+                color:       selectedColor,
+                avatarStyle: selectedAvatarStyle,
+                password:    pw1 || ''
+            }).then(function() {
+                showToast('Profile updated ✓', 'success');
+            }).catch(function() {
+                showToast('Saved locally but failed to sync', 'error');
+            });
         }
 
         async function fetchMovieData(title, year) {
@@ -1686,6 +1928,8 @@
                         if (acc) {
                             if (u.initials) acc.initials = u.initials;
                             if (u.password) acc.password = u.password;
+                            if (u.color)       acc.color       = u.color;
+                            if (u.avatarStyle) acc.avatarStyle = u.avatarStyle;
                         }
                     });
                     // refresh avatar in case initials changed
@@ -1696,6 +1940,8 @@
                             document.getElementById('chip-avatar').textContent = currentUser.initials;
                         }
                     }
+                    document.getElementById('chip-avatar').textContent = currentUser.initials;
+                    applyAvatarStyle(document.getElementById('chip-avatar'), currentUser);  
                 });
                 setStatus('connected', 'Connected \xb7 ' + new Date().toLocaleTimeString());
             }).catch(function(e) {
@@ -2101,7 +2347,9 @@
                     var acc = ACCOUNTS.find(function(a) { return a.name.toLowerCase() === v.trim().toLowerCase(); });
                     var initial = acc ? acc.initials : v.trim()[0].toUpperCase();
                     var isMe = currentUser && v.trim().toLowerCase() === currentUser.name.toLowerCase();
-                    return '<div class="viewer-pip' + (isMe ? ' me' : '') + '" title="' + esc(v.trim()) + '">' + initial + '</div>';
+                    var styleAttr = acc ? getAvatarStyleAttr(acc) : '';
+                    var base = acc ? getAvatarStyleAttr(acc, isMe) : '';
+                    return '<div ' + base + ' title="' + esc(v.trim()) + '">' + initial + '</div>';
                 }).join('') +
             '</div>';
         }
@@ -2114,7 +2362,9 @@
                     var acc = ACCOUNTS.find(function(a) { return a.name.toLowerCase() === v.trim().toLowerCase(); });
                     var initial = acc ? acc.initials : v.trim()[0].toUpperCase();
                     var isMe = currentUser && v.trim().toLowerCase() === currentUser.name.toLowerCase();
-                    return '<div class="viewer-pip' + (isMe ? ' me' : '') + '" title="' + esc(v.trim()) + ' watched">' + initial + '</div>';
+                    var styleAttr = acc ? getAvatarStyleAttr(acc) : '';
+                    var base = acc ? getAvatarStyleAttr(acc, isMe) : '';
+                    return '<div ' + base + ' title="' + esc(v.trim()) + '">' + initial + '</div>';
                 }).join('') +
             '</div>';
         }
