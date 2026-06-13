@@ -516,9 +516,12 @@
             }
 
             .search-wrap .icon {
-                position: absolute; left: 0.6rem; top: 50%;
+                position: absolute;
+                left: 0.6rem;
+                top: 50%;
                 transform: translateY(-50%);
-                color: var(--text-dim); font-size: 0.85rem;
+                color: var(--text-dim);
+                font-size: 0.85rem;
                 pointer-events: none;
             }
 
@@ -628,6 +631,11 @@
             }
 
             .toolbar {
+                font-family: 'DM Mono', monospace;
+                font-size: 0.67rem;
+                color: var(--text-dim);
+                letter-spacing: 0.1em;
+                text-transform: uppercase;
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
@@ -1601,6 +1609,11 @@
             <div class="toolbar">
                 <span class="results-count" id="results-count"></span>
                 <div style="display:flex;gap:1rem;align-items:center;flex-wrap:wrap">
+                    <label>Search</label>
+                    <div class="search-wrap">
+                        <span class="icon">&#x1F50D;</span>
+                        <input type="text" id="search" placeholder="Title, director&#x2026;" />
+                    </div>
                     <div class="sort-row">
                         <label>Sort</label>
                         <select id="sort-select" class="filter-select" style="width:auto">
@@ -1627,14 +1640,6 @@
                     <span id="filter-toggle-arrow">▼</span>
                 </div>
                 <aside id="sidebar">
-                    <div class="filter-section">
-                        <h3>Search</h3>
-                        <div class="search-wrap">
-                            <span class="icon">&#x1F50D;</span>
-                            <input type="text" id="search" placeholder="Title, director&#x2026;" />
-                        </div>
-                    </div>
-
                     <div class="filter-section">
                         <h3>Status</h3>
                         <div class="check-group" id="filter-status">
