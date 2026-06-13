@@ -1581,7 +1581,7 @@
             // Body rows
             var rows = [
                 ['Director',  m.Director],
-                ['Source',    m.Source],
+                ['Owned',     m.Source ? (m.Source === 'Yes' ? '✓ Yes' : '✗ No') : null],
                 ['Notes',     m.Notes],
                 ['Viewers',   m.Viewers],
                 ['Watched By',m.WatchedBy],
