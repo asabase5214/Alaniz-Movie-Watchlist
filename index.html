@@ -1698,6 +1698,15 @@
             applyAvatarStyle(document.getElementById('chip-avatar'), currentUser);
             document.getElementById('profile-modal').classList.remove('open');
 
+            console.log('Saving profile:', {
+                action:      'saveProfile',
+                name:        currentUser.name,
+                initials:    initials,
+                color:       selectedColor,
+                avatarStyle: selectedAvatarStyle,
+                password:    pw1 || ''
+            });
+
             apiPost({
                 action:      'saveProfile',
                 name:        currentUser.name,
