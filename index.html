@@ -1183,7 +1183,7 @@
                 </div>
 
                 <div class="filter-section">
-                    <h3>Who Can Watch</h3>
+                    <h3>On Watchlist</h3>
                     <div class="check-group" id="filter-viewers"></div>
                 </div>
 
@@ -2210,7 +2210,7 @@
             container.innerHTML = '<div class="table-wrap"><table>' +
                 '<thead><tr>' +
                 '<th>Title</th><th>Genre</th><th>Priority</th>' +
-                '<th>Status</th><th>Rating</th><th>On List</th><th>Who Can Watch</th><th>Watched By</th><th></th>' +
+                '<th>Status</th><th>Rating</th><th>On List</th><th>On Watchlist</th><th>Watched By</th><th></th>' +
                 '</tr></thead><tbody>' + rows + '</tbody></table></div>';
         }
 
@@ -2455,10 +2455,17 @@
                 }
             }
 
-            // Priority boost: priority 1 = +1, priority 2 = +0.5
             var priorityBoost = movie.Priority == 1 ? 1 : movie.Priority == 2 ? 0.5 : 0;
 
-            return (directScore * 2) + genreScore + priorityBoost;
+            var movieViewers = parseList(movie.Viewers || '');
+            var viewerBoost = viewers.reduce(function(total, viewer) {
+                var onList = movieViewers.some(function(v) {
+                    return v.trim().toLowerCase() === viewer.toLowerCase();
+                });
+                return total + (onList ? 0.5 : 0);
+            }, 0);
+
+            return (directScore * 2) + genreScore + priorityBoost + viewerBoost;
         }
 
         function closeModal() {
@@ -2555,7 +2562,16 @@
             }
 
             var priorityBoost = movie.Priority == 1 ? 1 : movie.Priority == 2 ? 0.5 : 0;
-            return (directScore * 2) + genreScore + priorityBoost;
+
+            var movieViewers = parseList(movie.Viewers || '');
+            var viewerBoost = viewers.reduce(function(total, viewer) {
+                var onList = movieViewers.some(function(v) {
+                    return v.trim().toLowerCase() === viewer.toLowerCase();
+                });
+                return total + (onList ? 0.5 : 0);
+            }, 0);
+
+            return (directScore * 2) + genreScore + priorityBoost + viewerBoost;
         }
         </script>
     </body>
