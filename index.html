@@ -1002,27 +1002,24 @@
             }
 
             .avatar-rainbow {
-                background: linear-gradient(135deg, #e05c5c, #e0a85c, #a8e05c, #5ce0c9, #5c8ce0, #c95ce0) !important;
-                background-size: 300% 300% !important;
-                animation: rainbowShift 4s ease infinite !important;
-                border-color: transparent !important;
-                color: white !important;
-            }
-
-            .avatar-fire {
-                background: linear-gradient(135deg, #ff4500, #ff8c00, #ffd700) !important;
-                background-size: 300% 300% !important;
-                animation: fireShift 1.5s ease infinite alternate !important;
+                background: linear-gradient(135deg, #e05c5c, #5c8ce0, #a8e05c) !important;
+                animation: rainbowShift 3s linear infinite !important;
                 border-color: transparent !important;
                 color: white !important;
             }
 
             .avatar-shimmer {
-                background: linear-gradient(90deg, #c9a84c 0%, #fff8e7 50%, #c9a84c 100%) !important;
-                background-size: 200% 100% !important;
-                animation: shimmerSlide 2s linear infinite !important;
+                background: linear-gradient(90deg, #c9a84c, #fff8e7) !important;
+                animation: shimmerSlide 1.5s ease infinite !important;
                 border-color: transparent !important;
                 color: #0a0a0b !important;
+            }
+
+            .avatar-fire {
+                background: linear-gradient(135deg, #ff4500, #ffd700) !important;
+                animation: fireShift 1s ease infinite !important;
+                border-color: transparent !important;
+                color: white !important;
             }
 
             .avatar-pulse {
@@ -1031,24 +1028,25 @@
             }
 
             @keyframes rainbowShift {
-                0%   { background-position: 0% 50%; }
-                50%  { background-position: 100% 50%; }
-                100% { background-position: 0% 50%; }
+                0%   { filter: hue-rotate(0deg); }
+                100% { filter: hue-rotate(360deg); }
+            }
+
+            @keyframes shimmerSlide {
+                0%   { opacity: 1; }
+                50%  { opacity: 0.5; }
+                100% { opacity: 1; }
+            }
+
+            @keyframes fireShift {
+                0%   { filter: hue-rotate(0deg) brightness(1); }
+                50%  { filter: hue-rotate(20deg) brightness(1.3); }
+                100% { filter: hue-rotate(-20deg) brightness(0.8); }
             }
 
             @keyframes avatarPulse {
                 0%,100% { transform: scale(1); box-shadow: 0 0 0 0 currentColor; }
                 50%      { transform: scale(1.08); box-shadow: 0 0 8px 2px currentColor; }
-            }
-
-            @keyframes shimmerSlide {
-                0%   { background-position: 200% 0; }
-                100% { background-position: -200% 0; }
-            }
-
-            @keyframes fireShift {
-                0%   { background-position: 0% 50%; }
-                100% { background-position: 100% 50%; }
             }
         </style>
     </head>
