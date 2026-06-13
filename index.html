@@ -1361,6 +1361,7 @@
                 <div class="modal-footer">
                     <button class="btn" id="detail-close">Close</button>
                     <button class="btn" id="detail-edit">✎ Edit</button>
+                    <button class="btn" id="detail-add-list" style="border-color:var(--gold-dim);color:var(--gold)">+ My List</button>
                     <button class="btn primary" id="detail-watch-toggle"></button>
                 </div>
             </div>
@@ -1553,6 +1554,17 @@
                 '</div>';
             }).join('') +
             '<div style="margin-top:0.25rem">' + buildStarHTML(m.RowID) + '</div>';
+
+            var addListBtn = document.getElementById('detail-add-list');
+            if (!isOnMyList(m)) {
+                addListBtn.style.display = 'inline-flex';
+                addListBtn.onclick = function() {
+                    addToMyList(m);
+                    document.getElementById('detail-modal').classList.remove('open');
+                };
+            } else {
+                addListBtn.style.display = 'none';
+            }
 
             // Footer buttons
             document.getElementById('detail-watch-toggle').textContent = iWatched(m) ? '↩ Unwatch' : '✓ Mark Watched';
