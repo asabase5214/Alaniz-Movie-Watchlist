@@ -49,9 +49,9 @@
                 overflow-y: auto;
             }
 
-            /* ===================== SIGN-IN GATE ===================== */
+            /* style for sign-in gate */
             #signin-gate {
-                position: fixed;
+                position: fixed; 
                 inset: 0;
                 z-index: 1000;
                 background: var(--bg);
@@ -63,7 +63,10 @@
                 padding: 2rem;
                 overflow-y: auto;
             }
-            #signin-gate.hidden { display: none; }
+
+            #signin-gate.hidden {
+                display: none;
+            }
 
             .signin-logo {
                 font-family: 'Playfair Display', serif;
@@ -74,6 +77,7 @@
                 text-transform: uppercase;
                 margin-bottom: 0.4rem;
             }
+
             .signin-tagline {
                 font-family: 'DM Mono', monospace;
                 font-size: 0.65rem;
@@ -105,7 +109,9 @@
             }
 
             @media (max-width: 520px) {
-                .user-grid { grid-template-columns: repeat(2, 1fr); }
+                .user-grid { 
+                    grid-template-columns: repeat(2, 1fr);
+                }
             }
 
             .user-card {
@@ -123,6 +129,7 @@
                 position: relative;
                 overflow: hidden;
             }
+
             .user-card::before {
                 content: '';
                 position: absolute; top: 0; left: 0; right: 0; height: 2px;
@@ -130,15 +137,17 @@
                 opacity: 0;
                 transition: opacity var(--transition);
             }
-            .user-card:hover,
-            .user-card.selected {
+
+            .user-card:hover, .user-card.selected {
                 border-color: var(--gold-dim);
                 background: var(--surface2);
                 transform: translateY(-2px);
                 box-shadow: 0 6px 20px rgba(0,0,0,0.4);
             }
-            .user-card:hover::before,
-            .user-card.selected::before { opacity: 1; }
+
+            .user-card:hover::before, .user-card.selected::before {
+                opacity: 1;
+            }
 
             .user-avatar {
                 width: 48px; height: 48px;
@@ -153,11 +162,12 @@
                 transition: all var(--transition);
                 flex-shrink: 0;
             }
-            .user-card.selected .user-avatar,
-            .user-card:hover .user-avatar {
+
+            .user-card.selected .user-avatar, .user-card:hover .user-avatar {
                 border-color: var(--gold-dim);
                 background: rgba(201,168,76,0.08);
             }
+
             .user-name {
                 font-family: 'Playfair Display', serif;
                 font-size: 0.9rem;
@@ -173,11 +183,21 @@
                 gap: 0.75rem;
                 animation: fadeSlideUp 0.2s ease;
             }
-            #pin-section.visible { display: flex; }
+
+            #pin-section.visible {
+                display: flex;
+            }
 
             @keyframes fadeSlideUp {
-                from { opacity: 0; transform: translateY(8px); }
-                to   { opacity: 1; transform: none; }
+                from {
+                    opacity: 0;
+                    transform: translateY(8px);
+                }
+
+                to   {
+                    opacity: 1;
+                    transform: none;
+                }
             }
 
             .pin-label {
@@ -187,6 +207,7 @@
                 text-transform: uppercase;
                 color: var(--text-dim);
             }
+
             .pin-label em {
                 color: var(--gold);
                 font-style: normal;
@@ -196,6 +217,7 @@
                 display: flex;
                 gap: 0.6rem;
             }
+
             .pin-input {
                 flex: 1;
                 background: var(--surface2);
@@ -209,14 +231,28 @@
                 outline: none;
                 transition: border-color var(--transition);
             }
-            .pin-input:focus { border-color: var(--gold-dim); }
-            .pin-input.error { border-color: var(--red); animation: shake 0.3s ease; }
-            .pin-input::placeholder { letter-spacing: 0.05em; color: var(--text-dim); }
+
+            .pin-input:focus {
+                border-color: var(--gold-dim);
+            }
+
+            .pin-input.error {
+                border-color: var(--red);
+                animation: shake 0.3s ease;
+            }
+            .pin-input::placeholder {
+                letter-spacing: 0.05em;
+                color: var(--text-dim);
+            }
 
             @keyframes shake {
-                0%,100%{transform:translateX(0)}
-                25%{transform:translateX(-6px)}
-                75%{transform:translateX(6px)}
+                0%, 100%{
+                    transform:translateX(0)
+                } 25% {
+                    transform:translateX(-6px)
+                } 75% {
+                    transform:translateX(6px)
+                }
             }
 
             .btn-signin {
@@ -234,7 +270,10 @@
                 transition: all var(--transition);
                 white-space: nowrap;
             }
-            .btn-signin:hover { background: #d4b05c; }
+
+            .btn-signin:hover {
+                background: #d4b05c;
+            }
 
             .signin-error {
                 font-family: 'DM Mono', monospace;
@@ -244,7 +283,8 @@
                 min-height: 1em;
             }
 
-            /* ===================== MAIN APP ===================== */
+            /* main styles */
+
             #main-app {
                 display: none;
                 height: 100vh;
@@ -252,7 +292,10 @@
                 overflow-x: hidden;
                 flex-direction: column;
             }
-            #main-app.visible { display: flex; }
+
+            #main-app.visible {
+                display: flex;
+            }
 
             header {
                 border-bottom: 1px solid var(--border);
@@ -276,6 +319,7 @@
                 color: var(--gold);
                 text-transform: uppercase;
             }
+
             .logo span {
                 display: inline-block;
                 width: 6px; height: 6px;
@@ -285,7 +329,11 @@
                 vertical-align: middle;
             }
 
-            .header-actions { display: flex; gap: 0.75rem; align-items: center; }
+            .header-actions {
+                display: flex;
+                gap: 0.75rem;
+                align-items: center;
+            }
 
             .user-chip {
                 display: flex;
@@ -298,7 +346,11 @@
                 cursor: pointer;
                 transition: all var(--transition);
             }
-            .user-chip:hover { border-color: var(--gold-dim); }
+
+            .user-chip:hover {
+                border-color: var(--gold-dim);
+            }
+
             .user-chip-avatar {
                 width: 24px; height: 24px;
                 border-radius: 50%;
@@ -310,6 +362,7 @@
                 font-weight: 700;
                 color: var(--gold);
             }
+
             .user-chip-name {
                 font-family: 'DM Mono', monospace;
                 font-size: 0.68rem;
@@ -330,16 +383,32 @@
                 cursor: pointer;
                 transition: all var(--transition);
             }
-            .btn:hover { border-color: var(--gold-dim); color: var(--gold); }
+
+            .btn:hover {
+                border-color: var(--gold-dim);
+                color: var(--gold);
+            }
+            
             .btn.primary {
                 background: var(--gold);
                 border-color: var(--gold);
                 color: #0a0a0b;
                 font-weight: 500;
             }
-            .btn.primary:hover { background: #d4b05c; }
-            .btn.danger { border-color: #5a2020; color: #c0392b; }
-            .btn.danger:hover { background: rgba(192,57,43,0.1); border-color: var(--red); }
+
+            .btn.primary:hover {
+                background: #d4b05c;
+            }
+
+            .btn.danger {
+                border-color: #5a2020;
+                color: #c0392b;
+            }
+
+            .btn.danger:hover {
+                background: rgba(192,57,43,0.1);
+                border-color: var(--red);
+            }
 
             #status-bar {
                 font-family: 'DM Mono', monospace;
@@ -362,11 +431,29 @@
                 display: inline-block; margin-right: 6px;
                 background: var(--text-dim);
             }
-            #status-bar .dot.connected { background: var(--green); box-shadow: 0 0 6px var(--green); }
-            #status-bar .dot.error     { background: var(--red);   box-shadow: 0 0 6px var(--red); }
-            #status-bar .dot.loading   { background: var(--gold);  animation: pulse 1s infinite; }
 
-            @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+            #status-bar.dot.connected {
+                background: var(--green);
+                box-shadow: 0 0 6px var(--green);
+            }
+
+            #status-bar.dot.error {
+                background: var(--red);
+                box-shadow: 0 0 6px var(--red);
+            }
+
+            #status-bar.dot.loading {
+                background: var(--gold);
+                animation: pulse 1s infinite;
+            }
+
+            @keyframes pulse {
+                0%, 100% {
+                    opacity:1
+                } 50% {
+                    opacity:0.3
+                }
+            }
 
             .app {
                 display: flex;
@@ -399,7 +486,10 @@
                 margin-bottom: 0.75rem;
             }
 
-            .search-wrap { position: relative; }
+            .search-wrap {
+                position: relative;
+            }
+
             .search-wrap input {
                 width: 100%;
                 background: var(--surface2);
@@ -413,8 +503,15 @@
                 transition: border-color var(--transition);
                 outline: none;
             }
-            .search-wrap input:focus { border-color: var(--gold-dim); }
-            .search-wrap input::placeholder { color: var(--text-dim); }
+
+            .search-wrap input:focus {
+                border-color: var(--gold-dim);
+            }
+
+            .search-wrap input::placeholder {
+                color: var(--text-dim);
+            }
+
             .search-wrap .icon {
                 position: absolute; left: 0.6rem; top: 50%;
                 transform: translateY(-50%);
@@ -422,13 +519,22 @@
                 pointer-events: none;
             }
 
-            .check-group { display: flex; flex-direction: column; gap: 0.45rem; }
+            .check-group {
+                display: flex;
+                flex-direction: column;
+                gap: 0.45rem;
+            }
+
             .check-item {
                 display: flex; align-items: center; gap: 0.6rem;
                 cursor: pointer; font-size: 0.82rem; color: var(--text-muted);
                 transition: color var(--transition);
             }
-            .check-item:hover { color: var(--text); }
+
+            .check-item:hover {
+                color: var(--text);
+            }
+
             .check-item input[type="checkbox"] {
                 appearance: none;
                 width: 14px; height: 14px;
@@ -439,10 +545,12 @@
                 flex-shrink: 0;
                 transition: all var(--transition);
             }
+
             .check-item input[type="checkbox"]:checked {
                 background: var(--gold);
                 border-color: var(--gold);
             }
+
             .check-item input[type="checkbox"]:checked::after {
                 content: '✓';
                 display: block;
@@ -453,12 +561,18 @@
                 font-weight: 700;
             }
 
-            .range-row { display: flex; align-items: center; gap: 0.5rem; }
+            .range-row {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+
             .range-row input[type="range"] {
                 flex: 1;
                 accent-color: var(--gold);
                 cursor: pointer;
             }
+
             .range-val {
                 font-family: 'DM Mono', monospace;
                 font-size: 0.7rem;
@@ -480,7 +594,10 @@
                 cursor: pointer;
                 transition: border-color var(--transition);
             }
-            .filter-select:focus { border-color: var(--gold-dim); }
+
+            .filter-select:focus {
+                border-color: var(--gold-dim);
+            }
 
             .reset-link {
                 font-family: 'DM Mono', monospace;
@@ -495,7 +612,10 @@
                 margin-top: auto;
                 transition: color var(--transition);
             }
-            .reset-link:hover { color: var(--gold); }
+
+            .reset-link:hover {
+                color: var(--gold);
+            }
 
             main {
                 flex: 1;
@@ -525,9 +645,16 @@
                 color: var(--text-dim);
                 letter-spacing: 0.05em;
             }
-            .results-count strong { color: var(--gold); }
 
-            .view-toggle { display: flex; gap: 0.3rem; }
+            .results-count strong {
+                color: var(--gold);
+            }
+
+            .view-toggle {
+                display: flex;
+                gap: 0.3rem;
+            }
+
             .view-toggle button {
                 background: none;
                 border: 1px solid var(--border);
@@ -538,10 +665,18 @@
                 font-size: 0.85rem;
                 transition: all var(--transition);
             }
-            .view-toggle button.active,
-            .view-toggle button:hover { border-color: var(--gold-dim); color: var(--gold); }
 
-            .sort-row { display: flex; align-items: center; gap: 0.6rem; }
+            .view-toggle button.active, .view-toggle button:hover {
+                border-color: var(--gold-dim);
+                color: var(--gold);
+            }
+
+            .sort-row {
+                display: flex;
+                align-items: center;
+                gap: 0.6rem;
+            }
+
             .sort-row label {
                 font-family: 'DM Mono', monospace;
                 font-size: 0.67rem;
@@ -554,7 +689,13 @@
                 overflow-x: visible;
                 overflow-y: visible;
             }
-            table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                font-size: 0.875rem;
+            }
+
             thead th {
                 font-family: 'DM Mono', monospace;
                 font-size: 0.65rem;
@@ -568,7 +709,10 @@
                 white-space: nowrap;
                 user-select: none;
             }
-            thead th:hover { color: var(--gold); }
+
+            thead th:hover {
+                color: var(--gold);
+            }
 
             tbody tr {
                 border-bottom: 1px solid var(--border);
@@ -576,18 +720,36 @@
                 cursor: pointer;
                 animation: fadeIn 0.3s ease both;
             }
-            tbody tr:hover { background: var(--gold-glow); }
-            tbody tr.watched { opacity: 0.45; }
 
-            @keyframes fadeIn { from{opacity:0;transform:translateY(4px)} to{opacity:1;transform:none} }
+            tbody tr:hover {
+                background: var(--gold-glow);
+            }
 
-            td { padding: 0.85rem 0.75rem; vertical-align: middle; }
+            tbody tr.watched {
+                opacity: 0.45;
+            }
+
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(4px)
+                } to {
+                    opacity: 1;
+                    transform: none
+                }
+            }
+
+            td {
+                padding: 0.85rem 0.75rem;
+                vertical-align: middle;
+            }
 
             .movie-title-cell strong {
                 font-family: 'Playfair Display', serif;
                 font-size: 0.95rem;
                 display: block;
             }
+
             .movie-title-cell .year {
                 font-family: 'DM Mono', monospace;
                 font-size: 0.68rem;
@@ -619,9 +781,24 @@
                 font-size: 0.75rem;
                 font-weight: 500;
             }
-            .priority-1 { background: rgba(201,168,76,0.2); color: var(--gold); border: 1px solid var(--gold-dim); }
-            .priority-2 { background: rgba(52,152,219,0.15); color: #5dade2; border: 1px solid #2471a3; }
-            .priority-3 { background: rgba(74,72,70,0.4); color: var(--text-muted); border: 1px solid var(--border); }
+
+            .priority-1 {
+                background: rgba(201,168,76,0.2);
+                color: var(--gold);
+                border: 1px solid var(--gold-dim);
+            }
+
+            .priority-2 {
+                background: rgba(52,152,219,0.15);
+                color: #5dade2;
+                border: 1px solid #2471a3;
+            }
+
+            .priority-3 {
+                background: rgba(74,72,70,0.4);
+                color: var(--text-muted);
+                border: 1px solid var(--border);
+            }
 
             .runtime-cell {
                 font-family: 'DM Mono', monospace;
@@ -639,11 +816,30 @@
                 padding: 0.2rem 0.55rem;
                 border-radius: 20px;
             }
-            .status-watched   { background: rgba(46,204,113,0.12); color: #2ecc71; border: 1px solid #1a8a46; }
-            .status-unwatched { background: rgba(74,72,70,0.3); color: var(--text-dim); border: 1px solid var(--border); }
 
-            .row-actions { display: flex; gap: 0.3rem; opacity: 0; transition: opacity var(--transition); }
-            tbody tr:hover .row-actions { opacity: 1; }
+            .status-watched {
+                background: rgba(46,204,113,0.12);
+                color: #2ecc71;
+                border: 1px solid #1a8a46;
+            }
+
+            .status-unwatched {
+                background: rgba(74,72,70,0.3);
+                color: var(--text-dim);
+                border: 1px solid var(--border);
+            }
+
+            .row-actions {
+                display: flex;
+                gap: 0.3rem;
+                opacity: 0;
+                transition: opacity var(--transition);
+            }
+
+            tbody tr:hover.row-actions {
+                opacity: 1;
+            }
+
             .row-btn {
                 background: none; border: 1px solid var(--border);
                 color: var(--text-muted); border-radius: 3px;
@@ -651,8 +847,16 @@
                 cursor: pointer; transition: all var(--transition);
                 font-family: 'DM Mono', monospace;
             }
-            .row-btn:hover { border-color: var(--gold-dim); color: var(--gold); }
-            .row-btn.del:hover { border-color: var(--red); color: var(--red); }
+
+            .row-btn:hover {
+                border-color: var(--gold-dim);
+                color: var(--gold);
+            }
+
+            .row-btn.del:hover {
+                border-color: var(--red);
+                color: var(--red);
+            }
 
             .card-grid {
                 display: grid;
@@ -671,26 +875,83 @@
                 position: relative;
                 overflow: hidden;
             }
+
             .movie-card::before {
                 content: '';
                 position: absolute; top: 0; left: 0; right: 0; height: 3px;
                 background: linear-gradient(90deg, var(--gold-dim), transparent);
                 opacity: 0; transition: opacity var(--transition);
             }
-            .movie-card:hover { border-color: var(--gold-dim); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.4); }
-            .movie-card:hover::before { opacity: 1; }
-            .movie-card.watched { opacity: 0.45; }
 
-            .card-title { font-family: 'Playfair Display', serif; font-size: 1rem; line-height: 1.3; margin-bottom: 0.3rem; }
-            .card-meta { font-family: 'DM Mono', monospace; font-size: 0.65rem; color: var(--text-dim); letter-spacing: 0.05em; margin-bottom: 0.75rem; }
-            .card-genres { margin-bottom: 0.75rem; }
-            .card-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--border); }
-            .card-actions { display: flex; gap: 0.3rem; margin-top: 0.75rem; }
+            .movie-card:hover {
+                border-color: var(--gold-dim);
+                transform: translateY(-2px);
+                box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+            }
 
-            .empty-state { text-align: center; padding: 4rem 2rem; color: var(--text-dim); }
-            .empty-state .icon { font-size: 3rem; margin-bottom: 1rem; }
-            .empty-state h3 { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--text-muted); margin-bottom: 0.5rem; }
-            .empty-state p { font-size: 0.82rem; }
+            .movie-card:hover::before {
+                opacity: 1;
+            }
+
+            .movie-card.watched {
+                opacity: 0.45;
+            }
+
+            .card-title {
+                font-family: 'Playfair Display', serif;
+                font-size: 1rem;
+                line-height: 1.3;
+                margin-bottom: 0.3rem;
+            }
+
+            .card-meta {
+                font-family: 'DM Mono', monospace;
+                font-size: 0.65rem;
+                color: var(--text-dim);
+                letter-spacing: 0.05em;
+                margin-bottom: 0.75rem;
+            }
+
+            .card-genres {
+                margin-bottom: 0.75rem;
+            }
+
+            .card-footer {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-top: 0.75rem;
+                padding-top: 0.75rem;
+                border-top: 1px solid var(--border);
+            }
+
+            .card-actions {
+                display: flex;
+                gap: 0.3rem;
+                margin-top: 0.75rem;
+            }
+
+            .empty-state {
+                text-align: center;
+                padding: 4rem 2rem;
+                color: var(--text-dim);
+            }
+
+            .empty-state.icon {
+                font-size: 3rem;
+                margin-bottom: 1rem;
+            }
+
+            .empty-state h3 {
+                font-family: 'Playfair Display', serif;
+                font-size: 1.2rem;
+                color: var(--text-muted);
+                margin-bottom: 0.5rem;
+            }
+
+            .empty-state p {
+                font-size: 0.82rem;
+            }
 
             .modal-backdrop {
                 display: none;
@@ -701,7 +962,10 @@
                 align-items: center;
                 justify-content: center;
             }
-            .modal-backdrop.open { display: flex; }
+
+            .modal-backdrop.open {
+                display: flex;
+            }
 
             .modal {
                 background: var(--surface);
@@ -714,16 +978,53 @@
                 padding: 2rem;
                 animation: modalIn 0.2s ease;
             }
-            @keyframes modalIn { from{opacity:0;transform:scale(0.96)} to{opacity:1;transform:none} }
 
-            .modal h2 { font-family: 'Playfair Display', serif; font-size: 1.4rem; margin-bottom: 1.5rem; color: var(--text); }
-            .modal h2 em { color: var(--gold); font-style: normal; }
+            @keyframes modalIn {
+                from {
+                    opacity: 0;
+                    transform:scale(0.96)
+                } to {
+                    opacity: 1;
+                    transform: none
+                }
+            }
 
-            .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-            .form-grid .full { grid-column: 1 / -1; }
+            .modal h2 {
+                font-family: 'Playfair Display', serif;
+                font-size: 1.4rem;
+                margin-bottom: 1.5rem;
+                color: var(--text);
+            }
 
-            .field { display: flex; flex-direction: column; gap: 0.4rem; }
-            .field label { font-family: 'DM Mono', monospace; font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-dim); }
+            .modal h2 em {
+                color: var(--gold);
+                font-style: normal;
+            }
+
+            .form-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 1rem;
+            }
+
+            .form-grid .full {
+                grid-column: 1 / -1;
+            }
+
+            .field {
+                display: flex;
+                flex-direction: column;
+                gap: 0.4rem;
+            }
+            
+            .field label {
+                font-family: 'DM Mono', monospace;
+                font-size: 0.62rem;
+                letter-spacing: 0.12em;
+                text-transform: uppercase;
+                color: var(--text-dim);
+            }
+
             .field input, .field select, .field textarea {
                 background: var(--surface2);
                 border: 1px solid var(--border);
@@ -736,11 +1037,28 @@
                 outline: none;
                 transition: border-color var(--transition);
             }
-            .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--gold-dim); }
-            .field textarea { resize: vertical; min-height: 70px; }
-            .field select option { background: var(--surface2); }
 
-            .modal-footer { display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid var(--border); }
+            .field input:focus, .field select:focus, .field textarea:focus {
+                border-color: var(--gold-dim);
+            }
+
+            .field textarea {
+                resize: vertical;
+                min-height: 70px;
+            }
+
+            .field select option {
+                background: var(--surface2);
+            }
+
+            .modal-footer {
+                display: flex;
+                justify-content: flex-end;
+                gap: 0.75rem;
+                margin-top: 1.5rem;
+                padding-top: 1.25rem;
+                border-top: 1px solid var(--border);
+            }
 
             #toast {
                 position: fixed;
@@ -759,16 +1077,30 @@
                 pointer-events: none;
                 max-width: 300px;
             }
-            #toast.show { opacity: 1; transform: none; }
-            #toast.success { border-color: #1a8a46; color: #2ecc71; }
-            #toast.error   { border-color: #5a2020; color: var(--red); }
 
-            /* ===================== RATINGS & WATCHLIST ===================== */
+            #toast.show {
+                opacity: 1;
+                transform: none;
+            }
+
+            #toast.success {
+                border-color: #1a8a46;
+                color: #2ecc71;
+            }
+
+            #toast.error {
+                border-color: #5a2020;
+                color: var(--red);
+            }
+
+            /* Ratings styles */
+
             .star-row {
                 display: flex;
                 gap: 2px;
                 align-items: center;
             }
+
             .star {
                 font-size: 0.85rem;
                 cursor: pointer;
@@ -777,9 +1109,18 @@
                 line-height: 1;
                 padding: 1px;
             }
-            .star.filled  { color: var(--gold); }
-            .star.pending { color: var(--gold-dim); }
-            .star:hover   { color: var(--gold); }
+
+            .star.filled {
+                color: var(--gold);
+            }
+
+            .star.pending {
+                color: var(--gold-dim);
+            }
+
+            .star:hover {
+                color: var(--gold);
+            }
 
             .avg-rating {
                 font-family: 'DM Mono', monospace;
@@ -788,6 +1129,8 @@
                 margin-left: 4px;
                 white-space: nowrap;
             }
+
+            /* avatars */
 
             .viewer-avatars {
                 display: flex;
@@ -806,11 +1149,14 @@
                 font-weight: 700;
                 color: var(--text-dim);
             }
+
             .viewer-pip.me {
                 background: rgba(201,168,76,0.15);
                 border-color: var(--gold-dim);
                 color: var(--gold);
             }
+
+            /* watchlist styles */
 
             .add-to-list-btn {
                 background: none;
@@ -825,17 +1171,35 @@
                 transition: all var(--transition);
                 white-space: nowrap;
             }
+
             .add-to-list-btn:hover {
                 background: rgba(201,168,76,0.12);
             }
 
-            ::-webkit-scrollbar { width: 5px; height: 5px; }
-            ::-webkit-scrollbar-track { background: var(--surface); }
-            ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
-            ::-webkit-scrollbar-thumb:hover { background: var(--gold-dim); }
+            ::-webkit-scrollbar {
+                width: 5px;
+                height: 5px;
+            }
 
-            /* User dropdown */
-            .user-menu { position: relative; }
+            ::-webkit-scrollbar-track {
+                background: var(--surface);
+            }
+
+            ::-webkit-scrollbar-thumb {
+                background: var(--border);
+                border-radius: 10px;
+            }
+
+            ::-webkit-scrollbar-thumb:hover {
+                background: var(--gold-dim);
+            }
+
+            /* User dropdown btn */
+
+            .user-menu {
+                position: relative;
+            }
+
             .user-dropdown {
                 display: none;
                 position: absolute;
@@ -852,19 +1216,49 @@
                 box-shadow: 0 8px 24px rgba(0,0,0,0.5);
                 animation: modalIn 0.15s ease;
             }
-            .user-dropdown.open { display: block; }
-            .user-dropdown-header { padding: 0.6rem 0.75rem 0.75rem; border-bottom: 1px solid var(--border); margin-bottom: 0.4rem; }
-            .user-dropdown-name { font-family: 'Playfair Display', serif; font-size: 0.95rem; color: var(--text); }
-            .dropdown-item {
-                display: block; width: 100%; text-align: left;
-                background: none; border: none; color: var(--text-muted);
-                font-family: 'DM Mono', monospace; font-size: 0.7rem;
-                letter-spacing: 0.07em; text-transform: uppercase;
-                padding: 0.5rem 0.75rem; border-radius: var(--radius);
-                cursor: pointer; transition: all var(--transition);
+
+            .user-dropdown.open {
+                display: block;
             }
-            .dropdown-item:hover { background: var(--surface2); color: var(--red); }
+
+            .user-dropdown-header {
+                padding: 0.6rem 0.75rem 0.75rem;
+                border-bottom: 1px solid var(--border);
+                margin-bottom: 0.4rem;
+            }
+
+            .user-dropdown-name {
+                font-family: 'Playfair Display', serif;
+                font-size: 0.95rem;
+                color: var(--text);
+            }
+
+            .dropdown-item {
+                display: block;
+                width: 100%;
+                text-align: left;
+                background: none;
+                border: none;
+                color: var(--text-muted);
+                font-family: 'DM Mono', monospace;
+                font-size: 0.7rem;
+                letter-spacing: 0.07em;
+                text-transform: uppercase;
+                padding: 0.5rem 0.75rem;
+                border-radius: var(--radius);
+                cursor: pointer;
+                transition: all var(--transition);
+            }
+
+            .dropdown-item:hover {
+                background: var(--surface2);
+                color: var(--red);
+            }
+
+            /* mobile friendly */
+
             @media (max-width: 768px) {
+
                 header {
                     padding: 0 1rem;
                     height: auto;
@@ -873,13 +1267,32 @@
                     padding-top: 0.75rem;
                     padding-bottom: 0.75rem;
                 }
-                .logo { font-size: 1.2rem; }
-                .header-actions { gap: 0.4rem; flex-wrap: wrap; }
-                .btn { padding: 0.4rem 0.7rem; font-size: 0.65rem; }
 
-                #status-bar { padding: 0.4rem 1rem; gap: 0.75rem; font-size: 0.65rem; flex-wrap: wrap; }
+                .logo {
+                    font-size: 1.2rem;
+                }
 
-                .app { flex-direction: column; height: auto; }
+                .header-actions {
+                    gap: 0.4rem;
+                    flex-wrap: wrap;
+                }
+
+                .btn {
+                    padding: 0.4rem 0.7rem;
+                    font-size: 0.65rem;
+                }
+
+                #status-bar {
+                    padding: 0.4rem 1rem;
+                    gap: 0.75rem;
+                    font-size: 0.65rem;
+                    flex-wrap: wrap;
+                }
+
+                .app {
+                    flex-direction: column;
+                    height: auto;
+                }
 
                 aside {
                     width: 100%;
@@ -897,6 +1310,7 @@
                     padding: 0;
                     transition: max-height 0.3s ease, padding 0.3s ease;
                 }
+
                 aside.mobile-open {
                     max-height: 70vh;
                     overflow-y: auto;
@@ -926,29 +1340,52 @@
                     min-width: 0;
                 }
 
-                .toolbar { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
+                .toolbar {
+                    flex-direction: column;
+                    align-items: flex-start;
+                    gap: 0.75rem;
+                }
 
-                .table-wrap { font-size: 0.78rem; }
-                thead th { font-size: 0.58rem; padding: 0 0.4rem 0.6rem; }
-                td { padding: 0.6rem 0.4rem; }
+                .table-wrap {
+                    font-size: 0.78rem;
+                }
 
-                /* Hide less important columns on mobile */
-                table th:nth-child(6),
-                table td:nth-child(6),
-                table th:nth-child(7),
-                table td:nth-child(7),
-                table th:nth-child(10),
-                table td:nth-child(10) { display: none; }
+                thead th {
+                    font-size: 0.58rem;
+                    padding: 0 0.4rem 0.6rem;
+                }
 
-                .card-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 0.75rem; }
+                td {
+                    padding: 0.6rem 0.4rem;
+                }
 
-                .modal { padding: 1.25rem; margin: 1rem; }
-                .form-grid { grid-template-columns: 1fr; }
-                .form-grid .full { grid-column: 1; }
+                /* Hide the less important stuff */
+                table th:nth-child(6), table td:nth-child(6), table th:nth-child(7), table td:nth-child(7), table th:nth-child(10), table td:nth-child(10) {
+                    display: none;
+                }
+
+                .card-grid {
+                    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+                    gap: 0.75rem;
+                }
+
+                .modal {
+                    padding: 1.25rem;
+                    margin: 1rem;
+                }
+
+                .form-grid {
+                    grid-template-columns: 1fr;
+                }
+
+                .form-grid.full {
+                    grid-column: 1;
+                }
 
                 #status-bar {
                     position: static;
                 }
+
                 .toolbar {
                     position: static;
                 }
@@ -968,20 +1405,24 @@
                 }
             }
 
-            #mobile-filter-toggle { display: none; }
+            #mobile-filter-toggle {
+                display: none;
+            }
 
             @media (max-width: 768px) {
-                #mobile-filter-toggle { display: flex; }
+                #mobile-filter-toggle {
+                    display: flex;
+                }
             }
 
             @media (min-width: 769px) {
-                table th:first-child,
-                table td:first-child {
+                table th:first-child, table td:first-child {
                     position: sticky;
                     left: 0;
                     background: var(--bg);
                     z-index: 2;
                 }
+
                 tbody tr:hover td:first-child {
                     background: var(--surface2);
                 }
@@ -990,7 +1431,8 @@
                 }
             }
 
-            /* ===================== AVATAR STYLES ===================== */
+            /* different avatar styles */
+
             .viewer-pip, .user-chip-avatar, .user-avatar {
                 transition: all 0.3s ease;
             }
@@ -1028,26 +1470,44 @@
             }
 
             @keyframes rainbowShift {
-                0%   { filter: hue-rotate(0deg); }
-                100% { filter: hue-rotate(360deg); }
+                0% {
+                    filter: hue-rotate(0deg);
+                } 100% {
+                    filter: hue-rotate(360deg);
+                }
             }
 
             @keyframes shimmerSlide {
-                0%   { opacity: 1; }
-                50%  { opacity: 0.5; }
-                100% { opacity: 1; }
+                0% {
+                    opacity: 1;
+                } 50% {
+                    opacity: 0.5;
+                } 100% {
+                    opacity: 1;
+                }
             }
 
             @keyframes fireShift {
-                0%   { filter: hue-rotate(0deg) brightness(1); }
-                50%  { filter: hue-rotate(20deg) brightness(1.3); }
-                100% { filter: hue-rotate(-20deg) brightness(0.8); }
+                0% {
+                    filter: hue-rotate(0deg) brightness(1);
+                } 50% {
+                    filter: hue-rotate(20deg) brightness(1.3);
+                } 100% {
+                    filter: hue-rotate(-20deg) brightness(0.8);
+                }
             }
 
             @keyframes avatarPulse {
-                0%,100% { transform: scale(1); box-shadow: 0 0 0 0 currentColor; }
-                50%      { transform: scale(1.08); box-shadow: 0 0 8px 2px currentColor; }
+                0%, 100% {
+                    transform: scale(1);
+                    box-shadow: 0 0 0 0 currentColor;
+                } 50% {
+                    transform: scale(1.08);
+                    box-shadow: 0 0 8px 2px currentColor;
+                }
             }
+
+            /* style for the radio buttons */
 
             .check-item input[type="radio"] {
                 appearance: none;
@@ -1059,10 +1519,12 @@
                 flex-shrink: 0;
                 transition: all var(--transition);
             }
+
             .check-item input[type="radio"]:checked {
                 background: var(--gold);
                 border-color: var(--gold);
             }
+
             .check-item input[type="radio"]:checked::after {
                 content: '';
                 display: block;
@@ -1074,13 +1536,18 @@
         </style>
     </head>
     <body>
-
         <!--sign-in gate -->
+
         <div id="signin-gate">
-            <div class="signin-logo">Alaniz Movie Watchlist</div>
+            <div class="signin-logo">
+                Alaniz Movie Watchlist
+            </div>
 
-            <div class="signin-heading">Select your profile</div>
+            <div class="signin-heading">
+                Select your profile
+            </div>
 
+            <!-- Js populated-->
             <div class="user-grid" id="user-grid">
             </div>
 
@@ -1097,308 +1564,307 @@
         <!--main-->
         <div id="main-app">
 
-        <header>
-            <div class="logo">Alaniz<span></span>Watchlist</div>
-            <div class="header-actions">
-                <button class="btn" id="btn-refresh" title="Reload from Google Sheets">⟳ Sync</button>
-                <button class="btn" id="btn-tonights-pick" style="border-color:var(--gold-dim);color:var(--gold)">🎬 Tonight's Pick</button>
-                <button class="btn primary" id="btn-add">+ Add Movie</button>
+            <header>
+                <div class="logo">Alaniz<span></span>Watchlist</div>
+                <div class="header-actions">
+                    <button class="btn" id="btn-refresh" title="Reload from Google Sheets">⟳ Sync</button>
+                    <button class="btn" id="btn-tonights-pick" style="border-color:var(--gold-dim);color:var(--gold)">🎬 Tonight's Pick</button>
+                    <button class="btn primary" id="btn-add">+ Add Movie</button>
 
-                <div class="user-menu" id="user-menu">
-                    <div class="user-chip" id="user-chip">
-                        <div class="user-chip-avatar" id="chip-avatar"></div>
-                        <span class="user-chip-name" id="chip-name"></span>
-                        <span style="font-size:0.6rem;color:var(--text-dim);margin-left:2px">&#9662;</span>
-                    </div>
-                    <div class="user-dropdown" id="user-dropdown">
-                        <div class="user-dropdown-header">
-                            <div class="user-dropdown-name" id="dropdown-name"></div>
+                    <div class="user-menu" id="user-menu">
+                        <div class="user-chip" id="user-chip">
+                            <div class="user-chip-avatar" id="chip-avatar"></div>
+                            <span class="user-chip-name" id="chip-name"></span>
+                            <span style="font-size:0.6rem;color:var(--text-dim);margin-left:2px">&#9662;</span>
                         </div>
-                        <button class="dropdown-item" id="btn-edit-profile">&#x270E; Edit Profile</button>
-                        <button class="dropdown-item" id="btn-signout">&#x21A9; Sign out</button>
+                        <div class="user-dropdown" id="user-dropdown">
+                            <div class="user-dropdown-header">
+                                <div class="user-dropdown-name" id="dropdown-name"></div>
+                            </div>
+                            <button class="dropdown-item" id="btn-edit-profile">&#x270E; Edit Profile</button>
+                            <button class="dropdown-item" id="btn-signout">&#x21A9; Sign out</button>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <div id="status-bar">
+                <span><span class="dot" id="conn-dot"></span><span id="conn-text">Connecting&#x2026;</span></span>
+                <span id="stat-total"></span>
+                <span id="stat-watched"></span>
+                <span id="stat-unwatched"></span>
+            </div>
+
+            <div class="toolbar">
+                <span class="results-count" id="results-count"></span>
+                <div style="display:flex;gap:1rem;align-items:center;flex-wrap:wrap">
+                    <div class="sort-row">
+                        <label>Sort</label>
+                        <select id="sort-select" class="filter-select" style="width:auto">
+                            <option value="title-asc">Title A&#x2192;Z</option>
+                            <option value="title-desc">Title Z&#x2192;A</option>
+                            <option value="year-desc">Newest first</option>
+                            <option value="year-asc">Oldest first</option>
+                            <option value="priority-asc">Priority &#x2191;</option>
+                            <option value="runtime-asc">Shortest first</option>
+                            <option value="runtime-desc">Longest first</option>
+                            <option value="added-desc">Recently added</option>
+                            <option value="recommended">&#x2605; Recommended for group</option>
+                        </select>
+                    </div>
+                    <div class="view-toggle">
+                        <button id="view-table" class="active" title="Table view">&#x2630;</button>
+                        <button id="view-cards" title="Card view">&#x229E;</button>
                     </div>
                 </div>
             </div>
-        </header>
-
-        <div id="status-bar">
-            <span><span class="dot" id="conn-dot"></span><span id="conn-text">Connecting&#x2026;</span></span>
-            <span id="stat-total"></span>
-            <span id="stat-watched"></span>
-            <span id="stat-unwatched"></span>
-        </div>
-
-        <div class="toolbar">
-            <span class="results-count" id="results-count"></span>
-            <div style="display:flex;gap:1rem;align-items:center;flex-wrap:wrap">
-                <div class="sort-row">
-                    <label>Sort</label>
-                    <select id="sort-select" class="filter-select" style="width:auto">
-                        <option value="title-asc">Title A&#x2192;Z</option>
-                        <option value="title-desc">Title Z&#x2192;A</option>
-                        <option value="year-desc">Newest first</option>
-                        <option value="year-asc">Oldest first</option>
-                        <option value="priority-asc">Priority &#x2191;</option>
-                        <option value="runtime-asc">Shortest first</option>
-                        <option value="runtime-desc">Longest first</option>
-                        <option value="added-desc">Recently added</option>
-                        <option value="recommended">&#x2605; Recommended for group</option>
-                    </select>
+            <div class="app" id="app-shell">
+                <div id="mobile-filter-toggle">
+                    <span>⚙ Filters</span>
+                    <span id="filter-toggle-arrow">▼</span>
                 </div>
-                <div class="view-toggle">
-                    <button id="view-table" class="active" title="Table view">&#x2630;</button>
-                    <button id="view-cards" title="Card view">&#x229E;</button>
-                </div>
-            </div>
-        </div>
-        <div class="app" id="app-shell">
-            <div id="mobile-filter-toggle">
-                <span>⚙ Filters</span>
-                <span id="filter-toggle-arrow">▼</span>
-            </div>
-            <aside id="sidebar">
-                <div class="filter-section">
-                    <h3>Search</h3>
-                    <div class="search-wrap">
-                        <span class="icon">&#x1F50D;</span>
-                        <input type="text" id="search" placeholder="Title, director&#x2026;" />
-                    </div>
-                </div>
-
-                <div class="filter-section">
-                    <h3>Status</h3>
-                    <div class="check-group" id="filter-status">
-                        <label class="check-item"><input type="checkbox" value="Unwatched" checked> Unwatched</label>
-                        <label class="check-item"><input type="checkbox" value="Watched"   checked> Watched</label>
-                    </div>
-                </div>
-
-                <div class="filter-section">
-                    <h3>Priority</h3>
-                    <div class="check-group" id="filter-priority">
-                        <label class="check-item"><input type="checkbox" value="1" checked> &#x1F947;</label>
-                        <label class="check-item"><input type="checkbox" value="2" checked> &#x1F948;</label>
-                        <label class="check-item"><input type="checkbox" value="3" checked> &#x1F949;</label>
-                    </div>
-                </div>
-
-                <div class="filter-section">
-                    <h3>Genre</h3>
-                    <div class="check-group" id="filter-genre"></div>
-                </div>
-
-                <div class="filter-section">
-                    <h3>Max Runtime</h3>
-                    <div class="range-row">
-                        <input type="range" id="filter-runtime" min="30" max="300" value="300" step="5">
-                        <span class="range-val" id="runtime-val">Any</span>
-                    </div>
-                </div>
-
-                <div class="filter-section">
-                    <h3>Year Range</h3>
-                    <div style="display:flex;gap:0.5rem">
-                        <input type="number" id="filter-year-from" class="filter-select" placeholder="From" min="1900" max="2099" style="width:50%">
-                        <input type="number" id="filter-year-to"   class="filter-select" placeholder="To"   min="1900" max="2099" style="width:50%">
-                    </div>
-                </div>
-
-                <div class="filter-section">
-                    <h3>Language</h3>
-                    <div class="check-group" id="filter-language"></div>
-                </div>
-
-                <div class="filter-section">
-                    <h3>On Watchlist</h3>
-                    <div class="check-group" id="filter-viewers"></div>
-                </div>
-
-                <button class="reset-link" id="btn-reset">&#x21BA; Reset all filters</button>
-            </aside>
-
-            <main>
-                <div id="movie-list"></div>
-            </main>
-        </div>
-
-        <div class="modal-backdrop" id="profile-modal">
-            <div class="modal" style="max-width:420px">
-                <h2>Edit <em>Profile</em></h2>
-
-                <div style="display:flex;flex-direction:column;gap:1.25rem">
-                    <div class="field">
-                        <label>Initials (1–3 characters)</label>
-                        <input type="text" id="profile-initials" maxlength="3" placeholder="A">
-                    </div>
-
-                    <div class="field">
-                        <label>Avatar Color</label>
-                        <div id="color-swatches" style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.5rem"></div>
-                        <div style="display:flex;align-items:center;gap:0.75rem;margin-top:0.25rem">
-                            <label style="font-family:'DM Mono',monospace;font-size:0.62rem;color:var(--text-dim);letter-spacing:0.08em;text-transform:uppercase">Custom</label>
-                            <input type="color" id="profile-color-custom" value="#c9a84c"
-                                style="width:36px;height:36px;border:1px solid var(--border);border-radius:4px;background:none;cursor:pointer;padding:2px">
-                            <button class="btn" id="profile-color-custom-apply" style="font-size:0.65rem;padding:0.3rem 0.6rem">Use this</button>
+                <aside id="sidebar">
+                    <div class="filter-section">
+                        <h3>Search</h3>
+                        <div class="search-wrap">
+                            <span class="icon">&#x1F50D;</span>
+                            <input type="text" id="search" placeholder="Title, director&#x2026;" />
                         </div>
                     </div>
 
-                    <div class="field" id="animated-styles-section">
-                        <label style="display:flex;align-items:center;gap:0.5rem">
-                            Animated Styles
-                            <span id="unlock-badge" style="font-size:0.6rem;padding:0.15rem 0.4rem;border-radius:10px;font-family:'DM Mono',monospace;letter-spacing:0.05em"></span>
-                        </label>
-                        <div id="animated-swatches" style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:0.4rem"></div>
-                        <div id="unlock-hint" style="font-family:'DM Mono',monospace;font-size:0.65rem;color:var(--text-dim);margin-top:0.4rem"></div>
-                    </div>
-
-                    <div class="field">
-                        <label>New Password (leave blank to keep current)</label>
-                        <input type="password" id="profile-password" placeholder="New password">
-                    </div>
-                    <div class="field">
-                        <label>Confirm New Password</label>
-                        <input type="password" id="profile-password-confirm" placeholder="Confirm password">
-                    </div>
-                </div>
-
-                <div class="modal-footer">
-                    <button class="btn" id="profile-cancel">Cancel</button>
-                    <button class="btn primary" id="profile-save">Save Changes</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Add / Edit Modal -->
-        <div class="modal-backdrop" id="movie-modal">
-            <div class="modal">
-                <h2 id="modal-title">Add <em>Movie</em></h2>
-                <input type="hidden" id="edit-row-id">
-                <div class="form-grid">
-                    <div class="field full">
-                    <label>Title *</label>
-                    <div style="display:flex;gap:0.5rem">
-                        <input type="text" id="f-title" placeholder="Movie title" required style="flex:1">
-                        <button type="button" id="omdb-autofill-btn" class="btn" style="white-space:nowrap;font-size:0.68rem">Auto-fill</button>
-                    </div>
-                </div>
-                <div class="field full">
-                    <label>Poster URL</label>
-                    <input type="text" id="f-poster" placeholder="https://…">
-                </div>
-                    <div class="field">
-                        <label>Year</label>
-                        <input type="number" id="f-year" placeholder="2024" min="1888" max="2099">
-                    </div>
-                    <div class="field">
-                        <label>Runtime (in minutes)</label>
-                        <input type="number" id="f-runtime" placeholder="120" min="1">
-                    </div>
-                    <div class="field full">
-                        <label>Genre(s) &#x2014; separate with a comma and a space (", ")</label>
-                        <input type="text" id="f-genre" placeholder="Drama, Thriller">
-                    </div>
-                    <div class="field">
-                        <label>Director</label>
-                        <input type="text" id="f-director" placeholder="Director name">
-                    </div>
-                    <div class="field">
-                        <label>Language</label>
-                        <input type="text" id="f-language" placeholder="English">
-                    </div>
-                    <div class="field">
-                        <label>Priority</label>
-                        <select id="f-priority">
-                            <option value="1">1 &#x2014;</option>
-                            <option value="2" selected>2 &#x2014;</option>
-                            <option value="3">3 &#x2014;</option>
-                        </select>
-                    </div>
-                    <div class="field">
-                        <label>Status</label>
-                        <select id="f-status">
-                            <option value="Unwatched" selected>Unwatched</option>
-                            <option value="Watched">Watched</option>
-                        </select>
-                    </div>
-                    <div class="field full">
-                        <label>Viewers &#x2014; separate with a semicolon and a space ("; ")</label>
-                        <input type="text" id="f-viewers" placeholder="Aidan; Jordan">
-                    </div>
-                    <div class="field">
-                        <label>Owned</label>
-                        <select id="f-source">
-                            <option value="Yes">Yes</option>
-                            <option value="No">No</option>
-                        </select>
-                    </div>
-                    <div class="field full">
-                        <label>Notes</label>
-                        <textarea id="f-notes"></textarea>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn" id="modal-cancel">Cancel</button>
-                    <button class="btn primary" id="modal-save">Save Movie</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Tonight's Pick Modal -->
-        <div class="modal-backdrop" id="pick-modal">
-            <div class="modal" style="max-width:480px">
-                <h2>🎬 <em>Tonight's Pick</em></h2>
-
-                <div id="pick-step-1">
-                    <div class="field" style="margin-bottom:1rem">
-                        <label>Who's watching tonight?</label>
-                        <div class="check-group" id="pick-viewers-group"></div>
-                    </div>
-                    <div class="field" style="margin-bottom:1rem">
-                        <label>Movie filter</label>
-                        <div class="check-group">
-                            <label class="check-item"><input type="radio" name="pick-watch-filter" value="new-to-everyone" checked> New to everyone</label>
-                            <label class="check-item"><input type="radio" name="pick-watch-filter" value="new-to-someone"> New to someone</label>
-                            <label class="check-item"><input type="radio" name="pick-watch-filter" value="any"> Any</label>
+                    <div class="filter-section">
+                        <h3>Status</h3>
+                        <div class="check-group" id="filter-status">
+                            <label class="check-item"><input type="checkbox" value="Unwatched" checked> Unwatched</label>
+                            <label class="check-item"><input type="checkbox" value="Watched"   checked> Watched</label>
                         </div>
                     </div>
-                    <div class="modal-footer" style="margin-top:0">
-                        <button class="btn" id="pick-cancel-1">Cancel</button>
-                        <button class="btn primary" id="pick-go">Find Top Picks →</button>
-                    </div>
-                </div>
 
-                <div id="pick-step-2" style="display:none">
-                    <div style="font-family:'DM Mono',monospace;font-size:0.65rem;color:var(--text-dim);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:1rem" id="pick-subtitle"></div>
-                    <div id="pick-results"></div>
+                    <div class="filter-section">
+                        <h3>Priority</h3>
+                        <div class="check-group" id="filter-priority">
+                            <label class="check-item"><input type="checkbox" value="1" checked> &#x1F947;</label>
+                            <label class="check-item"><input type="checkbox" value="2" checked> &#x1F948;</label>
+                            <label class="check-item"><input type="checkbox" value="3" checked> &#x1F949;</label>
+                        </div>
+                    </div>
+
+                    <div class="filter-section">
+                        <h3>Genre</h3>
+                        <div class="check-group" id="filter-genre"></div>
+                    </div>
+
+                    <div class="filter-section">
+                        <h3>Max Runtime</h3>
+                        <div class="range-row">
+                            <input type="range" id="filter-runtime" min="30" max="300" value="300" step="5">
+                            <span class="range-val" id="runtime-val">Any</span>
+                        </div>
+                    </div>
+
+                    <div class="filter-section">
+                        <h3>Year Range</h3>
+                        <div style="display:flex;gap:0.5rem">
+                            <input type="number" id="filter-year-from" class="filter-select" placeholder="From" min="1900" max="2099" style="width:50%">
+                            <input type="number" id="filter-year-to"   class="filter-select" placeholder="To"   min="1900" max="2099" style="width:50%">
+                        </div>
+                    </div>
+
+                    <div class="filter-section">
+                        <h3>Language</h3>
+                        <div class="check-group" id="filter-language"></div>
+                    </div>
+
+                    <div class="filter-section">
+                        <h3>On Watchlist</h3>
+                        <div class="check-group" id="filter-viewers"></div>
+                    </div>
+
+                    <button class="reset-link" id="btn-reset">&#x21BA; Reset all filters</button>
+                </aside>
+
+                <main>
+                    <div id="movie-list"></div>
+                </main>
+            </div>
+
+            <div class="modal-backdrop" id="profile-modal">
+                <div class="modal" style="max-width:420px">
+                    <h2>Edit <em>Profile</em></h2>
+
+                    <div style="display:flex;flex-direction:column;gap:1.25rem">
+                        <div class="field">
+                            <label>Initials (1–3 characters)</label>
+                            <input type="text" id="profile-initials" maxlength="3" placeholder="A">
+                        </div>
+
+                        <div class="field">
+                            <label>Avatar Color</label>
+                            <div id="color-swatches" style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.5rem"></div>
+                            <div style="display:flex;align-items:center;gap:0.75rem;margin-top:0.25rem">
+                                <label style="font-family:'DM Mono',monospace;font-size:0.62rem;color:var(--text-dim);letter-spacing:0.08em;text-transform:uppercase">Custom</label>
+                                <input type="color" id="profile-color-custom" value="#c9a84c"
+                                    style="width:36px;height:36px;border:1px solid var(--border);border-radius:4px;background:none;cursor:pointer;padding:2px">
+                                <button class="btn" id="profile-color-custom-apply" style="font-size:0.65rem;padding:0.3rem 0.6rem">Use this</button>
+                            </div>
+                        </div>
+
+                        <div class="field" id="animated-styles-section">
+                            <label style="display:flex;align-items:center;gap:0.5rem">
+                                Animated Styles
+                                <span id="unlock-badge" style="font-size:0.6rem;padding:0.15rem 0.4rem;border-radius:10px;font-family:'DM Mono',monospace;letter-spacing:0.05em"></span>
+                            </label>
+                            <div id="animated-swatches" style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:0.4rem"></div>
+                            <div id="unlock-hint" style="font-family:'DM Mono',monospace;font-size:0.65rem;color:var(--text-dim);margin-top:0.4rem"></div>
+                        </div>
+
+                        <div class="field">
+                            <label>New Password (leave blank to keep current)</label>
+                            <input type="password" id="profile-password" placeholder="New password">
+                        </div>
+                        <div class="field">
+                            <label>Confirm New Password</label>
+                            <input type="password" id="profile-password-confirm" placeholder="Confirm password">
+                        </div>
+                    </div>
+
                     <div class="modal-footer">
-                        <button class="btn" id="pick-back">← Back</button>
-                        <button class="btn" id="pick-close">Done</button>
+                        <button class="btn" id="profile-cancel">Cancel</button>
+                        <button class="btn primary" id="profile-save">Save Changes</button>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- detail Modal -->
-        <div class="modal-backdrop" id="detail-modal">
-            <div class="modal" style="max-width:560px">
-                <div style="display:flex;gap:1.25rem;align-items:flex-start;margin-bottom:1.25rem">
-                    <img id="detail-poster" src="" style="width:80px;height:118px;object-fit:cover;border-radius:6px;border:1px solid var(--border);flex-shrink:0;display:none">
-                    <div style="flex:1">
-                        <h2 id="detail-title" style="margin-bottom:0.25rem"></h2>
-                        <div id="detail-meta" style="font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--text-dim);letter-spacing:0.05em;margin-bottom:0.75rem"></div>
-                        <div id="detail-genres"></div>
+            <!-- Add / Edit Modal -->
+            <div class="modal-backdrop" id="movie-modal">
+                <div class="modal">
+                    <h2 id="modal-title">Add <em>Movie</em></h2>
+                    <input type="hidden" id="edit-row-id">
+                    <div class="form-grid">
+                        <div class="field full">
+                        <label>Title *</label>
+                        <div style="display:flex;gap:0.5rem">
+                            <input type="text" id="f-title" placeholder="Movie title" required style="flex:1">
+                            <button type="button" id="omdb-autofill-btn" class="btn" style="white-space:nowrap;font-size:0.68rem">Auto-fill</button>
+                        </div>
+                    </div>
+                    <div class="field full">
+                        <label>Poster URL</label>
+                        <input type="text" id="f-poster" placeholder="https://…">
+                    </div>
+                        <div class="field">
+                            <label>Year</label>
+                            <input type="number" id="f-year" placeholder="2024" min="1888" max="2099">
+                        </div>
+                        <div class="field">
+                            <label>Runtime (in minutes)</label>
+                            <input type="number" id="f-runtime" placeholder="120" min="1">
+                        </div>
+                        <div class="field full">
+                            <label>Genre(s) &#x2014; separate with a comma and a space (", ")</label>
+                            <input type="text" id="f-genre" placeholder="Drama, Thriller">
+                        </div>
+                        <div class="field">
+                            <label>Director</label>
+                            <input type="text" id="f-director" placeholder="Director name">
+                        </div>
+                        <div class="field">
+                            <label>Language</label>
+                            <input type="text" id="f-language" placeholder="English">
+                        </div>
+                        <div class="field">
+                            <label>Priority</label>
+                            <select id="f-priority">
+                                <option value="1">1 &#x2014;</option>
+                                <option value="2" selected>2 &#x2014;</option>
+                                <option value="3">3 &#x2014;</option>
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label>Status</label>
+                            <select id="f-status">
+                                <option value="Unwatched" selected>Unwatched</option>
+                                <option value="Watched">Watched</option>
+                            </select>
+                        </div>
+                        <div class="field full">
+                            <label>Viewers &#x2014; separate with a semicolon and a space ("; ")</label>
+                            <input type="text" id="f-viewers" placeholder="Aidan; Jordan">
+                        </div>
+                        <div class="field">
+                            <label>Owned</label>
+                            <select id="f-source">
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                        </div>
+                        <div class="field full">
+                            <label>Notes</label>
+                            <textarea id="f-notes"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn" id="modal-cancel">Cancel</button>
+                        <button class="btn primary" id="modal-save">Save Movie</button>
                     </div>
                 </div>
-                <div id="detail-body" style="display:flex;flex-direction:column;gap:0.75rem"></div>
-                <div class="modal-footer">
-                    <button class="btn" id="detail-close">Close</button>
-                    <button class="btn" id="detail-edit">✎ Edit</button>
-                    <button class="btn" id="detail-add-list" style="border-color:var(--gold-dim);color:var(--gold)">+ My List</button>
-                    <button class="btn primary" id="detail-watch-toggle"></button>
+            </div>
+
+            <!-- Tonight's Pick Modal -->
+            <div class="modal-backdrop" id="pick-modal">
+                <div class="modal" style="max-width:480px">
+                    <h2>🎬 <em>Tonight's Pick</em></h2>
+
+                    <div id="pick-step-1">
+                        <div class="field" style="margin-bottom:1rem">
+                            <label>Who's watching tonight?</label>
+                            <div class="check-group" id="pick-viewers-group"></div>
+                        </div>
+                        <div class="field" style="margin-bottom:1rem">
+                            <label>Movie filter</label>
+                            <div class="check-group">
+                                <label class="check-item"><input type="radio" name="pick-watch-filter" value="new-to-everyone" checked> New to everyone</label>
+                                <label class="check-item"><input type="radio" name="pick-watch-filter" value="new-to-someone"> New to someone</label>
+                                <label class="check-item"><input type="radio" name="pick-watch-filter" value="any"> Any</label>
+                            </div>
+                        </div>
+                        <div class="modal-footer" style="margin-top:0">
+                            <button class="btn" id="pick-cancel-1">Cancel</button>
+                            <button class="btn primary" id="pick-go">Find Top Picks →</button>
+                        </div>
+                    </div>
+
+                    <div id="pick-step-2" style="display:none">
+                        <div style="font-family:'DM Mono',monospace;font-size:0.65rem;color:var(--text-dim);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:1rem" id="pick-subtitle"></div>
+                        <div id="pick-results"></div>
+                        <div class="modal-footer">
+                            <button class="btn" id="pick-back">← Back</button>
+                            <button class="btn" id="pick-close">Done</button>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
 
+            <!-- detail Modal -->
+            <div class="modal-backdrop" id="detail-modal">
+                <div class="modal" style="max-width:560px">
+                    <div style="display:flex;gap:1.25rem;align-items:flex-start;margin-bottom:1.25rem">
+                        <img id="detail-poster" src="" style="width:80px;height:118px;object-fit:cover;border-radius:6px;border:1px solid var(--border);flex-shrink:0;display:none">
+                        <div style="flex:1">
+                            <h2 id="detail-title" style="margin-bottom:0.25rem"></h2>
+                            <div id="detail-meta" style="font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--text-dim);letter-spacing:0.05em;margin-bottom:0.75rem"></div>
+                            <div id="detail-genres"></div>
+                        </div>
+                    </div>
+                    <div id="detail-body" style="display:flex;flex-direction:column;gap:0.75rem"></div>
+                    <div class="modal-footer">
+                        <button class="btn" id="detail-close">Close</button>
+                        <button class="btn" id="detail-edit">✎ Edit</button>
+                        <button class="btn" id="detail-add-list" style="border-color:var(--gold-dim);color:var(--gold)">+ My List</button>
+                        <button class="btn primary" id="detail-watch-toggle"></button>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div id="toast"></div>
@@ -1581,7 +2047,7 @@
             // Body rows
             var rows = [
                 ['Director',  m.Director],
-                ['Owned',     m.Source ? (m.Source === 'Yes' ? '✓ Yes' : '✗ No') : null],
+                ['Owned',     m.Source ? (m.Source === 'Yes' ? 'Yes' : 'No') : null],
                 ['Notes',     m.Notes],
                 ['Viewers',   m.Viewers],
                 ['Watched By',m.WatchedBy],
@@ -1778,9 +2244,9 @@
                 avatarStyle: selectedAvatarStyle,
                 password:    pw1 || ''
             }).then(function() {
-                showToast('Profile updated ✓', 'success');
+                showToast('Profile updated successfully', 'success');
             }).catch(function() {
-                showToast('Saved locally but failed to sync', 'error');
+                showToast('Failed to sync profile, but saved locally', 'error');
             });
         }
 
@@ -2060,7 +2526,7 @@
 
         function saveMovie() {
             var movie = {
-                Poster: document.getElementById('f-poster').value.trim(),
+                Poster:   document.getElementById('f-poster').value.trim(),
                 Title:    document.getElementById('f-title').value.trim(),
                 Year:     document.getElementById('f-year').value.trim(),
                 Runtime:  document.getElementById('f-runtime').value.trim(),
@@ -2110,12 +2576,10 @@
             var isWatched = iWatched(movie);
             var watchedBy = parseList(movie.WatchedBy || '');
             if (!isWatched) {
-                // marking as watched — add current user if not already there
                 if (currentUser && !watchedBy.some(function(v) { return v.toLowerCase() === currentUser.name.toLowerCase(); })) {
                     watchedBy.push(currentUser.name);
                 }
             } else {
-                // marking as unwatched — remove current user
                 if (currentUser) {
                     watchedBy = watchedBy.filter(function(v) { return v.toLowerCase() !== currentUser.name.toLowerCase(); });
                 }
@@ -2353,7 +2817,7 @@
                 if (data.Director && data.Director !== 'N/A') document.getElementById('f-director').value = data.Director;
                 if (data.Language && data.Language !== 'N/A') document.getElementById('f-language').value = data.Language.split(',')[0].trim();
                 if (data.Poster   && data.Poster   !== 'N/A') document.getElementById('f-poster').value   = data.Poster;
-                showToast('Auto-filled from OMDB ✓', 'success');
+                showToast('Successfully auto-filled', 'success');
             });
         }
 
