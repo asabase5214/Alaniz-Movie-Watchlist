@@ -1718,12 +1718,8 @@
                         </div>
 
                         <div class="field" id="animated-styles-section">
-                            <label style="display:flex;align-items:center;gap:0.5rem">
-                                Animated Styles
-                                <span id="unlock-badge" style="font-size:0.6rem;padding:0.15rem 0.4rem;border-radius:10px;font-family:'DM Mono',monospace;letter-spacing:0.05em"></span>
-                            </label>
+                            <label>Animated Styles</label>
                             <div id="animated-swatches" style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:0.4rem"></div>
-                            <div id="unlock-hint" style="font-family:'DM Mono',monospace;font-size:0.65rem;color:var(--text-dim);margin-top:0.4rem"></div>
                         </div>
 
                         <div class="field">
@@ -2147,32 +2143,23 @@
                 refreshSwatchSelections();
             };
 
-            var badge    = document.getElementById('unlock-badge');
-            var hint     = document.getElementById('unlock-hint');
+            // Check unlock status
+            var myRatingCount = getUserRatingCount(currentUser.name);
             var animSect = document.getElementById('animated-swatches');
             animSect.innerHTML = '';
-
-            badge.textContent         = '';
-            badge.style.background    = 'rgba(46,204,113,0.15)';
-            badge.style.color         = '#2ecc71';
-            badge.style.border        = '1px solid #1a8a46';
-            hint.textContent          = '';
 
             ANIMATED_STYLES.forEach(function(s) {
                 var sw = document.createElement('div');
                 sw.style.cssText = 'width:32px;height:32px;border-radius:50%;background:' + s.preview +
-                    ';cursor:' + (unlocked ? 'pointer' : 'not-allowed') + ';border:2px solid ' +
+                    ';cursor:pointer;border:2px solid ' +
                     (selectedAvatarStyle === s.key ? 'white' : 'transparent') +
-                    ';transition:border-color 0.2s;flex-shrink:0;position:relative;' +
-                    (unlocked ? '' : 'opacity:0.35;filter:grayscale(0.5)');
-                sw.title = unlocked ? s.label : s.label + ' (locked)';
-                if (unlocked) {
-                    sw.addEventListener('click', function() {
-                        selectedAvatarStyle = s.key;
-                        selectedColor = '';
-                        refreshSwatchSelections();
-                    });
-                }
+                    ';transition:border-color 0.2s;flex-shrink:0;position:relative';
+                sw.title = s.label;
+                sw.addEventListener('click', function() {
+                    selectedAvatarStyle = s.key;
+                    selectedColor = '';
+                    refreshSwatchSelections();
+                });
                 animSect.appendChild(sw);
             });
 
