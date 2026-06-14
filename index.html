@@ -1580,6 +1580,7 @@
                 <div class="header-actions">
                     <button class="btn" id="btn-refresh" title="Reload from Google Sheets">⟳ Sync</button>
                     <button class="btn" id="btn-tonights-pick" style="border-color:var(--gold-dim);color:var(--gold)">🎬 Tonight's Pick</button>
+                    <button class="btn" id="btn-my-watchlist" style="border-color:var(--gold-dim);color:var(--gold)">☰ My Watchlist</button>
                     <button class="btn primary" id="btn-add">+ Add Movie</button>
 
                     <div class="user-menu" id="user-menu">
@@ -1723,7 +1724,7 @@
                         </div>
 
                         <div class="field">
-                            <label>New Password (leave blank to keep current)</label>
+                            <label>New Password (leave blank to keep your current password)</label>
                             <input type="password" id="profile-password" placeholder="New password">
                         </div>
                         <div class="field">
@@ -1735,6 +1736,17 @@
                     <div class="modal-footer">
                         <button class="btn" id="profile-cancel">Cancel</button>
                         <button class="btn primary" id="profile-save">Save Changes</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- My Watchlist Modal -->
+            <div class="modal-backdrop" id="watchlist-modal">
+                <div class="modal" style="max-width:560px">
+                    <h2>☰ <em>My Watchlist</em></h2>
+                    <div id="watchlist-body" style="display:flex;flex-direction:column;gap:0.5rem;margin-bottom:1rem"></div>
+                    <div class="modal-footer">
+                        <button class="btn" id="watchlist-close">Close</button>
                     </div>
                 </div>
             </div>
@@ -2028,6 +2040,51 @@
 
         function closeUserDropdown() {
             document.getElementById('user-dropdown').classList.remove('open');
+        }
+
+        function openWatchlistModal() {
+            var myMovies = allMovies.filter(function(m) {
+                return isOnMyList(m);
+            });
+
+            var body = document.getElementById('watchlist-body');
+
+            if (!myMovies.length) {
+                body.innerHTML = '<div style="color:var(--text-dim);font-family:\'DM Mono\',monospace;font-size:0.78rem;padding:1rem 0">You have no movies on your watchlist.</div>';
+            } else {
+                body.innerHTML = myMovies.map(function(m) {
+                    return '<div style="display:flex;align-items:center;gap:0.75rem;padding:0.6rem 0;border-bottom:1px solid var(--border)">' +
+                        (m.Poster ? '<img src="' + esc(m.Poster) + '" style="width:32px;height:46px;object-fit:cover;border-radius:3px;border:1px solid var(--border);flex-shrink:0">' :
+                            '<div style="width:32px;height:46px;background:var(--surface2);border:1px solid var(--border);border-radius:3px;flex-shrink:0"></div>') +
+                        '<div style="flex:1;min-width:0">' +
+                            '<div style="font-family:\'Playfair Display\',serif;font-size:0.95rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + esc(m.Title) + '</div>' +
+                            '<div style="font-family:\'DM Mono\',monospace;font-size:0.65rem;color:var(--text-dim)">' +
+                                [m.Year, m.Runtime ? m.Runtime + 'm' : null, parseList(m.Genre)[0]].filter(Boolean).join(' · ') +
+                            '</div>' +
+                        '</div>' +
+                        '<span class="status-pill status-' + (iWatched(m) ? 'watched' : 'unwatched') + '">' + (iWatched(m) ? 'Watched' : 'Unwatched') + '</span>' +
+                        '<button class="row-btn del" onclick="removeFromWatchlist(' + m.RowID + ')" title="Remove from watchlist">✕</button>' +
+                    '</div>';
+                }).join('');
+            }
+
+            document.getElementById('watchlist-modal').classList.add('open');
+        }
+
+        function removeFromWatchlist(rowId) {
+            var m = allMovies.find(function(x) { return String(x.RowID) === String(rowId); });
+            if (!m) return;
+            var viewers = parseList(m.Viewers).filter(function(v) {
+                return v.trim().toLowerCase() !== currentUser.name.toLowerCase();
+            });
+            var updated = Object.assign({}, m, { Viewers: viewers.join('; ') });
+            var idx = allMovies.findIndex(function(x) { return String(x.RowID) === String(rowId); });
+            if (idx >= 0) allMovies[idx].Viewers = updated.Viewers;
+            apiPost({ action: 'update', movie: updated }).catch(function() {
+                showToast('Failed to remove from watchlist', 'error');
+            });
+            openWatchlistModal();
+            renderList();
         }
 
         function openDetailModal(rowId) {
@@ -2393,6 +2450,14 @@
             document.getElementById('profile-modal').addEventListener('click', function(e) {
                 if (e.target === document.getElementById('profile-modal'))
                     document.getElementById('profile-modal').classList.remove('open');
+            });
+            document.getElementById('btn-my-watchlist').addEventListener('click', openWatchlistModal);
+            document.getElementById('watchlist-close').addEventListener('click', function() {
+                document.getElementById('watchlist-modal').classList.remove('open');
+            });
+            document.getElementById('watchlist-modal').addEventListener('click', function(e) {
+                if (e.target === document.getElementById('watchlist-modal'))
+                    document.getElementById('watchlist-modal').classList.remove('open');
             });
         });
 
