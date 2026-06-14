@@ -2147,29 +2147,16 @@
                 refreshSwatchSelections();
             };
 
-            // Check unlock status
-            var myRatingCount = getUserRatingCount(currentUser.name);
-            var unlocked      = myRatingCount >= 10;
-            var remaining     = 10 - myRatingCount;
-
             var badge    = document.getElementById('unlock-badge');
             var hint     = document.getElementById('unlock-hint');
             var animSect = document.getElementById('animated-swatches');
             animSect.innerHTML = '';
 
-            if (unlocked) {
-                badge.textContent         = '✓ Unlocked';
-                badge.style.background    = 'rgba(46,204,113,0.15)';
-                badge.style.color         = '#2ecc71';
-                badge.style.border        = '1px solid #1a8a46';
-                hint.textContent          = '';
-            } else {
-                badge.textContent         = '🔒 Locked';
-                badge.style.background    = 'rgba(74,72,70,0.3)';
-                badge.style.color         = 'var(--text-dim)';
-                badge.style.border        = '1px solid var(--border)';
-                hint.textContent          = 'Rate ' + remaining + ' more movie' + (remaining === 1 ? '' : 's') + ' to unlock animated styles.';
-            }
+            badge.textContent         = '';
+            badge.style.background    = 'rgba(46,204,113,0.15)';
+            badge.style.color         = '#2ecc71';
+            badge.style.border        = '1px solid #1a8a46';
+            hint.textContent          = '';
 
             ANIMATED_STYLES.forEach(function(s) {
                 var sw = document.createElement('div');
